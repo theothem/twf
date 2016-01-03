@@ -1,0 +1,26 @@
+
+1) Na pairnw kai public tweets
+2) Na kanei search me vash kapoio #hashtag
+3) Na pairnei ta apotelesmata kai gia kathe #hashtag na krataei ta ypoloipa #hashtag pou anaferontai mazi tou se mia lista-domh
+4) Opote tha exoume gia kathe #hashtag kai mia akolouthia apo alla #hashtags pou tha ta parathetoun oi xrhstes mazi tou
+5) Elegxos gia to an ta apotelesmata sxetizontai me to thema
+6) Aksiologhsh twn hashtag pou emfanizontai pio syxna
+7) Tha mporousa na xrhsimopoihsw apo to 463 th xrhsh twn leskikwn gia anazhthsh leksewn-hashtags me vash th riza ths lekshs
+8) Xrhsh mongo DB.
+
+*) Na vrw kapoia gnwsta hashtags na exw ws paradeigma.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1) 	Na ftiaksw to front-end opou tha emfanizontai ta tweets
+2)	Na ftiaksw th vash (MONGODB)
+3)	Sth vash tha apothikeuw ta tweets tou admin kathws kai opoies anazhthseis ginontai (px : #hashtags , users)
+4)	Stis anazhthseis na krataw stoixeia , pososta , kai an kanw anazhthsh #hashtag na epistrefetai kai to tweet mazi tou
+5) 	O xrhsths loipon tha vlepei sthn arxikh tou ta tweets pou einai apothikeumena sth vash kai tha mporei apo kapoio search( kateuthinomeno search ) na kanei 	  anazhthsh gia "hashtags" , "users" , "tweets" ktl. Meta thn anazhthsh tha episrefontai kai pososta-stoixeia ths anazhthshs.
+
+
+*) 	Morfh cloud tag na thn koitaksw 
+	ReactJS
+	AngularJS
+	Bootstrap

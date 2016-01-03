@@ -1,0 +1,646 @@
+body{
+	height: 100%;
+	width: 	100%;
+	background-color: black;
+	overflow: hidden;
+}
+
+button:focus {outline:0 !important;}
+
+header{
+	background-color: #222;
+	height: 7%;
+	width: 100%;
+	display: block;
+	float: left;
+}
+
+/* put toggle bars on the left :: not using button */
+#slide-nav .navbar-toggle {
+    cursor: pointer;
+    position: relative;
+    line-height: 0;
+    float: left;
+    margin: 0;
+    width: 30px;
+    height: 40px;
+    padding: 10px 0 0 0;
+    border: 0;
+    background: transparent;
+}
+/* icon bar prettyup - optional */
+#slide-nav .navbar-toggle > .icon-bar {
+    width: 100%;
+    display: block;
+    height: 3px;
+    margin: 5px 0 0 0;
+}
+#slide-nav .navbar-toggle.slide-active .icon-bar {
+    background: orange
+}
+.navbar-header {
+    position: relative;
+}
+/* un fix the navbar when active so that all the menu items are accessible */
+.navbar.navbar-fixed-top.slide-active {
+    position: relative
+}
+
+
+#main #navbarCollapse0{
+	background-color: black;
+	float: left;
+	display: inline;
+	height: 560px;
+	width: 80%;
+}
+
+#search_form_slidemenu{
+	height: 40px;
+	width: 95%;
+	margin-left: 2.5%;
+	float: left;
+	display: block;
+	margin-top: 10px;
+	background-color: #222;
+}
+#search_bar_left_slidemenu{
+	height: 30px;
+	margin-top: 3px;
+	width: 65%;
+	float: left;
+	display: inline;
+	margin-left: 5%;
+	border-bottom: none;
+}
+#search_bar_item_slidemenu{
+	width: 100%;
+	height: 100%;
+	background-color: #222;
+	box-shadow: none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	color: white;
+	padding-top: 10px;
+}
+#search_bar_button_slidemenu{
+	width: 8%;
+	height: 100%;
+	float: left;
+	display: inline;
+	margin-top: 10px;
+}
+#search_button_slidemenu{
+	background-color: #222;
+	border: none;
+	font-size: 16px;
+	margin-top: 0px;
+}
+#filter_menu{
+	width: 95%;
+	height: 89%;
+	margin-left: 2.5%;
+	margin-top: -10px;
+	float: left;
+	display: block;
+	background-color: #222;
+	border-bottom-style: solid;
+    border-bottom-width: medium;
+    border-bottom-color: black;
+}
+
+#myNavbar{
+	width: 100%;
+	height: 7%;
+	display: inline;
+	float: left;
+	border: none;
+}
+#title{
+	height: 100%;
+	width: 20%;
+	margin-left: 5%;
+	float: left;
+	display: inline;
+}
+#myNavbar #navbar-brand{
+	padding-top: 10%;	
+	font-size: 26px;
+	display: inline;
+	float: left;
+	color: white;
+}
+#button_left_menu{
+	display: none;
+}
+
+
+
+
+
+#main_menu{
+	height: 100%;
+	width: 22%;
+	margin-left: 35%;
+	float: left;
+	display: inline;
+}
+#navbarCollapse{
+	background-color: #222;
+	width: 100%;
+}
+#dropdownMenu{
+	background-color: #222;
+	margin-top: -1px;
+}
+#dropdownMenu a{
+	color: #9d9d9d;
+}
+
+
+
+#main{
+	height: 90%;
+	width: 100%;
+	float: left;
+	display: block;
+	background-color: #336699;
+}
+
+#main #tweet_window{
+	height: auto;
+	width: 	48.6%;
+	float: left;
+	display: inline;
+	margin-left: 28%;
+	margin-top: 10px;
+}
+
+#main #filter_window{
+	height: 88%;
+	width: 	24.3%;
+	background-color: #999;
+	margin-left: 5px;
+	float: left;
+	display: inline;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+footer{
+	height: 3%;
+	width: 100%;
+	background-color: #222;
+	display: block;
+	float: left;
+	text-align: right;
+	padding-right: 1%;
+}
+
+footer p{
+  font-size: 11px;
+  width: 100%;
+  color: white;
+  margin-left: 0.2%;
+  clear: both;
+  font-family: 'Lucida Grande';
+  font-style: italic;
+  font-variant: normal;
+  display: inline;
+}
+
+#left_footer{
+	display: inline;
+}
+
+#right_footer{
+	display: inline;
+}
+
+.lang-xs{
+	display: inline;
+	color: white;
+	margin-left: 1%;
+	margin-top: 2px;
+}
+
+@media screen and (max-width: 767px){ 
+
+	body.slide-active {
+    	overflow-x: hidden
+	}
+
+	.no-margin-top {
+	    margin-top: 0px;
+	}
+
+	body{
+		height: 100%;
+		width: 	100%;
+		background-color: #336699;
+	}
+	header{
+		background-color: #222;
+		height: 50px;
+		width: 100%;
+		display: block;
+		float: left;
+	}
+
+	.navbar-header {
+	    margin: 0 auto;
+	    padding: 0 15px;
+	}
+
+	.navbar-header .navbar-brand{
+		color: white;
+	}
+	.navbar.slide-active {
+	    position: absolute;
+	    width: 100%;
+	    top: -1px;
+	}
+	.navbar.slide-active .icon-bar {
+	    background: orange;
+	}
+	#slidemenu {
+	    left: -100%;
+	    width: 80%;
+	    height: 100%;
+	    min-width: 0;
+	    position: absolute;
+	    padding-left: 0;
+	    z-index: 10;
+	    top: -8px;
+	    margin-top: 50px;
+	    background-color: black;
+	}
+
+	#slidemenu .navbar-nav {
+	    min-width: 0;
+	    width: 100%;
+	    margin: 0;
+	}
+	#slide-nav {
+	    border-top: 0;
+	}
+	.navbar-inverse #slidemenu {
+	    background: black;
+	}
+
+	#search_form_slidemenu{
+		width: 99%;
+		margin-left: 0px;
+	}
+
+	#filter_menu{
+		width: 99%;
+		margin-left: 0px;
+		margin-top: -15px;
+	}
+
+	#search_bar{
+		display: none;
+		height: 100%;
+		width: 0%;
+		float: left;
+		margin-left: 15%;
+	}
+
+	#main_menu{
+		height: 0%;
+		width: 0%;
+		margin-left: 0%;
+		float: left;
+		display: none;
+	}
+
+	#main{
+		height: auto;
+		width: 100%;
+		float: left;
+		display: block;
+		background-color: #336699;
+	}
+
+	
+
+	#main #tweet_window{
+		height: 2043px;
+		width: 	90%;
+		background-color: #336699;
+		float: left;
+		display: inline;
+		margin-left: 5%;
+		margin-top: 5px;
+	}
+
+	#main #tweet_window ul li{
+		display: block;
+	}
+
+	#main #filter_window{
+		height: 0%;
+		width: 	0%;
+		background-color: #999;
+		margin-left: 0px;
+		float: left;
+		display: none;
+		margin-left: 0px;
+		margin-top: 0px;
+	}
+
+	footer{
+		display: none;
+	}
+	footer #left_footer{
+		display: none;
+	}
+	footer p{
+	  display: none;
+	}
+}
+
+@media screen and (min-width: 768px){ 
+
+	header{
+		height: 50px;
+	}
+
+	#slide-nav{
+		height: 50px;
+	}
+
+	#slidemenu{
+		display: none;
+	}
+
+	.navbar-header .navbar-brand{
+		color: white;
+		font-size: 22px;
+		height: 7%;
+		padding-left: 23%;
+	}
+
+	.navbar-header{
+		margin-left: 0%;
+		height: 50px;
+		width: 30%;
+	}
+
+	#search_bar{
+		height: 50px;
+		width: 35%;
+		margin-left: 1%;
+	}
+
+	#main{
+		overflow-y: scroll;
+	}
+
+	#tweet_window{
+		height: auto;
+		display: inline;
+	}
+
+	#main_menu{
+		width: 35%;
+	}
+
+	#search_form{
+		width: 90%;
+		float: right;
+	}
+
+	#search_bar_left{
+		width: 60%;
+		margin-left: 15%;
+	}
+
+	#search_bar_button{
+		width: 10%;
+	}
+
+	#navbarCollapse
+	{
+		width: 100%;
+	}
+
+	#nav-navbar-nav{
+		float: right;
+		margin-right: 10%;
+	}
+
+	#mainInfo{
+		display: inline;
+		float: left;
+		height: 100%;
+		width: 100%;
+	}
+
+	#logo{
+		display: block;
+		float: left;
+		height: 25%;
+		width: 100%;
+	}
+
+	#logo img{
+		height: 90%;
+		width: 10.4%;
+		margin-left: 43%;
+		margin-top: 2%;
+	}
+
+	#userFields{
+		display: block;
+		float: left;
+		height: 75%;
+		width: 100%;
+	}
+
+	#userFields #title{
+		width: 100%;
+		height: 10%;
+		float: left;
+		display: block;
+		margin-left: 0px;
+		margin-top: 3%;
+	}
+
+	#userFields #title p {
+		color: black;
+		font-size: 200%;
+		margin-left: 40.5%;
+	}
+
+	#userFields #content {
+		width: 100%;
+		height: 83%;
+		float: left;
+		display: block;
+	}
+
+	#userFields #content #content_box{
+		height: 100%;
+		width: 50%;
+		float: left;
+		display: block;
+		margin-left: 25%;
+		margin-top: 3%;
+	}		
+
+	#userFields #content #content_box #search{
+		height: 10%;
+		width: 100%;
+		float: left;
+		display: block;
+	}
+
+	#userFields #content #content_box #text{
+		height: 10%;
+		width: 100%;
+		float: left;
+		display: block;
+	}
+
+	#userFields #content #content_box #user{
+		height: 10%;
+		width: 100%;
+		float: left;
+		display: block;
+	}
+
+	#userFields #content #content_box #hashtag{
+		height: 10%;
+		width: 100%;
+		float: left;
+		display: block;
+	}
+
+	#userFields #content #content_box #date{
+		height: 10%;
+		width: 100%;
+		float: left;
+		display: block;
+	}
+
+	#userFields #content #content_box #hour{
+		height: 10%;
+		width: 100%;
+		float: left;
+		display: block;
+	}
+
+	#options_form{
+		height: 100%;
+		width: 100%;
+		float: left;
+	}
+	#search_bar_left{
+		width: 40%;
+		float: left;
+		display: inline;
+		margin-left: 23%;
+	}
+	#search_bar_item{
+		width: 40%;
+		height: 80%;
+		background-color: #336699;
+		box-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom-color: black;
+		color: black;
+		padding-top: 10px;	
+		margin-left: 23%;
+	}
+
+	#search_bar_button{
+		width: 10%;
+		float: left;
+		display: inline;
+	}
+	#search_button{
+		background-color: #336699;
+		border: none;
+		font-size: 20px;
+		color: black;
+	}
+
+	#rightInput{
+		float: left;
+		display: inline;
+		margin-left: 31%;
+		width: 42%;
+		height: 22px;
+		background-color: #336699;
+		box-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom-color: black;
+		color: black;
+		padding-top: 0px;
+	}
+
+	#date{
+		display: inline;
+		float: left;
+		margin-top: 0px;
+		height: 100%;
+		margin-left: 31%;
+	}
+
+	#rightInput1{
+		float: left;
+		display: inline;
+		width: 21%;
+		height: 22px;
+		background-color: #336699;
+		box-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom-color: black;
+		color: black;
+		padding-top: 0px;
+		margin-top: 0px;
+	}
+
+	#rightInput2{
+		float: left;
+		display: inline;
+		width: 21%;
+		height: 22px;
+		background-color: #336699;
+		box-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom-color: black;
+		color: black;
+		padding-top: 0px;
+		margin-top: 0px;
+	}
+
+	#content_box button{
+		
+		background-color: black;
+		color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+		margin-left: 67%;
+		margin-top: 2%;
+	}
+}
+
+

@@ -1,0 +1,29 @@
+npm init
+npm install express --save
+sudo npm install express-generator -g
+express twf
+node bin/www
+npm install --save serve-favicon
+node bin/www
+npm install --save morgan
+node bin/www
+npm install --save cookie-parser
+node bin/www
+npm install --save body-parser
+node bin/www
+npm install --save debug
+node bin/www
+npm install --save jade
+node bin/www
+npm install -g jade
+sudo npm install -g jade
+node bin/www
+npm install
+node bin/www
+npm install mustache --save
+node bin/www
+npm install
+node bin/www
+
+mongoDB:
+	sudo chown -R `id -u` /data/db
