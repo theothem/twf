@@ -12,6 +12,7 @@ var tweets          = require('./routes/tweets');
 var hashtags        = require('./routes/hashtags');
 var mongo           = require('./routes/mongodb');
 var getTweets       = require('./routes/getTweets');
+var searchTweets    = require('./routes/searchTweetsBy');
 
 var app             = express(); 
 
@@ -52,6 +53,48 @@ var last_get=0;
 if (app.post('/load_tweets', function(req, res) {
     console.log('Load_tweets triggered!');
     getTweets(res);
+}));
+
+
+if (app.post('/db_options', function(req, res) {
+    console.log('Database option received');
+
+    var recHashtag = null;
+
+    if( req.body.search != '')
+    {
+        console.log(req.body.search);
+        searchTweets(req.body.search);
+    }
+    if( req.body.text != '')
+    {
+        console.log(req.body.text);
+        searchTweets(req.body.text);
+    }
+    if( req.body.user != '')
+    {
+        console.log(req.body.user);
+        searchTweets(req.body.user);
+    }
+    if( req.body.hashtag != '')
+    {
+        if (req.body.hashtag[0] != '#')
+          req.body.hashtag = '#'+req.body.hashtag;
+
+        console.log(req.body.hashtag);
+        searchTweets(req.body.hashtag);
+    }
+    if( req.body.dateFrom != '')
+    {
+        console.log(req.body.dateFrom);
+        searchTweets(req.body.dateFrom);
+    }
+    if( req.body.dateTo != '')
+    {
+        console.log(req.body.dateTo);
+        searchTweets(req.body.dateTo);
+    }
+
 }));
 
 

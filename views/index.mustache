@@ -47,7 +47,6 @@
 			            </ul>
 			        </div>
 			    </div>
-			   	
 			</div>
 		</header>
 
@@ -82,34 +81,34 @@
 						<div id="content_box">
 							<form id="text_form" role="search" action="#">
 								<div id="text">
-									<input id="rightInput" class="form-control" type="text" value="Search"
-									onfocus="if (this.value=='Text') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'Text'">
+									<input id="src" class="form-control" type="text" value="Search"
+									onfocus="if (this.value=='Search') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Search'">
 								</div>
 
 								<div id="text">
-									<input id="rightInput" class="form-control" type="text" value="Text"
+									<input id="txt" class="form-control" type="text" value="Text"
 									onfocus="if (this.value=='Text') this.value = ''"  
 						    		onblur="if (this.value=='') this.value = 'Text'">
 								</div>
 
 								<div id="user">
-									<input id="rightInput" class="form-control" type="text" value="User"
+									<input id="usr" class="form-control" type="text" value="User"
 									onfocus="if (this.value=='User') this.value = ''"  
 						    		onblur="if (this.value=='') this.value = 'User'">
 								</div>
 
 								<div id="hashtag">
-									<input id="rightInput" class="form-control" type="text" value="Hashtag #"
+									<input id="hashtg" class="form-control" type="text" value="Hashtag #"
 									onfocus="if (this.value=='Hashtag #') this.value = ''"  
 						    		onblur="if (this.value=='') this.value = 'Hashtag #'">
 								</div>
 								<div id="date">
-									<input id="rightInput1" class="form-control" type="date" value="Date">
-									<input id="rightInput2" class="form-control" type="date" value="Date">
+									<input id="rightInput1" class="form-control" type="date" value="">
+									<input id="rightInput2" class="form-control" type="date" value="">
 								</div>
 
-								<button type="button" onclick="document.getElementById('text_form').submit();">Send</button>
+								<button type="button" onclick="send()">Send</button>
 
 							</form>
 						</div>

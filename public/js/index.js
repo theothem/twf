@@ -27,3 +27,31 @@ $(document).ready(function () {
         
     });
 });
+
+
+function send() {
+    var search      = document.getElementById("src").value;
+    var text        = document.getElementById("txt").value;
+    var user        = document.getElementById("usr").value;
+    var hashtag     = document.getElementById("hashtg").value;
+    var dateFrom    = document.getElementById("rightInput1").value;
+    var dateTo      = document.getElementById("rightInput2").value;
+
+    if (search == 'Search' ){
+        search = '';
+    }
+
+    if (text == 'Text'){
+        text = '';
+    }
+
+    if (user == 'User' ){
+        user = '';
+    }
+
+    if (hashtag == 'Hashtag #' ){
+        hashtag = '';
+    }
+
+    $.post('http://localhost:3000/db_options', {'search' : search,'text':text,'user': user,'hashtag': hashtag,'dateFrom': dateFrom,'dateTo': dateTo});
+}
