@@ -13,6 +13,7 @@ var hashtags        = require('./routes/hashtags');
 var mongo           = require('./routes/mongodb');
 var getTweets       = require('./routes/getTweets');
 var searchTweets    = require('./routes/searchTweetsBy');
+var addTweets       = require('./routes/addTweets');
 
 var app             = express(); 
 
@@ -59,42 +60,57 @@ if (app.post('/load_tweets', function(req, res) {
 if (app.post('/db_options', function(req, res) {
     console.log('Database option received');
 
-    var recHashtag = null;
-
     if( req.body.search != '')
     {
         console.log(req.body.search);
-        searchTweets(req.body.search);
+        var myCallback = function(data) {
+          //insert data
+          mongo(addTweets,top,data);
+        };
+        if( req.body.dateFrom != '')
+          searchTweets(req.body.search,myCallback,1,req.body.dateFrom);
+        else
+          searchTweets(req.body.search,myCallback,0,0);
     }
     if( req.body.text != '')
     {
         console.log(req.body.text);
-        searchTweets(req.body.text);
+        var myCallback = function(data) {
+          //insert data
+          mongo(addTweets,top,data);
+        };
+        if( req.body.dateFrom != '')
+          searchTweets(req.body.text,myCallback,1,req.body.dateFrom);
+        else
+          searchTweets(req.body.text,myCallback,0,0);
     }
     if( req.body.user != '')
     {
         console.log(req.body.user);
-        searchTweets(req.body.user);
+        var myCallback = function(data) {
+          //insert data
+          mongo(addTweets,top,data);
+        };
+        if( req.body.dateFrom != '')
+          searchTweets(req.body.user,myCallback,1,req.body.dateFrom);
+        else
+          searchTweets(req.body.user,myCallback,0,0);
     }
     if( req.body.hashtag != '')
     {
         if (req.body.hashtag[0] != '#')
           req.body.hashtag = '#'+req.body.hashtag;
+        //console.log(req.body.hashtag);
 
-        console.log(req.body.hashtag);
-        searchTweets(req.body.hashtag);
+        var myCallback = function(data) {
+          //insert data
+          mongo(addTweets,top,data);
+        };
+        if( req.body.dateFrom != '')
+          searchTweets(req.body.hashtag,myCallback,1,req.body.dateFrom);
+        else
+          searchTweets(req.body.hashtag,myCallback,0,0);
     }
-    if( req.body.dateFrom != '')
-    {
-        console.log(req.body.dateFrom);
-        searchTweets(req.body.dateFrom);
-    }
-    if( req.body.dateTo != '')
-    {
-        console.log(req.body.dateTo);
-        searchTweets(req.body.dateTo);
-    }
-
 }));
 
 

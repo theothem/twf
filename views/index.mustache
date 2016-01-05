@@ -101,11 +101,14 @@
 								<div id="hashtag">
 									<input id="hashtg" class="form-control" type="text" value="Hashtag #"
 									onfocus="if (this.value=='Hashtag #') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'Hashtag #'">
+						    		onblur="if (this.value=='') this.value = 'Hashtag #'">	
 								</div>
 								<div id="date">
-									<input id="rightInput1" class="form-control" type="date" value="">
-									<input id="rightInput2" class="form-control" type="date" value="">
+									<input id="rightInput1" class="form-control" type="date" value=""
+									onblur="document.getElementById('date_warning').style.visibility = 'hidden'"  
+						    		onfocus="document.getElementById('date_warning').style.visibility = 'visible'">
+									<!--<input id="rightInput2" class="form-control" type="date" value="">-->
+									<i id="date_warning">Tweets before the given date</i>
 								</div>
 
 								<button type="button" onclick="send()">Send</button>

@@ -396,7 +396,7 @@ footer p{
 	}
 
 	#main{
-		overflow-y: scroll;
+		overflow-y: none;
 	}
 
 	#tweet_window{
@@ -603,7 +603,7 @@ footer p{
 	#rightInput1{
 		float: left;
 		display: inline;
-		width: 21%;
+		width: 42%;
 		height: 22px;
 		background-color: #336699;
 		box-shadow: none;
@@ -614,6 +614,21 @@ footer p{
 		color: black;
 		padding-top: 0px;
 		margin-top: 0px;
+	}
+
+	#date_warning{
+		float: left;
+		display: inline;
+		margin-left: 10px;
+		height: 22px;
+		width: 182px;
+		visibility: hidden;
+		margin-left: 10px;
+		text-align: center;
+		color: #00529B;
+    	background-color: #BDE5F8;
+    	-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
 	}
 
 	#rightInput2{

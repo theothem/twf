@@ -13,37 +13,50 @@ var tweet = new Twitter({
 
 var hashtable = new HashTable();
 
-module.exports = function(query) 
+module.exports = function(query,callback,option,date) 
 {
     if (query != '') 
     {
-     	console.log("Getting tweets...\n");
-		tweet.get('search/tweets', { q: query , count: 200}, function(error, hashtag_tweets, response) 
-		{
-			console.log('Collected '+hashtag_tweets.statuses.length+' tweets for query : '+query+'.\n');
-			return hashtag_tweets.statuses;
-			/*	put them in query HashTable
-			if (query[0] == '#'){
-				query = lin.substring(1, query.length);
-			}
-
-			hashtable.put(query, [] );
-
-			var j=0;
-			for (j=0;j<hashtag_tweets.statuses.length;j++)
+    	if (option == 1)	
+    	{
+    		//Returns tweets created before the given date
+    		console.log("Getting tweets...option :"+date);
+			tweet.get('search/tweets', { q: query , count: 200, until: dateFrom}, function(error, hashtag_tweets, response) 
 			{
-				var i=0;
-				for (i=0;i<hashtag_tweets.statuses[j].entities.hashtags.length;i++)
+				console.log('Collected '+hashtag_tweets.statuses.length+' tweets for query : '+query+'.\n');
+				callback(hashtag_tweets.statuses);
+			});
+    	}
+    	else 
+    	{
+    		console.log("Getting tweets...\n");
+			tweet.get('search/tweets', { q: query , count: 200}, function(error, hashtag_tweets, response) 
+			{
+				console.log('Collected '+hashtag_tweets.statuses.length+' tweets for query : '+query+'.\n');
+				callback(hashtag_tweets.statuses);
+				/*	put them in query HashTable
+				if (query[0] == '#'){
+					query = lin.substring(1, query.length);
+				}
+
+				hashtable.put(query, [] );
+
+				var j=0;
+				for (j=0;j<hashtag_tweets.statuses.length;j++)
 				{
-					if ((hashtag_tweets.statuses[j].entities.hashtags[i].text != query) && (hashtable.get(query).indexOf(hashtag_tweets.statuses[j].entities.hashtags[i].text)==-1))
+					var i=0;
+					for (i=0;i<hashtag_tweets.statuses[j].entities.hashtags.length;i++)
 					{
-						hashtable.get(query).push(hashtag_tweets.statuses[j].entities.hashtags[i].text);
+						if ((hashtag_tweets.statuses[j].entities.hashtags[i].text != query) && (hashtable.get(query).indexOf(hashtag_tweets.statuses[j].entities.hashtags[i].text)==-1))
+						{
+							hashtable.get(query).push(hashtag_tweets.statuses[j].entities.hashtags[i].text);
+						}
 					}
 				}
-			}
-			console.log(query+' :');
-			console.log(hashtable.get(query));
-			*/
-		});
+				console.log(query+' :');
+				console.log(hashtable.get(query));
+				*/
+			});
+    	}
     }
 };
