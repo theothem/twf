@@ -13,27 +13,69 @@ var tweet = new Twitter({
 
 var hashtable = new HashTable();
 
-module.exports = function(query,callback,option,date) 
+module.exports = function(query,callback,option,date,user_option) 
 {
+	var public_tweets 	= [] ;
+	var all_tweets    	= [] ;
+
+
     if (query != '') 
     {
     	if (option == 1)	
     	{
     		//Returns tweets created before the given date
     		console.log("Getting tweets...option :"+date);
-			tweet.get('search/tweets', { q: query , count: 200, until: dateFrom}, function(error, hashtag_tweets, response) 
+			tweet.get('search/tweets', { q: query , count: 200, until: date}, function(error, hashtag_tweets, response) 
 			{
 				console.log('Collected '+hashtag_tweets.statuses.length+' tweets for query : '+query+'.\n');
 				callback(hashtag_tweets.statuses);
 			});
     	}
+    	else if (user_option == 1)	// If you search Tweets from specific user!
+    	{
+    		console.log("Getting tweets...\n"+query);
+			tweet.get('statuses/user_timeline', { screen_name: query , count: 200}, function(error, all_tweets, response) 
+			{
+				if (error)
+			    {
+			    	console.log('Error getting user tweets.'+error);
+			    	return;
+			    }
+				console.log('Collected         : '+all_tweets.length+' tweets for user : '+query+'.\n');
+				callback(all_tweets);
+			});
+    	}
     	else 
     	{
-    		console.log("Getting tweets...\n");
-			tweet.get('search/tweets', { q: query , count: 200}, function(error, hashtag_tweets, response) 
+    		console.log("Getting tweets...\n"+query);
+			tweet.get('search/tweets', { q: query , count: 200}, function(error, all_tweets, response) 
 			{
-				console.log('Collected '+hashtag_tweets.statuses.length+' tweets for query : '+query+'.\n');
-				callback(hashtag_tweets.statuses);
+				if (error)
+			    {
+			    	console.log('Error getting user tweets.'+error);
+			    	return;
+			    }
+				console.log('Collected         : '+all_tweets.statuses.length+' tweets ( User ) for query : '+query+'.\n');
+
+				tweet.stream('statuses/filter', { track : query }, function(stream, error)	//get public tweets in 7 seconds
+				{		
+					if (error)
+						console.log("error in stream"+error);
+				    stream.on('data' , function(data){
+				        public_tweets.push(data);
+				        all_tweets.statuses.push(data);
+				    });
+				    
+				    setTimeout(function(error){
+				    		if (error)
+				    			console.log("error timeout"+error);
+							console.log('Collected         : '+public_tweets.length+' tweets ( Public ) for query : '+query+'.\n');
+							console.log('Total             : '+all_tweets.statuses.length   +' tweets ( Total ) for query : '+query+'.\n');
+				          	stream.destroy();
+				          	callback(all_tweets.statuses);
+				    },7000);
+				});
+				//callback(user_tweets.statuses);
 				/*	put them in query HashTable
 				if (query[0] == '#'){
 					query = lin.substring(1, query.length);

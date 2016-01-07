@@ -20,7 +20,7 @@ module.exports = function(db,tweets_to_add)
 
 	var myCallback = function(data) {
 	  	//insert data
-      	console.log('Collected         : '+tweets_to_add.length+' tweets.\n');
+      	//console.log('Collected         : '+tweets_to_add.length+' tweets.\n');
 		//console.log('Duplicates User   : '+tweets_to_add.length-data+'.\n');
 		//console.log('Added to database : '+data+' new tweets.\n');
 	};

@@ -60,18 +60,6 @@ if (app.post('/load_tweets', function(req, res) {
 if (app.post('/db_options', function(req, res) {
     console.log('Database option received');
 
-    if( req.body.search != '')
-    {
-        console.log(req.body.search);
-        var myCallback = function(data) {
-          //insert data
-          mongo(addTweets,top,data);
-        };
-        if( req.body.dateFrom != '')
-          searchTweets(req.body.search,myCallback,1,req.body.dateFrom);
-        else
-          searchTweets(req.body.search,myCallback,0,0);
-    }
     if( req.body.text != '')
     {
         console.log(req.body.text);
@@ -80,9 +68,9 @@ if (app.post('/db_options', function(req, res) {
           mongo(addTweets,top,data);
         };
         if( req.body.dateFrom != '')
-          searchTweets(req.body.text,myCallback,1,req.body.dateFrom);
+          searchTweets(req.body.text,myCallback,1,req.body.dateFrom,0);
         else
-          searchTweets(req.body.text,myCallback,0,0);
+          searchTweets(req.body.text,myCallback,0,0,0);
     }
     if( req.body.user != '')
     {
@@ -91,10 +79,7 @@ if (app.post('/db_options', function(req, res) {
           //insert data
           mongo(addTweets,top,data);
         };
-        if( req.body.dateFrom != '')
-          searchTweets(req.body.user,myCallback,1,req.body.dateFrom);
-        else
-          searchTweets(req.body.user,myCallback,0,0);
+        searchTweets(req.body.user,myCallback,0,0,1);
     }
     if( req.body.hashtag != '')
     {
@@ -107,9 +92,9 @@ if (app.post('/db_options', function(req, res) {
           mongo(addTweets,top,data);
         };
         if( req.body.dateFrom != '')
-          searchTweets(req.body.hashtag,myCallback,1,req.body.dateFrom);
+          searchTweets(req.body.hashtag,myCallback,1,req.body.dateFrom,0);
         else
-          searchTweets(req.body.hashtag,myCallback,0,0);
+          searchTweets(req.body.hashtag,myCallback,0,0,0);
     }
 }));
 

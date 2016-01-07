@@ -84,7 +84,7 @@
 			</div>
 
 			<div id="tweet_window" class="tweet_window">
-				<script type="text/javascript">
+				<!--<script type="text/javascript">
 							var load_length ;
 
 							$(document).ready(function () {
@@ -107,9 +107,43 @@
 							    });
 							});
 				</script>
+				-->
 			   	{{#tweet_data}}
 	    			<div id="twits">	
-	    				{{_id}}
+
+	    				<div id="retweet">
+
+	    				</div>
+
+	    				<div id="down">
+	    					<div id="img">
+	    						{{#tweet}}
+	    							{{#user}}
+	    								{{#entities}}
+	    									<img id="profile_img" src={{profile_image_url}}>
+	    								{{/entities}}
+	    							{{/user}}
+	    						{{/tweet}}
+		    				</div>
+
+		    				<div id="right_tw">
+		    					<div id="user_username_time">
+		    						{{#tweet}}
+	    								{{#user}}
+	    									<p id="username"><b>{{name}}</b></p>
+	    									<p id="screenname">@{{screen_name}}</p>
+	    								{{/user}}
+	    									<p id="tweet_date">{{created_at}}</p>
+	    							{{/tweet}}
+			    				</div>
+
+			    				<div id="text">
+			    					{{#tweet}}
+	    									<p id="tweet_text">{{text}} </p>
+	    							{{/tweet}}
+			    				</div>
+		    				</div>
+		    			</div>
 	    			</div>
 			    {{/tweet_data}}
 			</div>

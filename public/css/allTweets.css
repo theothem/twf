@@ -482,7 +482,7 @@ footer p{
 
 	#twits{
 		display: block;
-		height: 125px;
+		height: 100px;
 		width: 100%;
 		background-color: white;
 		border: 5px solid #336699 ;
@@ -496,7 +496,100 @@ footer p{
 		margin-right: 1%;
 	}
 
+	#retweet{
+		float: left;
+		display: block;
+		height: 15%;
+		width: 100%;
+		/*display: none;*/
+	}
 
+	#down{
+		float: left;
+		display: block;
+		height: 84%;
+		width: 100%;
+	}
+
+	#img{
+		float: left;
+		display: inline;
+		height: 95%;
+		width: 11%;
+		margin-left: 2px;
+	}
+
+	#profile_img{
+		width: 48px;
+		height: 48px;
+		margin-left: 6px;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	margin-left: 7px;
+    	margin-top: 12%;
+	}
+
+	#right_tw{
+		float: left;
+		display: inline;
+		height: 95%;
+		width: 88%;
+		background-color: white;
+	}
+
+	#user_username_time{
+		float: left;
+		display: block;
+		height: 25%;
+		width: 100%;
+	}
+
+	#username{
+		float: left;
+		display: inline;
+		height: 100%;
+		margin-left: 5px;
+		font-size: 14px;
+		margin-top: 3px;
+		color: #292f33;
+		font-weight: bold;
+	}
+
+	#screenname{
+		float: left;
+		display: inline;
+		height: 100%;
+		margin-left: 2px;
+		margin-top: 6px;
+		font-size: 13px;
+		color: #8899a6;
+	}
+
+	#tweet_date{
+		float: left;
+		display: inline;
+		height: 100%;
+		margin-left: 7px;
+		margin-top: 6px;
+		font-size: 13px;
+		color: #8899a6;
+	}
+
+	#text{
+		float: left;
+		display: block;
+		height: 75%;
+		width: 100%;
+		margin-top: 2px;
+	}
+
+	#tweet_text{
+		float: left;
+		display: inline;
+		margin-left: 5px;
+		font-size: 16px;
+    	line-height: 20px;
+	}
 }
 
 

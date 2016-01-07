@@ -19,7 +19,7 @@ module.exports = function (res,path)
 		} 
 		else 
 		{
-			db.collection('tweets').find().sort({'tweet.id' : -1}).limit(50).toArray(function(err, tweets) {
+			db.collection('tweets').find().sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 					res.render(path, { tweet_data: tweets });
 			    });
 		/*	console.log('Connection established to', url);
