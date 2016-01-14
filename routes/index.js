@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
           if (err)
             console.log('Error at distinct');
           else{
-            console.log(filter_options);
+            //console.log(filter_options);
             res.render('index', { 'load_options':  filter_options , title: 'Twitter Feed' });
           }
         });

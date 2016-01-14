@@ -1,7 +1,7 @@
 var mongodb 		= require('mongodb');
 
 //code for DB
-module.exports = function(addTweets,top,tweets_to_add,filter) 
+module.exports = function(addTweets,top,tweets_to_add,filter,res) 
 {
 	var MongoClient = mongodb.MongoClient;
 	var url = 'mongodb://localhost:27017/twfDB';

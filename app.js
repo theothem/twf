@@ -15,6 +15,7 @@ var mongo           = require('./routes/mongodb');
 var getTweets       = require('./routes/getTweets');
 var searchTweets    = require('./routes/searchTweetsBy');
 var addTweets       = require('./routes/addTweets');
+var remove_filter   = require('./routes/removeFilter');
 
 var app             = express(); 
 
@@ -61,7 +62,7 @@ if (app.post('/db_options', function(req, res) {
         //console.log(req.body.text);
         var myCallback = function(data) {
           //insert data
-          mongo(addTweets,top,data,req.body.text);
+          mongo(addTweets,top,data,req.body.text,res);
         };
         if( req.body.dateFrom != '')
           searchTweets(req.body.text,myCallback,1,req.body.dateFrom,0);
@@ -74,7 +75,7 @@ if (app.post('/db_options', function(req, res) {
         var myCallback = function(data) {
           //insert data
           var filt = ("@"+req.body.user);
-          mongo(addTweets,top,data,filt);
+          mongo(addTweets,top,data,filt,res);
         };
         searchTweets(req.body.user,myCallback,0,0,1);
     }
@@ -85,7 +86,7 @@ if (app.post('/db_options', function(req, res) {
         //console.log(req.body.hashtag);
         var myCallback = function(data) {
           //insert data
-          mongo(addTweets,top,data,req.body.hashtag);
+          mongo(addTweets,top,data,req.body.hashtag,res);
         };
         if( req.body.dateFrom != '')
           searchTweets(req.body.hashtag,myCallback,1,req.body.dateFrom,0);
@@ -94,7 +95,10 @@ if (app.post('/db_options', function(req, res) {
     }
 }));
 
-
+if (app.post('/remove_filter', function(req, res) {
+    console.log('Remove_filter : '+req.body.filter);
+    remove_filter(req.body.filter,res);
+}));
 
 
 // catch 404 and forward to error handler

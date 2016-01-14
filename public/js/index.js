@@ -48,10 +48,37 @@ function send() {
         hashtag = '';
     }
 
-    $.post('http://localhost:3000/db_options', {'text':text,'user': user,'hashtag': hashtag,'dateFrom': dateFrom/*,'dateTo': dateTo*/});
+    if ((text == '')&&(user == '')&&(hashtag == '')&&(dateFrom!=''))
+    {
+        document.getElementById("date_warning").innerHTML           = "Give text,user or hashtag";
+        document.getElementById("date_warning").style.color         = "#B10009";
+        document.getElementById("date_warning").style.background    = "#FDE4E1";
+        document.getElementById("date_warning").style.font          = "bold 14px Arial";
+        document.getElementById("date_warning").style.padding       = "2px 4px";
+        document.getElementById("date_warning").style.visibility    ='visible';
+    }
+
+    $.ajax({
+        type:       "POST",
+        url:        "http://localhost:3000/db_options",
+        data:       {'text':text,'user': user,'hashtag': hashtag,'dateFrom': dateFrom},
+        dataType:   "json",
+        timeout:    2500
+    });
+    window.location = "allTweets";
+
 }
 
 
-function remove_filter(){
-    window.location.reload();
+function remove_filter(clicked){
+
+    $.ajax({
+        type:       "POST",
+        url:        "http://localhost:3000/remove_filter",
+        data:       {'filter':clicked},
+        dataType:   "json",
+        timeout:    2500,
+        complete:   function(arg1, arg2, arg3)
+        {   window.location.reload();  }
+    });
 }
