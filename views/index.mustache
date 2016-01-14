@@ -106,9 +106,15 @@
 									<i id="date_warning">Tweets before the given date</i>
 								</div>
 
-								<button type="button" onclick="send()">Send</button>
-
+								<button type="button" onclick="send()" id="send_button">Send</button>
 							</form>
+						</div>
+						<div id="option_box">
+								{{#load_options.length}}
+									<div id="option">
+											{{#load_options}}<button id="button_item" onclick="remove_filter()">&#x274C;{{.}}</button>{{/load_options}}
+									</div>
+								{{/load_options.length}}
 						</div>
 					</div>
 				</div>

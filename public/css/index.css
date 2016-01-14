@@ -396,7 +396,7 @@ footer p{
 	}
 
 	#main{
-		overflow-y: none;
+		overflow-y: auto;
 	}
 
 	#tweet_window{
@@ -488,8 +488,17 @@ footer p{
 		display: block;
 	}
 
+	#userFields #option_box{
+		width: 20%;
+		height: auto;
+		float: left;
+		display: block;
+		margin-left: 41%;
+		margin-top: 0.4%;
+	}
+
 	#userFields #content #content_box{
-		height: 100%;
+		height: 50%;
 		width: 50%;
 		float: left;
 		display: block;
@@ -498,42 +507,35 @@ footer p{
 	}		
 
 	#userFields #content #content_box #search{
-		height: 10%;
+		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
 	}
 
 	#userFields #content #content_box #text{
-		height: 10%;
+		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
 	}
 
 	#userFields #content #content_box #user{
-		height: 10%;
+		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
 	}
 
 	#userFields #content #content_box #hashtag{
-		height: 10%;
+		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
 	}
 
 	#userFields #content #content_box #date{
-		height: 10%;
-		width: 100%;
-		float: left;
-		display: block;
-	}
-
-	#userFields #content #content_box #hour{
-		height: 10%;
+		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
@@ -647,7 +649,7 @@ footer p{
 		margin-top: 0px;
 	}
 
-	#content_box button{
+	#content_box #send_button{
 		
 		background-color: black;
 		color: white;
@@ -660,7 +662,20 @@ footer p{
     	-webkit-border-radius: 4px;
     	border-radius: 4px;
 		margin-left: 67%;
-		margin-top: 2%;
+		margin-top: 1%;
+	}
+
+	
+
+	#button_item{
+		height: 25px;
+		background-color: #336699;
+		color: black;
+		margin-left: 5px;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-color: black;
+    	margin-top: 5px;
 	}
 }
 

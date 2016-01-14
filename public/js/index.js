@@ -50,3 +50,8 @@ function send() {
 
     $.post('http://localhost:3000/db_options', {'text':text,'user': user,'hashtag': hashtag,'dateFrom': dateFrom/*,'dateTo': dateTo*/});
 }
+
+
+function remove_filter(){
+    window.location.reload();
+}

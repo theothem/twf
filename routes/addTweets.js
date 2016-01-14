@@ -12,7 +12,7 @@ var tweet = new Twitter({
 });
 
 
-module.exports = function(db,tweets_to_add) 
+module.exports = function(db,tweets_to_add,filter) 
 {
 	var added 				= 0;
 	var duplicates  		= 0;
@@ -29,7 +29,7 @@ module.exports = function(db,tweets_to_add)
 		var i=0;
 		for(i=0;i<tweets_to_add.length;i++)
 		{	
-			db.collection('tweets').insert(  {'_id' : tweets_to_add[i].id_str , 'tweet' : tweets_to_add[i] }  ,function(err, doc)
+			db.collection('tweets').insert(  {'_id' : tweets_to_add[i].id_str , 'filter': filter ,'tweet' : tweets_to_add[i] }  ,function(err, doc)
 			{
 			  	if (err){
 			  		// error occured since _id=1 already existed

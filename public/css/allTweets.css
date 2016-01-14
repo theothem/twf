@@ -211,7 +211,7 @@ header{
 
 #main #tweet_window{
 	height: auto;
-	width: 	41%;
+	width: 	590.391px;
 	float: left;
 	display: inline;
 	margin-left: 29.5%;
@@ -220,12 +220,11 @@ header{
 
 #main #filter_window{
 	height: 88%;
-	width: 	24.3%;
+	width: 	22%;
 	background-color: #999;
-	margin-left: 5px;
 	float: left;
 	display: inline;
-	margin-left: 10px;
+	margin-left: 0.5%;
 	margin-top: 10px;
 }
 
@@ -419,7 +418,6 @@ footer p{
 
 	#filter_window{
 		position: fixed;
-		display: inline;
 	}
 
 	.navbar-header .navbar-brand{
@@ -483,7 +481,7 @@ footer p{
 	#twits{
 		display: block;
 		height: 100px;
-		width: 100%;
+		width: 590.391px;
 		background-color: white;
 		border: 5px solid #336699 ;
 		border-top:none;
