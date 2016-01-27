@@ -103,7 +103,7 @@ function remove_filters(){
 function submitUsers(){
     if (users_to_send.length == 0)
     {
-        return;
+        window.location = 'allTweets';
     }
     else
     {

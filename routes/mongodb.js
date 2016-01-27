@@ -1,7 +1,7 @@
 var mongodb 		= require('mongodb');
 
 //code for DB
-module.exports = function(addTweets,top,tweets_to_add,filter,res) 
+module.exports = function(res,addTweets,top,tweets_to_add,filter,res) 
 {
 	var MongoClient = mongodb.MongoClient;
 	var url = 'mongodb://localhost:27017/twfDB';
@@ -11,7 +11,7 @@ module.exports = function(addTweets,top,tweets_to_add,filter,res)
 	  } else {
 	    console.log('Connection established to', url);
 	    //tweets(db,top);
-		addTweets(db,tweets_to_add,filter);
+		addTweets(res,db,tweets_to_add,filter);
 	    //hashtags();
 	  }
 	});

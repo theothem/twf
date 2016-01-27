@@ -147,7 +147,7 @@ function filterByHashtag(clicked){
 function submitHashtag(){
     if (hashtags_to_send.length == 0)
     {
-        return;
+        window.location = 'allTweets';
     }
     else
     {

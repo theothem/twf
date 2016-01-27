@@ -20,8 +20,29 @@ module.exports = function (res,path)
 		else 
 		{
 			db.collection('tweets').find().sort({'tweet.id' : -1}).toArray(function(err, tweets) {
-					res.render(path, { tweet_data: tweets });
-			    });
+				db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
+		        {
+		          	if (err)
+		            	console.log('Error at distinct');
+		        	else{
+			          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users)
+				        {
+							if (err)
+								console.log('Error at distinct');
+							else{
+								db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
+						        {
+									if (err)
+										console.log('Error at distinct');
+									else{
+										res.render(path, { tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort()});
+									}
+						        });
+							}
+				        });
+		          	}
+		        });
+			});
 		/*	console.log('Connection established to', url);
 			if (option === 0)
 			{

@@ -1,4 +1,5 @@
 <html lang="en">
+	<base href="/" />
 	<head>
 		<title>{{title}}</title>
             <meta 	charset="UTF-8">
@@ -8,9 +9,9 @@
 	    	<meta 	name="viewport" 	content="width=device-width,initial-scale=1">
 	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 			<script src="js/bootstrap.min.js"></script>
-			<script src="js/allTweets.js"></script>
+			<script src="js/hashtags.js"></script>
 	    	<link 	href="css/bootstrap.min.css" rel="stylesheet"> 
-	    	<link 	href="css/allTweets.css" 	rel ="stylesheet" type="text/css">	 
+	    	<link 	href="css/hashtags.css" 	rel ="stylesheet" type="text/css">	 
 	    	<link   href="css/languages.min.css" rel ="stylesheet" type="text/css">
 	</head>
 
@@ -138,6 +139,13 @@
 															<i class="chkbox"></i>
 															<span>{{.}}</span>
 														</a>
+														<script type="text/javascript">
+															var users;
+															users = '{{user}}'.split(",");
+															if ( $.inArray('{{.}}', users) > -1 ) {
+																document.getElementById("{{.}}").className = "filter-item selected";
+															}
+														</script>
 													</li>
 												{{/users}}
 												<!--x2718, x274C-->
@@ -148,7 +156,6 @@
 					      </div>
 					    </div>
 					</div>
-
 					<div id="panel3" class="panel">
 					    <div class="panel">
 					      <h4 id="filterBy_HashTag">
@@ -169,6 +176,13 @@
 															<i class="chkbox"></i>
 															<span>{{.}}</span>
 														</a>
+														<script type="text/javascript">
+															var hasht;
+															hasht = '{{url}}'.split(",");
+															if ( $.inArray('{{.}}', hasht) > -1 ) {
+																filterByHashtag('{{.}}');
+															}
+														</script>
 													</li>
 												{{/hashtags}}
 												<!--x2718, x274C-->

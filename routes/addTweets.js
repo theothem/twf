@@ -12,7 +12,7 @@ var tweet = new Twitter({
 });
 
 
-module.exports = function(db,tweets_to_add,filter) 
+module.exports = function(res,db,tweets_to_add,filter) 
 {
 	var added 				= 0;
 	var duplicates  		= 0;
@@ -23,6 +23,7 @@ module.exports = function(db,tweets_to_add,filter)
       	//console.log('Collected         : '+tweets_to_add.length+' tweets.\n');
 		//console.log('Duplicates User   : '+tweets_to_add.length-data+'.\n');
 		//console.log('Added to database : '+data+' new tweets.\n');
+		res.render('../public/js/index' ,{ resp : 'ok' } );
 	};
 
 	var usingItNow = function(callback,tweets_to_add) {
