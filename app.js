@@ -9,7 +9,6 @@ var mustacheExpress = require('mustache-express');
 
 var routes          = require('./routes/index');
 var allTweets       = require('./routes/allTweets');
-var users           = require('./routes/users');
 var tweets          = require('./routes/tweets');
 var hashtags        = require('./routes/hashtags');
 var mongo           = require('./routes/mongodb');
@@ -19,6 +18,7 @@ var addTweets       = require('./routes/addTweets');
 var remove_filter   = require('./routes/removeFilter');
 var filterByUser    = require('./routes/filterByUser');
 var filterByHashtag = require('./routes/filterByHashtag');
+var searchKeyWord   = require('./routes/searchKeyWord');
 
 var app             = express(); 
 
@@ -41,22 +41,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/allTweets',allTweets);
 //app.use('/users/:user',users);
-app.use('/users/:user', function(request, response, next) {
-  var username = request.params.user;
-    console.log(username);
-    filterByUser(username,response,"users");
+
+
+app.use('/filters/', function(request, response, next) {
+  var query     = require('url').parse(request.url,true).query;
+  var users     = query.users;
+  var hashtags  = query.hashtags;
+
+  filterByHashtag(users,hashtags,response,"filters");
 });
 
-app.use('/hashtags/:hashtag', function(request, response, next) {
-  var hashtag = request.params.hashtag;
-    console.log(hashtag);
-    filterByHashtag(hashtag,response,"hashtags");
+app.use('/searchKeyWord/', function(request, response, next) {
+  var query     = require('url').parse(request.url,true).query;
+  var search    = query.search;
+
+  searchKeyWord(search,response,"searchKeyWord");
 });
 
 //app.use('/api', tweets);
 //var connect = mongo();
-var top = -1;
-//mongo(tweets,top);
 
 
 //code for tweets and hashtags
@@ -78,7 +81,7 @@ if (app.post('/db_options', function(req, res) {
         //console.log(req.body.text);
         var myCallback = function(data) {
           //insert data
-          mongo(res,addTweets,top,data,req.body.text,res);
+          mongo(res,addTweets,data,req.body.text,res);
         };
         if( req.body.dateFrom != '')
           searchTweets(req.body.text,myCallback,1,req.body.dateFrom,0);
@@ -91,7 +94,7 @@ if (app.post('/db_options', function(req, res) {
         var myCallback = function(data) {
           //insert data
           var filt = ("@"+req.body.user);
-          mongo(res,addTweets,top,data,filt,res);
+          mongo(res,addTweets,data,filt,res);
         };
         searchTweets(req.body.user,myCallback,0,0,1);
     }
@@ -102,7 +105,7 @@ if (app.post('/db_options', function(req, res) {
         //console.log(req.body.hashtag);
         var myCallback = function(data) {
           //insert data
-          mongo(res,addTweets,top,data,req.body.hashtag,res);
+          mongo(res,addTweets,data,req.body.hashtag,res);
         };
         if( req.body.dateFrom != '')
           searchTweets(req.body.hashtag,myCallback,1,req.body.dateFrom,0);

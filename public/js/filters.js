@@ -103,11 +103,11 @@ function remove_filters(){
 function submitUsers(){
     if (users_to_send.length == 0)
     {
-        window.location = 'allTweets';
+        return;
     }
     else
     {
-        window.location = 'users/'+users_to_send;
+        window.location = 'filters?users='+users_to_send+'&hashtags=';
     }
 }
 
@@ -151,6 +151,12 @@ function submitHashtag(){
     }
     else
     {
-        window.location = 'hashtags/'+hashtags_to_send;
+        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send;
     }
+}
+
+function search(){
+    var value = document.getElementById('search_bar_item').value;
+    window.location = 'searchKeyWord?search='+value;
+
 }

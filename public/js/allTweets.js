@@ -107,7 +107,7 @@ function submitUsers(){
     }
     else
     {
-        window.location = 'users/'+users_to_send;
+        window.location = 'filters?users='+users_to_send+'&hashtags=';
     }
 }
 
@@ -151,6 +151,12 @@ function submitHashtag(){
     }
     else
     {
-        window.location = 'hashtags/'+hashtags_to_send;
+        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send;
     }
+}
+
+function search(){
+    var value = document.getElementById('search_bar_item').value;
+    window.location = 'searchKeyWord?search='+value;
+
 }

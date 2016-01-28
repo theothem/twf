@@ -9,9 +9,9 @@
 	    	<meta 	name="viewport" 	content="width=device-width,initial-scale=1">
 	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 			<script src="js/bootstrap.min.js"></script>
-			<script src="js/hashtags.js"></script>
+			<script src="js/searchKeyWord.js"></script>
 	    	<link 	href="css/bootstrap.min.css" rel="stylesheet"> 
-	    	<link 	href="css/hashtags.css" 	rel ="stylesheet" type="text/css">	 
+	    	<link 	href="css/searchKeyWord.css" 	rel ="stylesheet" type="text/css">	 
 	    	<link   href="css/languages.min.css" rel ="stylesheet" type="text/css">
 	</head>
 
@@ -30,7 +30,7 @@
 
 			   	<div id="main_menu">
 			   	
-			    	<form id="search_form" role="search" action="#">
+			    	<form id="search_form" role="search" action="javascript:search();">
 			    		<div id="search_bar_left">
 			    			<input id="search_bar_item" type="text" class="form-control" placeholder="Search">
 			    		</div>
@@ -143,7 +143,7 @@
 															var users;
 															users = '{{user}}'.split(",");
 															if ( $.inArray('{{.}}', users) > -1 ) {
-																document.getElementById("{{.}}").className = "filter-item selected";
+																filterByUser('{{.}}');
 															}
 														</script>
 													</li>
