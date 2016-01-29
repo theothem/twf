@@ -6,7 +6,10 @@
             <meta 	name="keywords"    	content="allTweets,Themistoklis Theologitis , twf">
             <meta 	name="author" 		content="Themistoklis Theologitis">
 	    	<meta 	name="viewport" 	content="width=device-width,initial-scale=1">
-	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	    	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+	    	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 			<script src="js/bootstrap.min.js"></script>
 			<script src="js/allTweets.js"></script>
 	    	<link 	href="css/bootstrap.min.css" rel="stylesheet"> 
@@ -179,22 +182,31 @@
 					      </div>
 					    </div>
 					</div>
-				</div>
-				<!--<div id="order_options">
-					
-				</div>
 
-				<div id="users">
-					
-				</div>
-
-				<div id="hashtags">
-					
-				</div>
-
-				<div id="date">
-					
-				</div>-->
+					<div id="panel4" class="panel">
+					    <div class="panel">
+					      <h4 id="filterBy_Date">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseDate">
+					        	<span class="caret"></span>
+					          	<span>Date</span>
+					        </a>
+					      </h4>
+					    </div>
+						<div id="collapseDate" class="panel-collapse collapse">
+							<div class="panel-body">
+							    <form id="calendar">
+								    <input id="datepicker" value="dd/mm/yyyy"/>
+								</form>
+								<button id="submitDate_button" onclick="submitDate()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+							</div>
+					      	<script>
+								$(document).ready(function() {
+									$("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
+								});
+						  	</script>
+						</div>
+					</div>
+				</div>				
 			</div>
 
 			<div id="tweet_window" class="tweet_window">

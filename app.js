@@ -47,15 +47,19 @@ app.use('/filters/', function(request, response, next) {
   var query     = require('url').parse(request.url,true).query;
   var users     = query.users;
   var hashtags  = query.hashtags;
+  var date      = query.date;
 
-  filterByHashtag(users,hashtags,response,"filters");
+  filterByHashtag(users,hashtags,date,response,"filters");
 });
 
 app.use('/searchKeyWord/', function(request, response, next) {
   var query     = require('url').parse(request.url,true).query;
   var search    = query.search;
+  var users     = query.users;
+  var hashtags  = query.hashtags;
+  var date      = query.date;
 
-  searchKeyWord(search,response,"searchKeyWord");
+  searchKeyWord(search,users,hashtags,date,response,"searchKeyWord");
 });
 
 //app.use('/api', tweets);

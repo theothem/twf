@@ -501,6 +501,19 @@ footer p{
 		height: 24px;
 	}
 
+	#submitDate_button{
+		float: right;
+		display: inline;
+		height: 24px;
+	}
+
+	#calendar{
+		float: left;
+		display: inline;
+		width: 85%;
+		height: 24px;
+	}
+
 	.glyphicon.glyphicon-trash{
 		font-size: 14px;
 	}
@@ -561,48 +574,21 @@ footer p{
 	    border:none;
 	}
 
-	#filterBy_title a{
+	#filterBy_title a,#filterBy_HashTag a,#filterBy_Date a{
 		margin-left: 5%;
 		color: white;
 	}
 
-	#filterBy_HashTag a{
+	#datepicker{
+		width: 90%;
+		height: 24px;
 		margin-left: 5%;
-		color: white;
 	}
 
-	#filter_window #order_options{
-		float: left;
-		display: block;
-		width: 100%;
-		height: 20%;
-		background-color: #222;
-	}
-
-	#filter_window #users{
-		float: left;
-		display: block;
-		width: 100%;
-		height: 20%;
-		background-color: red;
-	}
-
-	#filter_window #hashtags{ 
-		float: left;
-		display: block;
-		width: 100%;
-		height: 20%;
-		background-color: green;
-	}
-
-	#filter_window #date{
-		float: left;
-		display: block;
-		width: 100%;
-		height: 20%;
-		background-color: blue;
-	}
-
+	#ui-datepicker-div{
+		font-size:	81%;
+		margin-top: 8px;
+	}	
 
 	.navbar-header .navbar-brand{
 		color: white;

@@ -107,7 +107,21 @@ function submitUsers(){
     }
     else
     {
-        window.location = 'filters?users='+users_to_send+'&hashtags=';
+        var search = document.getElementById('search_bar_item').value;
+        if (search != '')
+        {
+            var date = document.getElementById('datepicker').value;
+            if (date == 'dd/mm/yyyy')
+                date = '';
+            window.location = 'searchKeyWord?search='+search+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+        }
+        else
+        {
+            var date = document.getElementById('datepicker').value;
+            if (date == 'dd/mm/yyyy')
+                date = '';
+            window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+        }
     }
 }
 
@@ -151,12 +165,42 @@ function submitHashtag(){
     }
     else
     {
-        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send;
+        var search = document.getElementById('search_bar_item').value;
+        if (search != '')
+        {
+            var date = document.getElementById('datepicker').value;
+            if (date == 'dd/mm/yyyy')
+                date = '';
+            window.location = 'searchKeyWord?search='+search+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+        }
+        else
+        {
+            var date = document.getElementById('datepicker').value;
+            if (date == 'dd/mm/yyyy')
+                date = '';
+            window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+        }
     }
 }
 
 function search(){
     var value = document.getElementById('search_bar_item').value;
-    window.location = 'searchKeyWord?search='+value;
+    var date = document.getElementById('datepicker').value;
+        if (date == 'dd/mm/yyyy')
+            date = '';
+    window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+}
 
+function submitDate(){
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        return;
+    var search = document.getElementById('search_bar_item').value;
+    if (search != '')
+    {
+        window.location = 'searchKeyWord?search='+search+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+    }
+    else
+        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+    
 }

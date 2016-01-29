@@ -30,6 +30,7 @@ module.exports = function(res,db,tweets_to_add,filter)
 		var i=0;
 		for(i=0;i<tweets_to_add.length;i++)
 		{	
+			tweets_to_add[i].created_at = dateToDate(tweets_to_add[i].created_at);
 			db.collection('tweets').insert(  {'_id' : tweets_to_add[i].id_str , 'filter': filter ,'tweet' : tweets_to_add[i] }  ,function(err, doc)
 			{
 			  	if (err){
@@ -47,3 +48,12 @@ module.exports = function(res,db,tweets_to_add,filter)
 
 	usingItNow(myCallback,tweets_to_add);
 };
+
+
+function dateToDate(input){
+
+	var date = input.split(' ');
+	var output = date[1]+' '+date[2]+' '+date[5]+' '+date[3]+' '+date[4];
+	
+	return output;
+}
