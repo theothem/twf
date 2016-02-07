@@ -22,6 +22,7 @@ module.exports = function (query,res)
 						console.log('Unable to remove '+query+' from database');
 					else
 						res.render('../public/js/index' ,{ remove_resp : 'ok' } );
+					db.close();
 			    });
 			}
 			else
@@ -31,6 +32,7 @@ module.exports = function (query,res)
 						console.log('Unable to remove '+query+' from database');
 					else
 						res.render( '../public/js/index' ,{remove_resp : 'ok' } );
+					db.close();
 			    });
 			}	
 		}

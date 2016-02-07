@@ -164,9 +164,25 @@ function submitHashtag(){
 function search(){
     var value = document.getElementById('search_bar_item').value;
     var date = document.getElementById('datepicker').value;
-        if (date == 'dd/mm/yyyy')
-            date = '';
-    window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+
+    if (value[0] == '#')
+    {
+        var hash = value.split('#');
+        hashtags_to_send.push(hash[1]);
+        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+    }
+    else if (value[0] == '@')
+    {
+        var hash = value.split('@');
+        window.location = 'searchKeyWord?search='+hash[1]+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
+    }
+    else
+    {
+        window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
+    }
+    
 
 }
 

@@ -13,6 +13,7 @@ module.exports = function (users,hashtag,date,res,path)
 	{	
 		if (err) {
 			console.log('Unable to connect to the mongoDB server. Error:', err);
+			db.close();
 		} 
 		else 
 		{
@@ -23,20 +24,27 @@ module.exports = function (users,hashtag,date,res,path)
 					db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 						db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 				        {
-				          	if (err)
+				          	if (err){
 				            	console.log('Error at distinct');
+				            	db.close();
+				          	}
 				        	else{
 					          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
 						        {
-									if (err)
+									if (err){
 										console.log('Error at distinct');
+										db.close();
+									}
 									else{
 										db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, fhashtags)
 								        {
-											if (err)
+											if (err){
 												console.log('Error at distinct');
+												db.close();
+											}
 											else{
 												res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+												db.close();
 											}
 								        });
 										
@@ -51,20 +59,27 @@ module.exports = function (users,hashtag,date,res,path)
 					db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 						db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 				        {
-				          	if (err)
+				          	if (err){
 				            	console.log('Error at distinct');
+				            	db.close();
+				          	}
 				        	else{
 					          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
 						        {
-									if (err)
+									if (err){
 										console.log('Error at distinct');
+										db.close();
+									}
 									else{
 										db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, fhashtags)
 								        {
-											if (err)
+											if (err){
 												console.log('Error at distinct');
+												db.close();
+											}
 											else{
 												res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+												db.close();
 											}
 								        });
 										
@@ -79,20 +94,27 @@ module.exports = function (users,hashtag,date,res,path)
 					db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 						db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 				        {
-				          	if (err)
+				          	if (err){
 				            	console.log('Error at distinct');
+				            	db.close();
+				          	}
 				        	else{
 					          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
 						        {
-									if (err)
+									if (err){
 										console.log('Error at distinct');
+										db.close();
+									}
 									else{
 										db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, fhashtags)
 								        {
-											if (err)
+											if (err){
 												console.log('Error at distinct');
+												db.close();
+											}
 											else{
 												res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+												db.close();
 											}
 								        });
 										
@@ -112,23 +134,29 @@ module.exports = function (users,hashtag,date,res,path)
 					db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 						db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 				        {
-				          	if (err)
+				          	if (err){
 				            	console.log('Error at distinct');
+				            	db.close();
+				          	}
 				        	else{
 					          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
 						        {
-									if (err)
+									if (err){
 										console.log('Error at distinct');
+										db.close();
+									}
 									else{
 										db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, fhashtags)
 								        {
-											if (err)
+											if (err){
 												console.log('Error at distinct');
+												db.close();
+											}
 											else{
 												res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate});
+												db.close();
 											}
 								        });
-										
 									}
 						        });
 				          	}
@@ -140,23 +168,29 @@ module.exports = function (users,hashtag,date,res,path)
 					db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 						db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 				        {
-				          	if (err)
+				          	if (err){
 				            	console.log('Error at distinct');
+				            	db.close();
+				          	}
 				        	else{
 					          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
 						        {
-									if (err)
+									if (err){
 										console.log('Error at distinct');
+										db.close();
+									}
 									else{
 										db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, fhashtags)
 								        {
-											if (err)
+											if (err){
 												console.log('Error at distinct');
+												db.close();
+											}
 											else{
 												res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+												db.close();
 											}
 								        });
-										
 									}
 						        });
 				          	}
@@ -168,20 +202,27 @@ module.exports = function (users,hashtag,date,res,path)
 					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 						db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 				        {
-				          	if (err)
+				          	if (err){
 				            	console.log('Error at distinct');
+				            	db.close();
+				          	}
 				        	else{
 					          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
 						        {
-									if (err)
+									if (err){
 										console.log('Error at distinct');
+										db.close();
+									}
 									else{
 										db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, fhashtags)
 								        {
-											if (err)
+											if (err){
 												console.log('Error at distinct');
+												db.close();
+											}
 											else{
 												res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+												db.close();
 											}
 								        });
 										
@@ -196,20 +237,27 @@ module.exports = function (users,hashtag,date,res,path)
 					db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
 						db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 				        {
-				          	if (err)
+				          	if (err){
 				            	console.log('Error at distinct');
+				            	db.close();
+				          	}
 				        	else{
 					          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
 						        {
-									if (err)
+									if (err){
 										console.log('Error at distinct');
+										db.close();
+									}
 									else{
 										db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, fhashtags)
 								        {
-											if (err)
+											if (err){
 												console.log('Error at distinct');
+												db.close();
+											}
 											else{
 												res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+												db.close();
 											}
 								        });
 										

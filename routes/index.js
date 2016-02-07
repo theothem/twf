@@ -23,6 +23,7 @@ router.get('/', function(req, res, next) {
           else{
             //console.log(filter_options);
             res.render('index', { 'load_options':  filter_options , title: 'Twitter Feed' });
+            db.close();
           }
         });
       }

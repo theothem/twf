@@ -149,7 +149,12 @@
 														<script type="text/javascript">
 															var users;
 															users = '{{user}}'.split(",");
+															var searched = '{{searched}}'.split(",");
+
 															if ( $.inArray('{{.}}', users) > -1 ) {
+																filterByUser('{{.}}');
+															}
+															if ( $.inArray('{{.}}', searched) > -1 ) {
 																filterByUser('{{.}}');
 															}
 														</script>
@@ -179,14 +184,19 @@
 										{{#hashtags.length}}
 												{{#hashtags}}
 													<li id="flist">
-														<a id="#{{.}}" class="filter-item" href="javascript:filterByHashtag('{{.}}');">
+														<a id="{{.}}" class="filter-item" href="javascript:filterByHashtag('{{.}}');">
 															<i class="chkbox"></i>
 															<span>{{.}}</span>
 														</a>
 														<script type="text/javascript">
 															var hasht;
 															hasht = '{{url}}'.split(",");
+															var searched = '{{searched}}'.split(",");
+
 															if ( $.inArray('{{.}}', hasht) > -1 ) {
+																filterByHashtag('{{.}}');
+															}
+															if ( $.inArray('{{.}}', searched) > -1 ) {
 																filterByHashtag('{{.}}');
 															}
 														</script>

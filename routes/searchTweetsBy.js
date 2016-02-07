@@ -56,25 +56,7 @@ module.exports = function(query,callback,option,date,user_option)
 			    	return;
 			    }
 				console.log('Collected         : '+all_tweets.statuses.length+' tweets ( User ) for query : '+query+'.\n');
-
-				tweet.stream('statuses/filter', { track : query }, function(stream, error)	//get public tweets in 7 seconds
-				{		
-					if (error)
-						console.log("error in stream"+error);
-				    stream.on('data' , function(data){
-				        public_tweets.push(data);
-				        all_tweets.statuses.push(data);
-				    });
-				    
-				    setTimeout(function(error){
-				    		if (error)
-				    			console.log("error timeout"+error);
-							console.log('Collected         : '+public_tweets.length+' tweets ( Public ) for query : '+query+'.\n');
-							console.log('Total             : '+all_tweets.statuses.length   +' tweets ( Total ) for query : '+query+'.\n');
-				          	stream.destroy();
-				          	callback(all_tweets.statuses);
-				    },7000);
-				});
+				callback(all_tweets.statuses);
 				//callback(user_tweets.statuses);
 				/*	put them in query HashTable
 				if (query[0] == '#'){
