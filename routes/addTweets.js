@@ -5,7 +5,7 @@ var router 			= express.Router();
 var mongodb 		= require('mongodb');
 
 
-module.exports = function(res,tweets_to_add,filter) 
+module.exports = function(res,tweets_to_add,filter,dateFrom) 
 {
 	var MongoClient = mongodb.MongoClient;
 	var url = 'mongodb://localhost:27017/twfDB';
@@ -27,26 +27,29 @@ module.exports = function(res,tweets_to_add,filter)
 			db.close();
 		};
 
-		var usingItNow = function(callback,tweets_to_add) {
+		var usingItNow = function(callback,tweets_to_add,dateFrom) {
 			var i=0;
 			for(i=0;i<tweets_to_add.length;i++)
 			{	
 				tweets_to_add[i].created_at = dateToDate(tweets_to_add[i].created_at);
-				db.collection('tweets').insert(  {'_id' : tweets_to_add[i].id_str , 'filter': filter ,'tweet' : tweets_to_add[i] }  ,function(err, doc)
+				if (( filter != null ) && ( filter != undefined) && (tweets_to_add[i].id_str != null)&& (tweets_to_add[i].id_str != undefined) && (tweets_to_add[i]!=null)&& (tweets_to_add[i]!=undefined))
 				{
-				  	if (err){
-				  		// error occured since _id=1 already existed
-				    	duplicates++;
-				  	}
-				  	else{  
-				  		// no error, inserted new document, with _id=1
-				  		added++;
-				  	}
-				});
+					db.collection('tweets').insert(  {'_id' : tweets_to_add[i].id_str , 'filter': filter, 'dateFrom' : dateFrom ,'tweet' : tweets_to_add[i] }  ,function(err, doc)
+					{
+					  	if (err){
+					  		// error occured since _id=1 already existed
+					    	duplicates++;
+					  	}
+					  	else{  
+					  		// no error, inserted new document, with _id=1
+					  		added++;
+					  	}
+					});
+				}
 			}
 		  	callback(added);
 		};
-		usingItNow(myCallback,tweets_to_add);
+		usingItNow(myCallback,tweets_to_add,dateFrom);
 	  }
 	});
 };

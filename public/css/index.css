@@ -380,13 +380,21 @@ footer p{
 		color: white;
 		font-size: 22px;
 		height: 7%;
-		padding-left: 23%;
+		padding-left: 3%;
+		/*padding-left: 23%;*/
 	}
 
 	.navbar-header{
 		margin-left: 0%;
 		height: 50px;
 		width: 30%;
+	}
+
+	#top_logo{
+		float: left;
+		display: inline;
+		margin-top: 3px;
+		margin-left: -10px;
 	}
 
 	#search_bar{
@@ -453,8 +461,8 @@ footer p{
 	}
 
 	#logo img{
-		height: 90%;
-		width: 10.4%;
+		height: 150px;
+		width: 150px;
 		margin-left: 43%;
 		margin-top: 2%;
 	}

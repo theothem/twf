@@ -11,7 +11,7 @@
 *) Na vrw kapoia gnwsta hashtags na exw ws paradeigma.
 
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------
 
 1) 	Na ftiaksw to front-end opou tha emfanizontai ta tweets
 2)	Na ftiaksw th vash (MONGODB)
@@ -24,3 +24,40 @@
 	ReactJS
 	AngularJS
 	Bootstrap
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+✓1)  Na valw multi-click sto Delete Filters
+✓2)  Na valw syndyasmenes epiloges sto User-Filtering
+✓3)  Na valw Hashtag 	Filtering
+✓4)  Na valw Date 	Filtering
+✓5)  Na valw Search 	Filtering
+✓6)  Na ftiaksw to Error sthn Home Page
+✓7) Na valw se ola ta functions tou Server Error Handlers
+✓8) Refresh Rate Getting Tweets
+✓9) Na mpei parallhlia sta filtra
+✓10) Mention metaksy xrhstwn
+✓11) Refresh se Text , User , Hashtag Fields
+✓12) Otan vazeis Date se filtro na mhn kanei Refresh ta tweets tou
+✓13)  Twitter Feed stoixish
+✓14) Twitter Feed LOGO
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+1)  Na valw Order-By Filtering
+2)  Na valw Favs sto Order-By
+3)  About Page
+
+4)  Na mpoun Users - Login - SignUp
+5)  Gia kathe tweet na kataxwreitai sth vash poioi mporoun na to doun ( 3os Pinakas )  [ Users_id's - Tweets_id's ]
+
+6)  Mobile Version
+7)  Show more at bottom
+8)  Refresh tweets - Client Page - every 1 minute
+
+9) Adobe Colors
+
+10) Create DB by server if does not exist
+
+11) Tha emfanizontai kapou oi sxeseis metaksy twn #Hashtags (?)

@@ -62,11 +62,11 @@ app.use('/searchKeyWord/', function(request, response, next) {
 
 //app.use('/api', tweets);
 
-refresh_db(searchTweets,addTweets,addTweets);
+//refresh_db(searchTweets,addTweets);
 //code for tweets and hashtags
 setInterval(function() {
-    refresh_db(searchTweets,addTweets,addTweets);
-}, 60 * 2000); // wait 60 seconds
+    //refresh_db(searchTweets,addTweets);
+}, 60 * 1000); // wait 60 seconds * 1 minutes
 
 
 if (app.post('/load_tweets', function(req, res) {
@@ -82,7 +82,10 @@ if (app.post('/db_options', function(req, res) {
         //console.log(req.body.text);
         var myCallback = function(data) {
           //insert data
-          addTweets(res,data,req.body.text);
+          if( req.body.dateFrom != '')
+            addTweets(res,data,req.body.text,req.body.dateFrom);
+          else
+            addTweets(res,data,req.body.text,null);
         };
         if( req.body.dateFrom != '')
           searchTweets(req.body.text,myCallback,1,req.body.dateFrom,0);
@@ -95,7 +98,7 @@ if (app.post('/db_options', function(req, res) {
         var myCallback = function(data) {
           //insert data
           var filt = ("@"+req.body.user);
-          addTweets(res,data,filt);
+          addTweets(res,data,filt,null);
         };
         searchTweets(req.body.user,myCallback,0,0,1);
     }
@@ -106,7 +109,10 @@ if (app.post('/db_options', function(req, res) {
 
         var myCallback = function(data) {
           //insert data
-          addTweets(res,data,req.body.hashtag);
+          if( req.body.dateFrom != '')
+            addTweets(res,data,req.body.hashtag,req.body.dateFrom);
+          else
+            addTweets(res,data,req.body.hashtag,null);
         };
         if( req.body.dateFrom != '')
           searchTweets(req.body.hashtag,myCallback,1,req.body.dateFrom,0);

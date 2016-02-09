@@ -28,6 +28,7 @@
 						<span class="icon-bar"></span>
 					</a>
 				    <a class="navbar-brand" href="/">Twitter Feed</a>
+				    <img id="top_logo" src="../images/logo_tw_40.png" alt="Twitter Logo">
 			   	</div>
 
 			   	<div id="main_menu">
@@ -84,6 +85,46 @@
 			
 			<div id="filter_window" class="filter_window">
 				<div class="panel-group">
+					<div id="panel0" class="panel">
+					    <div class="panel">
+					      <h4 id="filterOrderBy">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOrder">
+					        	<span class="caret"></span>
+					          	<span>Order By</span>
+					        </a>
+					      </h4>
+					    </div>
+						<div id="collapseOrder" class="panel-collapse collapse">
+					      <div class="panel-body">
+								<div id="option_box">
+									<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
+										<li id="DateUp">
+											<a id="DateUp_a" class="filter-item" href="">
+												<i class="chkbox"></i>
+												<span>DateUp</span>
+											</a>
+										</li>
+										<li id="DateDown">
+											<a id="DateDown_a" class="filter-item" href="">
+												<i class="chkbox"></i>
+												<span>DateDown</span>
+											</a>
+										</li>
+										<li id="Favorites">
+											<a id="Favorites_a" class="filter-item" href="">
+												<i class="chkbox"></i>
+												<span>Favorites</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div id="removeAll_div">
+									<button id="submit_Order_button" onclick="submit_Order()" class="btn btn-danger btn-xs" data-title="OrderBy" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+								</div>
+					      </div>
+					    </div>
+					</div>
+
 					<div id="panel1" class="panel">
 					    <div class="panel">
 					      <h4 id="filterBy_title">

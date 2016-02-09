@@ -33,12 +33,12 @@ module.exports = function(query,callback,option,date,user_option)
     	}
     	else if (user_option == 1)	// If you search Tweets from specific user!
     	{
-    		console.log("Getting tweets...\n"+query);
+    		console.log("Getting tweets for user "+query+"...");
 			tweet.get('statuses/user_timeline', { screen_name: query , count: 200}, function(error, all_tweets, response) 
 			{
 				if (error)
 			    {
-			    	console.log('Error getting user tweets.'+error);
+			    	console.log('Error getting user tweets for: '+query+'. "'+error.description+'"');
 			    	return;
 			    }
 				console.log('Collected         : '+all_tweets.length+' tweets for user : '+query+'.\n');
@@ -47,15 +47,16 @@ module.exports = function(query,callback,option,date,user_option)
     	}
     	else 
     	{
-    		console.log("Getting tweets...\n"+query);
+    		console.log("Getting tweets for query "+query+"...");
 			tweet.get('search/tweets', { q: query , count: 200}, function(error, all_tweets, response) 
 			{
 				if (error)
 			    {
-			    	console.log('Error getting user tweets.'+error);
+			    	console.log('Error getting tweets for: '+query+'. "'+error.description+'"');
 			    	return;
 			    }
-				console.log('Collected         : '+all_tweets.statuses.length+' tweets ( User ) for query : '+query+'.\n');
+			    if (all_tweets.statuses != undefined)
+					console.log('Collected         : '+all_tweets.statuses.length+' tweets ( User ) for query : '+query+'.\n');
 				callback(all_tweets.statuses);
 				//callback(user_tweets.statuses);
 				/*	put them in query HashTable

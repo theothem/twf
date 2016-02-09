@@ -430,6 +430,13 @@ footer p{
 		height: 50px;
 	}
 
+	#top_logo{
+		float: left;
+		display: inline;
+		margin-top: 3px;
+		margin-left: -10px;
+	}
+
 	#slide-nav{
 		height: 50px;
 	}
@@ -495,7 +502,7 @@ footer p{
 		background-position: 0 -15px;
 	}
 
-	#remove_button , #submitUsers_button , #submitHashtag_button{
+	#remove_button , #submitUsers_button , #submitHashtag_button , #submit_Order_button{
 		float: right;
 		display: block;
 		height: 24px;
@@ -518,12 +525,12 @@ footer p{
 		font-size: 14px;
 	}
 
-	#flist span{
+	#flist span , #DateUp span , #DateDown span , #Favorites span {
 		color: white;
 		position: relative;
 	}
 
-	#flist{
+	#flist , #DateUp , #DateDown , #Favorites{
 		margin-top: 2px;
 	}
 
@@ -556,7 +563,7 @@ footer p{
     	background-color: white
 	}
 
-	#panel1{
+	#panel0{
 		margin-top: 10%;
 	}
 
@@ -574,7 +581,7 @@ footer p{
 	    border:none;
 	}
 
-	#filterBy_title a,#filterBy_HashTag a,#filterBy_Date a{
+	#filterBy_title a,#filterBy_HashTag a,#filterBy_Date a, #filterOrderBy a{
 		margin-left: 5%;
 		color: white;
 	}

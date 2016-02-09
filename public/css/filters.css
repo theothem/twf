@@ -422,6 +422,13 @@ footer p{
 		height: 50px;
 	}
 
+	#top_logo{
+		float: left;
+		display: inline;
+		margin-top: 3px;
+		margin-left: -10px;
+	}
+
 	#slide-nav{
 		height: 50px;
 	}
