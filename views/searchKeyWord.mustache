@@ -90,6 +90,96 @@
 			
 			<div id="filter_window" class="filter_window">
 				<div class="panel-group">
+					<div id="panel0" class="panel">
+					    <div class="panel">
+					      <h4 id="filterOrderBy">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOrder">
+					        	<span class="caret"></span>
+					          	<span>Order By</span>
+					        </a>
+					      </h4>
+					    </div>
+						<div id="collapseOrder" class="panel-collapse collapse in">
+					      <div class="panel-body">
+								<div id="option_box">
+									<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
+										<li id="Retweeted">
+											<a id="Retweeted_a" class="filter-item" href="javascript:orderBy_retweets()">
+												<span id='Retweeted_span' class='glyphicon glyphicon-arrow-up'>Retweets</span>
+												<script>
+													var myParam = location.search.split('order=')[1];
+													if (myParam == 'retweets')
+													{
+														document.getElementById('Retweeted_span').style.color = 'gray';
+														document.getElementById('Retweeted_span').style.pointerEvents = 'none';	
+													}
+													else
+													{
+														document.getElementById('Retweeted_span').style.color = 'white';
+														document.getElementById('Retweeted_span').style.pointerEvents = 'auto';
+													}
+												</script>
+											</a>
+										</li>
+										<li id="Popular">
+											<a id="Popular_a" class="filter-item" href="javascript:orderBy_favorites()">
+												<span id='Favorites_span' class='glyphicon glyphicon-arrow-up'>Favorites</span>
+												<script>
+													var myParam = location.search.split('order=')[1];
+													if (myParam == 'favorites')
+													{
+														document.getElementById('Favorites_span').style.color = 'gray';
+														document.getElementById('Favorites_span').style.pointerEvents = 'none';	
+													}
+													else
+													{
+														document.getElementById('Favorites_span').style.color = 'white';
+														document.getElementById('Favorites_span').style.pointerEvents = 'auto';
+													}
+												</script>
+											</a>
+										</li>
+										<li id="DateUp">
+											<a id="DateUp_a" class="filter-item" href="javascript:orderBy_dateUp()">
+												<span id='DateUpspan' class='glyphicon glyphicon-arrow-up'>Date</span>
+												<script>
+													var myParam = location.search.split('order=')[1];
+													if ((myParam == 'dateDown')||(myParam == 'favorites')||(myParam == 'retweets'))
+													{
+														document.getElementById('DateUpspan').style.color = 'white';
+														document.getElementById('DateUpspan').style.pointerEvents = 'auto';
+													}
+													else
+													{
+														document.getElementById('DateUpspan').style.color = 'gray';
+														document.getElementById('DateUpspan').style.pointerEvents = 'none';
+													}
+												</script>
+											</a>
+										</li>
+										<li id="DateDown">
+											<a id="DateDown_a" class="filter-item" href="javascript:orderBy_dateDown()">
+												<span id='DateDownspan' class='glyphicon glyphicon-arrow-down'>Date</span>
+												<script>
+													var myParam = location.search.split('order=')[1];
+													if (myParam == 'dateDown')
+													{
+														document.getElementById('DateDownspan').style.color = 'gray';
+														document.getElementById('DateDownspan').style.pointerEvents = 'none';	
+													}
+													else
+													{
+														document.getElementById('DateDownspan').style.color = 'white';
+														document.getElementById('DateDownspan').style.pointerEvents = 'auto';
+													}
+												</script>
+											</a>
+										</li>
+									</ul>
+								</div>
+					      </div>
+					    </div>
+					</div>
 					<div id="panel1" class="panel">
 					    <div class="panel">
 					      <h4 id="filterBy_title">

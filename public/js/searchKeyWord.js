@@ -216,6 +216,44 @@ function submitDate(){
         window.location = 'searchKeyWord?search='+search+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
     }
     else
-        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
-    
+        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;   
+}
+
+function submitDate(){
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        return;
+    window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;   
+}
+
+function orderBy_dateUp(){
+    var value = document.getElementById('search_bar_item').value;
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+    window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
+}
+
+function orderBy_favorites(){
+    var value = document.getElementById('search_bar_item').value;
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+    window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date+'&order='+'favorites';    
+}
+
+function orderBy_dateDown(){
+    var value = document.getElementById('search_bar_item').value;
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+    window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date+'&order='+'dateDown';    
+}
+
+function orderBy_retweets(){
+    var value = document.getElementById('search_bar_item').value;
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+    window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date+'&order='+'retweets';    
 }

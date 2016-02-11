@@ -187,6 +187,33 @@ function submitDate(){
     var date = document.getElementById('datepicker').value;
     if (date == 'dd/mm/yyyy')
         return;
+    window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;   
+}
+
+function orderBy_dateUp(){
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
     window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
-    
+}
+
+function orderBy_favorites(){
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+    window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date+'&order='+'favorites';
+}
+
+function orderBy_dateDown(){
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+    window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date+'&order='+'dateDown';
+}
+
+function orderBy_retweets(){
+    var date = document.getElementById('datepicker').value;
+    if (date == 'dd/mm/yyyy')
+        date = '';
+    window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date+'&order='+'retweets';   
 }

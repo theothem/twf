@@ -525,12 +525,16 @@ footer p{
 		font-size: 14px;
 	}
 
-	#flist span , #DateUp span , #DateDown span , #Favorites span {
+	#flist span , #DateUp span , #DateDown span , #Popular span , #Retweeted span{
 		color: white;
 		position: relative;
 	}
 
-	#flist , #DateUp , #DateDown , #Favorites{
+	#Popular span , #DateUp span , #DateDown span , #Retweeted span{
+		margin-left: 7%;
+	}
+
+	#flist , #DateUp , #DateDown , #Popular , #Retweeted{
 		margin-top: 2px;
 	}
 

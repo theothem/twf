@@ -182,8 +182,6 @@ function search(){
     {
         window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
     }
-    
-
 }
 
 function submitDate(){
@@ -193,3 +191,20 @@ function submitDate(){
     window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
     
 }
+
+function orderBy_dateUp(){
+    window.location = 'allTweets';
+}
+
+function orderBy_favorites(){
+    window.location = 'allTweets?order='+'favorites';
+}
+
+function orderBy_dateDown(){
+    window.location = 'allTweets?order='+'dateDown';
+}
+
+function orderBy_retweets(){
+    window.location = 'allTweets?order='+'retweets';   
+}
+

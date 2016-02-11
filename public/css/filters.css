@@ -517,9 +517,13 @@ footer p{
 		font-size: 14px;
 	}
 
-	#flist span{
+	#flist span , #DateUp span , #DateDown span , #Popular span , #Retweeted span{
 		color: white;
 		position: relative;
+	}
+
+	#Popular span , #DateUp span , #DateDown span , #Retweeted span{
+		margin-left: 7%;
 	}
 
 	#flist{
@@ -573,7 +577,7 @@ footer p{
 	    border:none;
 	}
 
-	#filterBy_title a,#filterBy_HashTag a,#filterBy_Date a{
+	#filterBy_title a,#filterBy_HashTag a,#filterBy_Date a , #filterOrderBy a{
 		margin-left: 5%;
 		color: white;
 	}

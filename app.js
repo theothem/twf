@@ -47,7 +47,7 @@ app.use('/filters/', function(request, response, next) {
   var hashtags  = query.hashtags;
   var date      = query.date;
 
-  filterByHashtag(users,hashtags,date,response,"filters");
+  filterByHashtag(users,hashtags,date,response,"filters",query.order);
 });
 
 app.use('/searchKeyWord/', function(request, response, next) {
@@ -57,7 +57,7 @@ app.use('/searchKeyWord/', function(request, response, next) {
   var hashtags  = query.hashtags;
   var date      = query.date;
 
-  searchKeyWord(search,users,hashtags,date,response,"searchKeyWord");
+  searchKeyWord(search,users,hashtags,date,response,"searchKeyWord",query.order);
 });
 
 //app.use('/api', tweets);

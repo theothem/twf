@@ -34,13 +34,13 @@
 ✓4)  Na valw Date 	Filtering
 ✓5)  Na valw Search 	Filtering
 ✓6)  Na ftiaksw to Error sthn Home Page
-✓7) Na valw se ola ta functions tou Server Error Handlers
-✓8) Refresh Rate Getting Tweets
-✓9) Na mpei parallhlia sta filtra
+✓7)  Na valw se ola ta functions tou Server Error Handlers
+✓8)  Refresh Rate Getting Tweets
+✓9)  Na mpei parallhlia sta filtra
 ✓10) Mention metaksy xrhstwn
 ✓11) Refresh se Text , User , Hashtag Fields
 ✓12) Otan vazeis Date se filtro na mhn kanei Refresh ta tweets tou
-✓13)  Twitter Feed stoixish
+✓13) Twitter Feed stoixish
 ✓14) Twitter Feed LOGO
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
