@@ -45,8 +45,8 @@
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
-1)  Na valw Order-By Filtering
-2)  Na valw Favs sto Order-By
+✓1)  Na valw Order-By Filtering 	--!!!!Error Checking!!!!--
+✓2)  Na valw Favs sto Order-By 		--!!!!Error Checking!!!!--
 3)  About Page
 
 4)  Na mpoun Users - Login - SignUp

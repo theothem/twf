@@ -28,7 +28,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-				    <a class="navbar-brand" href="/">Twitter Feed</a>
+				    <a class="navbar-brand" href="/home">Twitter Feed</a>
 				    <img id="top_logo" src="../images/logo_tw_40.png" alt="Twitter Logo">
 			   	</div>
 
@@ -46,7 +46,7 @@
 					</form>
 					<div id="navbarCollapse" class="collapse navbar-collapse">
 			            <ul id="nav-navbar-nav" class="nav navbar-nav">
-			                <li ><a href="/">Home</a></li>
+			                <li ><a href="/home">Home</a></li>
 			                <li class="active"><a href="/allTweets">All Tweets</a></li>
 			                <li class="dropdown">
 								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> Contact <b class="caret"></b></a>
@@ -322,30 +322,32 @@
 			</div>
 
 			<div id="tweet_window" class="tweet_window">
-				<!--<script type="text/javascript">
-							var load_length ;
-
-							$(document).ready(function () {
-							    load_length = $("#tweet_window").height();
-							    $('#main').on('scroll', function() {
-							            if($(this).scrollTop() >= load_length-1000) {
-							                alert(load_length);
-							                load_length = load_length * 2 ;
-							                $.ajax({
-							                    type: 'POST',
-							                    url: 'http://localhost:3000/load_tweets'
-							                });
-							                
-							                var text = "{{#tweet_data}}<div id="+"twits"+">{{_id}}</div>{{/tweet_data}}";
+				<script type="text/javascript">
+					var load_length ;
+					$(document).ready(function () {
+					    load_length = $("#main").height();
+					    $('#main').on('scroll', function() {
+				            if($(this).scrollTop() >= load_length-300) {
+				            	load_length += 300;
+				                var options = window.location.href.split('?');
+				                $.ajax({
+				                    type: 'POST',
+				                    url: 'http://localhost:3000/load_filter_tweets?'+options[1],
+				                    success: function(result){
+								        for (var i=0;i<result.length;i++)
+								        {
+								        	var text = "<div id="+"twits"+">"+"<div id="+"retweet"+">"+"</div>"+"<div id="+"down"+">"+"<div id="+"img"+">"+"<img id="+"profile_img" +" src="+result[i].tweet.user.profile_image_url+">"+"</div>"+"<div id="+"right_tw"+">"+"<div id="+"user_username_time"+">"+"<p id="+"username"+">"+"<b>"+result[i].tweet.user.name+"</b>"+"</p>"+"<p id="+"screenname"+">@"+result[i].tweet.user.screen_name+"</p>"+"<p id="+"tweet_date"+">"+result[i].tweet.created_at+"</p>"+"</div>"+"<div id="+"text"+">"+"<p id="+"tweet_text"+">"+result[i].tweet.text+"</p>"+"</div>"+"</div>"+"</div>"+"<div id="+"favRt>"+"<img id="+"fav_icon"+" onmouseover=\"hoverFAV(this);\""+" onmouseout=\"unhoverFAV(this);\""+" src=\"../images/heart_0.png\">"+"<span id=\"fav_count\" onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='black'\">"+result[i].tweet.favorite_count+"</span>"+"<img id=\"rt_icon\" onmouseover=\"hoverRT(this);\" onmouseout=\"unhoverRT(this);\" src=\"../images/rt.png\""+">"+"<span id=\"rt_count\" onmouseover=\"this.style.color='#19cf86'\" onmouseout=\"this.style.color='black'\">"+result[i].tweet.retweet_count+"</span>"+"</div>"+"</div";
 							                var element = document.createElement("div");
 							                element.id  = "twits";
 							                element.innerHTML = text;
 							                document.getElementById('tweet_window').appendChild(element);
-							            }    
-							    });
-							});
+								        }
+								    }
+				                });
+				            }    
+					    });
+					});
 				</script>
-				-->
 			   	{{#tweet_data}}
 	    			<div id="twits">	
 
@@ -380,6 +382,14 @@
 	    									<p id="tweet_text">{{text}} </p>
 	    							{{/tweet}}
 			    				</div>
+		    				</div>
+		    				<div id="favRt">
+		    					{{#tweet}}
+			    					<img id="fav_icon" onmouseover="hoverFAV(this);" onmouseout="unhoverFAV(this);" src="../images/heart_0.png">
+			    					<span id="fav_count" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">{{favorite_count}}</span>
+			    					<img id="rt_icon" onmouseover="hoverRT(this);" onmouseout="unhoverRT(this);" src="../images/rt.png">
+			    					<span id="rt_count" onmouseover="this.style.color='#19cf86'" onmouseout="this.style.color='black'">{{retweet_count}}
+		    					{{/tweet}}
 		    				</div>
 		    			</div>
 	    			</div>

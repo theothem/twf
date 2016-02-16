@@ -2,9 +2,14 @@ var express         = require('express');
 
 module.exports = function (search,users,hashtags,date,res,path,order)
 {	
-	if (search.indexOf('/') > -1){
-		search = dateToDate(search);
+	if ((search!=null)&&(search!=undefined))
+		if (search.indexOf('/') > -1){
+			search = dateToDate(search);
 	}
+	
+	if (search == undefined)
+		search = '';
+	
 	var all_tweets  = [];
 	var mongodb 	= require('mongodb');
 	var MongoClient = mongodb.MongoClient;
@@ -20,7 +25,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 			{
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -54,7 +59,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -88,7 +93,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -122,7 +127,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -161,7 +166,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				date = dateToDate(date);
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -195,7 +200,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -229,7 +234,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -263,7 +268,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -302,7 +307,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				hashtags_var = hashtags.split(",");
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -336,7 +341,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -370,7 +375,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -404,7 +409,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -445,7 +450,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				hashtags_var = hashtags.split(",");
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -479,7 +484,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -513,7 +518,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -547,7 +552,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -585,7 +590,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				var usrs = users.split(",");
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -619,7 +624,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -653,7 +658,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -687,7 +692,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -727,7 +732,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				var usrs = users.split(",");
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -761,7 +766,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -795,7 +800,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -829,7 +834,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -864,12 +869,18 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 			}
 			if ((users!='')&(hashtags!='')&(date==''))	//110
 			{
-				var usrs = users.split(",");
-				var hashtags_var;
-				hashtags_var = hashtags.split(",");
+				var usrs,hashtags_var;
+				if (users.length == 1)
+					usrs = users;
+				else
+					usrs = users.split(",");
+				if (hashtags.length == 1)
+					hashtags_var = hashtags;
+				else
+					hashtags_var = hashtags.split(",");
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -903,7 +914,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -937,7 +948,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -971,9 +982,9 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} , $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
-							console.log('Error searching for user: "'+search+'"');
+							console.log('Error searching for user: "'+usrs+'"'+','+hashtags_var);
 						else
 						{
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
@@ -1013,7 +1024,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				date = dateToDate(date);
 				if (order == 'favorites')
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -1047,7 +1058,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'retweets')
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -1081,7 +1092,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else if (order == 'dateDown')
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -1115,7 +1126,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 				}
 				else
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 						if (err)
 							console.log('Error searching for user: "'+search+'"');
 						else
@@ -1185,6 +1196,6 @@ function dateToDate(input){
 	else if ((date[1] == '12')||(date[1] == '012'))
 		month = 'Dec';
 
-	var output = month+' '+day;
+	var output = month+' '+day+' '+year;
 	return output;
 }

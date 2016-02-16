@@ -6,18 +6,22 @@ var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var mustacheExpress = require('mustache-express');
 
-var routes          = require('./routes/index');
-var allTweets       = require('./routes/allTweets');
-var tweets          = require('./routes/tweets');
-var hashtags        = require('./routes/hashtags');
-var getTweets       = require('./routes/getTweets');
-var searchTweets    = require('./routes/searchTweetsBy');
-var addTweets       = require('./routes/addTweets');
-var remove_filter   = require('./routes/removeFilter');
-var filterByUser    = require('./routes/filterByUser');
-var filterByHashtag = require('./routes/filterByHashtag');
-var searchKeyWord   = require('./routes/searchKeyWord');
-var refresh_db      = require('./routes/refresh_db');
+var routes                    = require('./routes/index');
+var home                      = require('./routes/home');
+var allTweets                 = require('./routes/allTweets');
+var tweets                    = require('./routes/tweets');
+var hashtags                  = require('./routes/hashtags');
+var getTweets                 = require('./routes/getTweets');
+var searchTweets              = require('./routes/searchTweetsBy');
+var addTweets                 = require('./routes/addTweets');
+var remove_filter             = require('./routes/removeFilter');
+var filterByUser              = require('./routes/filterByUser');
+var filterByHashtag           = require('./routes/filterByHashtag');
+var searchKeyWord             = require('./routes/searchKeyWord');
+var refresh_db                = require('./routes/refresh_db');
+var filterByHashtag_loadMore  = require('./routes/filterByHashtag_loadMore');
+var searchKeyWord_loadMore    = require('./routes/searchKeyWord_loadMore');
+var signup_user               = require('./routes/signUp');
 
 var app             = express(); 
 
@@ -37,15 +41,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Handle Pages
 app.use('/', routes);
-app.use('/allTweets',allTweets);
-//app.use('/users/:user',users);
+app.use('/home', home);
+app.use('/allTweets',function(req,res,next){
+  allTweets_cnt = 1;
+  filters_cnt   = 1;
+  search_cnt    = 1;
+
+  allTweets(req,res,next);
+});
 
 app.use('/filters/', function(request, response, next) {
   var query     = require('url').parse(request.url,true).query;
   var users     = query.users;
   var hashtags  = query.hashtags;
   var date      = query.date;
+
+  allTweets_cnt = 1;
+  filters_cnt   = 1;
+  search_cnt    = 1;
 
   filterByHashtag(users,hashtags,date,response,"filters",query.order);
 });
@@ -57,23 +72,61 @@ app.use('/searchKeyWord/', function(request, response, next) {
   var hashtags  = query.hashtags;
   var date      = query.date;
 
+  allTweets_cnt = 1;
+  filters_cnt   = 1;
+  search_cnt    = 1;
+
   searchKeyWord(search,users,hashtags,date,response,"searchKeyWord",query.order);
 });
 
-//app.use('/api', tweets);
+// End - Handle Pages
+
+
+//Refresh Mongo DB Entries
 
 //refresh_db(searchTweets,addTweets);
 //code for tweets and hashtags
 setInterval(function() {
     //refresh_db(searchTweets,addTweets);
-}, 60 * 1000); // wait 60 seconds * 1 minutes
+}, 60 * 4000); // wait 60 seconds * 1 minutes
+// End - Refresh Mongo DB Entries
 
+var allTweets_cnt = 1;  //cnt for allTweets       page to load more and skip 'allTweets_cnt'  entries
+var filters_cnt   = 1;  //cnt for filters         page to load more and skip 'filters_cnt'    entries
+var search_cnt    = 1;  //cnt for searchKeyWord   page to load more and skip 'search_cnt'     entries
 
-if (app.post('/load_tweets', function(req, res) {
-    console.log('Load_tweets triggered!');
-    getTweets(res);
+//Load More 
+if (app.post('/load_search_tweets', function(req, res,data) {
+    var query     = require('url').parse(req.url,true).query;
+    var search    = query.search;
+    var users     = query.users;
+    var hashtags  = query.hashtags;
+    var date      = query.date;
+
+    allTweets_cnt = 1;
+    filters_cnt   = 1;
+
+    searchKeyWord_loadMore(search,users,hashtags,date,res,"searchKeyWord",query.order,20*search_cnt++);
+    console.log('Load_search_tweets triggered! '+req.query.order);
 }));
 
+if (app.post('/load_filter_tweets', function(req, res,data) {
+    var query     = require('url').parse(req.url,true).query;
+    var users     = query.users;
+    var hashtags  = query.hashtags;
+    var date      = query.date;
+
+    console.log('Load_filter_tweets triggered! '+users+','+hashtags+','+date);
+    filterByHashtag_loadMore(users,hashtags,date,res,"filters",query.order,20*filters_cnt++);
+}));
+
+if (app.post('/load_tweets', function(req, res,data) {
+    console.log('Load_tweets triggered! '+req.query.order);
+    getTweets(res,'allTweets',req.query.order,20*allTweets_cnt++);
+}));
+// End - Load More
+
+// Edit Mongo DB
 if (app.post('/db_options', function(req, res) {
     console.log('Database option received');
 
@@ -122,9 +175,14 @@ if (app.post('/db_options', function(req, res) {
 }));
 
 if (app.post('/remove_filter', function(req, res) {
+    allTweets_cnt = 1;
     console.log('Remove_filter : '+req.body.filter);
     remove_filter(req.body.filter,res);
 }));
+
+//add user to mongo DB
+if (app.post('/signup_user',signup_user));
+//End - Edit Mongo DB
 
 
 // catch 404 and forward to error handler

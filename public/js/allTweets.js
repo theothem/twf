@@ -23,8 +23,7 @@ $(document).ready(function () {
         });
         
         $(this).toggleClass('slide-active', !selected);
-        $('#slidemenu').toggleClass('slide-active').fadeIn('fast');
-        
+        $('#slidemenu').toggleClass('slide-active').fadeIn('fast');    
     });
 });
 
@@ -164,6 +163,8 @@ function submitHashtag(){
 function search(){
     var value = document.getElementById('search_bar_item').value;
     var date = document.getElementById('datepicker').value;
+    var search_date = value.split('/');
+
     if (date == 'dd/mm/yyyy')
         date = '';
 
@@ -171,12 +172,17 @@ function search(){
     {
         var hash = value.split('#');
         hashtags_to_send.push(hash[1]);
-        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+        window.location = 'searchKeyWord?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
     }
     else if (value[0] == '@')
     {
         var hash = value.split('@');
-        window.location = 'searchKeyWord?search='+hash[1]+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
+        users_to_send.push(hash[1]);
+        window.location = 'searchKeyWord?search='+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
+    }
+    else if (search_date.length == 3)
+    {
+        window.location = 'searchKeyWord?search='+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+value;    
     }
     else
     {
@@ -208,3 +214,15 @@ function orderBy_retweets(){
     window.location = 'allTweets?order='+'retweets';   
 }
 
+function hoverFAV(element) {
+    element.setAttribute('src', '../images/heart.png');
+}
+function unhoverFAV(element) {
+    element.setAttribute('src', '../images/heart_0.png');
+}
+function hoverRT(element) {
+    element.setAttribute('src', '../images/rt_2.png');
+}
+function unhoverRT(element) {
+    element.setAttribute('src', '../images/rt.png');
+}

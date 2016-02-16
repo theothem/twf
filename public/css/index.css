@@ -390,6 +390,89 @@ footer p{
 		width: 30%;
 	}
 
+	#Pass,#Log{
+		float: right;
+		display: inline;
+		height: 50%;
+		width: 150px;
+		margin-top: 1.1%;
+		margin-left: 2%;
+	}
+
+	#loginInput{
+		float: right;
+		display: inline;
+		height: 100%;
+		width: 83%;
+		padding-left: 26px;
+		color: gray;
+	}
+
+	#PassInput{
+		float: right;
+		display: inline;
+		height: 100%;
+		width: 100%;
+		padding-left: 26px;
+		padding-top: 9px;
+	}
+
+	#input_img1{
+		height: 16px;
+		width: 16px;
+		background-color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+    	margin-left: 30px;
+    	margin-top: -20px;
+	}
+
+	#input_img2{
+		height: 16px;
+		width: 16px;
+		background-color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+    	margin-left: 5px;
+    	margin-top: -20px;
+	}
+
+
+	#loginButton{
+		float: right;
+		display: inline;
+		height: 24.5px;
+		width: 60px;
+		margin-top: 1.1%;
+		margin-left: 1%;
+		margin-right: 2%;
+		color: white;
+		background-color: #00b36b;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 5px;
+    	-webkit-border-radius: 5px;
+    	border-radius: 5px;	
+    	font-family:'Verdana',Arial,sans-serif;
+		background-color:#0084b4;
+		color:white;
+	}
+
 	#top_logo{
 		float: left;
 		display: inline;
@@ -463,7 +546,7 @@ footer p{
 	#logo img{
 		height: 150px;
 		width: 150px;
-		margin-left: 43%;
+		margin-left: 45%;
 		margin-top: 2%;
 	}
 
@@ -486,7 +569,7 @@ footer p{
 	#userFields #title p {
 		color: black;
 		font-size: 200%;
-		margin-left: 40.5%;
+		margin-left: 45.5%;
 	}
 
 	#userFields #content {
@@ -494,15 +577,6 @@ footer p{
 		height: 83%;
 		float: left;
 		display: block;
-	}
-
-	#userFields #option_box{
-		width: 20%;
-		height: auto;
-		float: left;
-		display: block;
-		margin-left: 41%;
-		margin-top: 0.4%;
 	}
 
 	#userFields #content #content_box{
@@ -522,52 +596,34 @@ footer p{
 	}
 
 
-	#userFields #content #content_box #search{
+	#userFields #content #content_box #usrename{
 		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
 	}
 
-	#userFields #content #content_box #text{
+	#userFields #content #content_box #password{
 		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
 	}
 
-	#userFields #content #content_box #user{
+	#userFields #content #content_box #email{
 		height: 20%;
 		width: 100%;
 		float: left;
 		display: block;
 	}
 
-	#userFields #content #content_box #hashtag{
-		height: 20%;
-		width: 100%;
-		float: left;
-		display: block;
-	}
-
-	#userFields #content #content_box #date{
-		height: 20%;
-		width: 100%;
-		float: left;
-		display: block;
-	}
-
-	#options_form{
-		height: 100%;
-		width: 100%;
-		float: left;
-	}
 	#search_bar_left{
 		width: 40%;
 		float: left;
 		display: inline;
 		margin-left: 23%;
 	}
+
 	#search_bar_item{
 		width: 40%;
 		height: 80%;
@@ -587,6 +643,7 @@ footer p{
 		float: left;
 		display: inline;
 	}
+
 	#search_button{
 		background-color: #336699;
 		border: none;
@@ -594,7 +651,7 @@ footer p{
 		color: black;
 	}
 
-	#text input , #hashtag input , #user input{
+	#usrename input , #password input , #email input{
 		float: left;
 		display: inline;
 		margin-left: 31%;
@@ -609,60 +666,19 @@ footer p{
 		color: black;
 		padding-top: 0px;
 	}
-	
-	#date{
-		display: inline;
-		float: left;
-		margin-top: 0px;
-		height: 100%;
-		margin-left: 31%;
-	}
 
-	#rightInput1{
-		float: left;
-		display: inline;
-		width: 42%;
-		height: 22px;
-		background-color: #336699;
-		box-shadow: none;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-bottom-color: black;
-		color: black;
-		padding-top: 0px;
-		margin-top: 0px;
-	}
-
-	#text_warning,#date_warning , #user_warning, #hashtag_warning{
+	#usrname_warning , #password_warning , #email_warning{
 		float: left;
 		display: inline;
 		margin-left: 10px;
 		height: 22px;
 		width: 182px;
 		visibility: hidden;
-		margin-left: 10px;
 		text-align: center;
 		color: #00529B;
     	background-color: #BDE5F8;
     	-moz-border-radius: 4px;
     	-webkit-border-radius: 4px;
-	}
-
-	#rightInput2{
-		float: left;
-		display: inline;
-		width: 21%;
-		height: 22px;
-		background-color: #336699;
-		box-shadow: none;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-bottom-color: black;
-		color: black;
-		padding-top: 0px;
-		margin-top: 0px;
 	}
 
 	#content_box #send_button{
@@ -681,33 +697,6 @@ footer p{
 		margin-right: 27%;
 		float: right;
 		display: inline;
-	}
-
-	
-
-	#button_item{
-		height: 25px;
-		background-color: #336699;
-		color: black;
-		margin-left: 5px;
-		-moz-border-radius: 4px;
-    	-webkit-border-radius: 4px;
-    	border-color: black;
-    	margin-top: 5px;
-	}
-
-	#remove_all{
-		height: 25px;
-		background-color: black;
-		color: white;
-		margin-left: 33%;
-		-moz-border-radius: 4px;
-    	-webkit-border-radius: 4px;
-    	border-radius: 4px;
-    	border-color: black;
-    	margin-top: 1%;
-    	float: left;
-    	display: inline;
 	}
 
 	#bar{

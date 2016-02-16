@@ -17,13 +17,12 @@ module.exports = function (users,hashtag,date,res,path,order)
 		} 
 		else 
 		{
-			console.log('Order: '+order);
 			if (date=='')
 			{
 				if ((users != '')&&(hashtag == ''))
 				{
 					if (order == 'favorites'){
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -58,7 +57,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'retweets')
 					{
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -93,7 +92,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'dateDown')
 					{
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -128,7 +127,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else
 					{
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -166,7 +165,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 				{
 					if (order == 'favorites')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -201,7 +200,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'retweets')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -236,7 +235,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'dateDown')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -271,7 +270,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags}}).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -309,7 +308,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 				{
 					if (order == 'favorites')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -344,7 +343,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'retweets')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -379,7 +378,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'dateDown')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -414,7 +413,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs}}).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -457,7 +456,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 				{
 					if (order == 'favorites')
 					{
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -491,7 +490,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'retweets')
 					{
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -525,7 +524,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'dateDown')
 					{
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -559,7 +558,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else
 					{
-						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -597,7 +596,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 				{
 					if (order == 'favorites')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -631,7 +630,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'retweets')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -665,7 +664,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'dateDown')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -699,7 +698,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -736,7 +735,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 				{
 					if (order == 'favorites')
 					{
-						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -771,7 +770,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'retweets')
 					{
-						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -806,7 +805,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'dateDown')
 					{
-						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -841,7 +840,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else
 					{
-						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -879,7 +878,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 				{
 					if (order == 'favorites')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.favorite_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -914,7 +913,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'retweets')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.retweet_count' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -949,7 +948,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else if (order == 'dateDown')
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : 1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){
@@ -984,7 +983,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 					}
 					else
 					{
-						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).toArray(function(err, tweets) {
+						db.collection('tweets').find({'tweet.entities.hashtags.text': {$in: hashtags},'tweet.user.screen_name': {$in: usrs},'tweet.created_at': { $regex: date , $options: 'i' }}).sort({'tweet.id' : -1}).limit(20).toArray(function(err, tweets) {
 							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
 					        {
 					          	if (err){

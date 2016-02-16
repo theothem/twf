@@ -16,7 +16,6 @@
 			<script src="loadie.js-master/js/jquery.loadie.min.js"></script>
 
 	</head>
-
 	<body>
 		<header>
 			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="slide-nav">
@@ -30,27 +29,23 @@
 				    <a class="navbar-brand" href="/">Twitter Feed</a>
 				    <img id="top_logo" src="../images/logo_tw_40.png" alt="Twitter Logo">
 			   	</div>
-
-			   	
-
-			    <div id="main_menu">
-			    	<div id="navbarCollapse" class="collapse navbar-collapse">
-			            <ul id="nav-navbar-nav" class="nav navbar-nav">
-			                <li class="active"><a href="/">Home</a></li>
-			                <li><a href="allTweets">All Tweets</a></li>
-			                <li class="dropdown">
-								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> Contact <b class="caret"></b></a>
-								<ul id="dropdownMenu" class = "dropdown-menu">
-					                <li><a href="https://www.facebook.com/themis.theologitis" target="_blank">Facebook</a></li>
-					                <li><a href="https://twitter.com/moukooss" target="_blank">Twitter</a></li>
-					                <li><a href="https://plus.google.com/u/0/114853911892757077911" target="_blank">Google+</a></li>
-					                <li><a href="mailto:theothem@csd.uoc.gr" target="_blank">Email</a></li>
-					            </ul>
-					        </li>
-			                <li><a href="#" target="_blank">About</a></li>
-			            </ul>
-			        </div>
-			    </div>
+			   	<form>
+			   			<button type="button" class="styled-button-2" onclick="Login()" id="loginButton">Login</button>
+			   			<div id="Pass">
+					   		<input id="PassInput"class="form-control" type="password" value="Password"
+											onfocus="if (this.value=='Password') this.value = ''"  
+								    		onblur="if (this.value=='') this.value = 'Password'">
+					   		</input>
+					   		<img src="../images/lock.png" id="input_img2">
+					   	</div>		
+					   	<div id="Log">
+					   		<input id="loginInput"class="form-control" type="text" value="Login"
+											onfocus="if (this.value=='Login') this.value = ''"  
+								    		onblur="if (this.value=='') this.value = 'Login'">
+					   		</input>	
+					   		<img src="../images/user1.png" id="input_img1">
+					   	</div>	   		
+			   	</form>
 			</div>
 		</header>
 
@@ -78,52 +73,35 @@
 
 				<div id="userFields">
 					<div id="title">
-						<p><u>Search Tweets By:</u></p>
+						<p><u>Sign Up:</u></p>
 					</div>
 					<div id="content">
 						<div id="content_box">
 							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<div id="text">
-									<input id="txt" class="form-control" type="text" value="Text"
-									onfocus="if (this.value=='Text') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'Text'">
-						    		<i id="text_warning">Tweets before the given date</i>
+								<div id="usrename">
+									<input id="usrname" class="form-control" type="text" value="Username"
+									onfocus="if (this.value=='Username') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Username'">
+						    		<i id="usrname_warning">More than 4 characters</i>
 								</div>
 							</form>
 							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<div id="user">
-									<input id="usr" class="form-control" type="text" value="User"
-									onfocus="if (this.value=='User') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'User'">
-						    		<i id="user_warning">Tweets before the given date</i>
+								<div id="password">
+									<input id="pass" class="form-control" type="password" value="Password"
+									onfocus="if (this.value=='Password') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Password'">
+						    		<i id="password_warning">More than 6 digits.(Letters and chars)</i>
 								</div>
 							</form>
 							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<div id="hashtag">
-									<input id="hashtg" class="form-control" type="text" value="Hashtag #"
-									onfocus="if (this.value=='Hashtag #') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'Hashtag #'">
-						    		<i id="hashtag_warning">Tweets before the given date</i>	
+								<div id="email">
+									<input id="mail" class="form-control" type="text" value="Email"
+									onfocus="if (this.value=='Email') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Email'">
+						    		<i id="email_warning">Must contain @ and . </i>	
 								</div>
 							</form>
-							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<div id="date">
-									<input id="rightInput1" class="form-control" type="date" value=""
-									onblur="document.getElementById('date_warning').style.visibility = 'hidden'"  
-						    		onfocus="document.getElementById('date_warning').style.visibility = 'visible'">
-									<i id="date_warning">Tweets before the given date</i>
-								</div>
-							</form>
-							<button id="remove_all" onclick="remove_filter(this.value)" value="all">Remove All</button>
 							<button type="button" onclick="send()" id="send_button">Send</button>
-						</div>
-						<div id="option_box">
-								{{#load_options.length}}
-									<div id="option">
-											{{#load_options}}<button id="button_item" onclick="remove_filter(this.value)" value={{.}}>&#x2718;{{.}}</button>{{/load_options}}
-											<!--x2718, x274C-->
-									</div>
-								{{/load_options.length}}
 						</div>
 					</div>
 				</div>

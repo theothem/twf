@@ -30,64 +30,69 @@ $(document).ready(function () {
 
 
 function send() {
-    var text        = document.getElementById("txt").value;
-    var user        = document.getElementById("usr").value;
-    var hashtag     = document.getElementById("hashtg").value;
-    var dateFrom    = document.getElementById("rightInput1").value;
-   // var dateTo      = document.getElementById("rightInput2").value;
+    var username    = document.getElementById("usrname").value;
+    var password    = document.getElementById("pass").value;
+    var email       = document.getElementById("mail").value;
+    var cnt        = 0;
 
-    if (text == 'Text'){
-        text = '';
+    if (username == 'Username'){
+        username = '';
     }
 
-    if (user == 'User' ){
-        user = '';
+    if (password == 'Password' ){
+        password = '';
     }
 
-    if (hashtag == 'Hashtag #' ){
-        hashtag = '';
+    if (email == 'Email' ){
+        email = '';
     }
 
-    if ((text == '')&&(user == '')&&(hashtag == '')&&(dateFrom ==''))
+    if (((username.length < 4))||((username == '')))
     {
-        document.getElementById("text_warning").innerHTML           = "Give text";
-        document.getElementById("text_warning").style.color         = "#B10009";
-        document.getElementById("text_warning").style.background    = "#FDE4E1";
-        document.getElementById("text_warning").style.font          = "bold 14px Arial";
-        document.getElementById("text_warning").style.padding       = "2px 4px";
-        document.getElementById("text_warning").style.visibility    ='visible';
-
-        document.getElementById("user_warning").innerHTML           = "Give user";
-        document.getElementById("user_warning").style.color         = "#B10009";
-        document.getElementById("user_warning").style.background    = "#FDE4E1";
-        document.getElementById("user_warning").style.font          = "bold 14px Arial";
-        document.getElementById("user_warning").style.padding       = "2px 4px";
-        document.getElementById("user_warning").style.visibility    ='visible';
-
-        document.getElementById("hashtag_warning").innerHTML        = "Give hashtag";
-        document.getElementById("hashtag_warning").style.color      = "#B10009";
-        document.getElementById("hashtag_warning").style.background = "#FDE4E1";
-        document.getElementById("hashtag_warning").style.font       = "bold 14px Arial";
-        document.getElementById("hashtag_warning").style.padding    = "2px 4px";
-        document.getElementById("hashtag_warning").style.visibility ='visible';
-
-        document.getElementById("date_warning").innerHTML           = "Give date";
-        document.getElementById("date_warning").style.color         = "#B10009";
-        document.getElementById("date_warning").style.background    = "#FDE4E1";
-        document.getElementById("date_warning").style.font          = "bold 14px Arial";
-        document.getElementById("date_warning").style.padding       = "2px 4px";
-        document.getElementById("date_warning").style.visibility    ='visible';
-    }
-    else if ((text == '')&&(user == '')&&(hashtag == '')&&(dateFrom!=''))
-    {
-        document.getElementById("date_warning").innerHTML           = "Give text,user or hashtag";
-        document.getElementById("date_warning").style.color         = "#B10009";
-        document.getElementById("date_warning").style.background    = "#FDE4E1";
-        document.getElementById("date_warning").style.font          = "bold 14px Arial";
-        document.getElementById("date_warning").style.padding       = "2px 4px";
-        document.getElementById("date_warning").style.visibility    ='visible';
+        document.getElementById("usrname_warning").innerHTML           = "More than 4 characters";
+        document.getElementById("usrname_warning").style.color         = "#B10009";
+        document.getElementById("usrname_warning").style.background    = "#FDE4E1";
+        document.getElementById("usrname_warning").style.font          = "bold 14px Arial";
+        document.getElementById("usrname_warning").style.padding       = "2px 4px";
+        document.getElementById("usrname_warning").style.visibility    ='visible';
+        cnt = 1;
     }
     else
+    {
+        document.getElementById("usrname_warning").style.visibility    ='hidden';
+    }
+    
+    if (((!(isAlphanumeric(password)))||((password.length < 6)))||(password == ''))
+    {
+        document.getElementById("password_warning").innerHTML           = "More than 6 digits";
+        document.getElementById("password_warning").style.color         = "#B10009";
+        document.getElementById("password_warning").style.background    = "#FDE4E1";
+        document.getElementById("password_warning").style.font          = "bold 14px Arial";
+        document.getElementById("password_warning").style.padding       = "2px 4px";
+        document.getElementById("password_warning").style.visibility    ='visible';
+        cnt = 1;
+    }
+    else
+    {
+        document.getElementById("password_warning").style.visibility    ='hidden';
+    }
+    
+    if (((email.indexOf('.') < 0 ))||((email == ''))||((email.indexOf('@') < 0 )))
+    {
+        document.getElementById("email_warning").innerHTML              = "Must contain @ and . ";
+        document.getElementById("email_warning").style.color            = "#B10009";
+        document.getElementById("email_warning").style.background       = "#FDE4E1";
+        document.getElementById("email_warning").style.font             = "bold 14px Arial";
+        document.getElementById("email_warning").style.padding          = "2px 4px";
+        document.getElementById("email_warning").style.visibility       ='visible';
+        cnt = 1;
+    }
+    else
+    {
+        document.getElementById("email_warning").style.visibility       ='hidden';
+    }
+
+    if (cnt != 1)
     {
         $('#bar').loadie(); // Change the wrapper if wanted.
         var percent = 0;
@@ -96,19 +101,20 @@ function send() {
            $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
         }, 10 * 100); // wait 60 seconds
         
-        
-
         $.ajax({
             type:       "POST",
-            url:        "http://localhost:3000/db_options",
-            data:       {'text':text,'user': user,'hashtag': hashtag,'dateFrom': dateFrom},
+            url:        "http://localhost:3000/signup_user",
+            data:       {'username':username,'password': password,'email': email},
             dataType:   "json",
-            complete:   function()
-            {
+            success: function(msg){
                 percent = 1
                 $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
-                window.location = 'allTweets';
-            }
+                if (msg.error == 'error')
+                    window.alert('Error adding \''+username+'\' to DataBase');
+                else
+                    window.alert('User \''+username+'\' added to DataBase');
+                window.location = '/';
+            }, 
         });
     }
 }
@@ -144,15 +150,6 @@ function playDemo (_id, index, interval) {
   }, 300);
 }
 
-
-function remove_filter(clicked){
-
-    $.ajax({
-        type:       "POST",
-        url:        "http://localhost:3000/remove_filter",
-        data:       {'filter':clicked},
-        dataType:   "json",
-        complete:   function()
-        {   window.location.reload();  }
-    });
+function isAlphanumeric( str ) {
+ return /^[0-9a-zA-Z]+$/.test(str);
 }

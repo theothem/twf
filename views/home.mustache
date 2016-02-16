@@ -1,0 +1,143 @@
+<html lang="en">
+	<head>
+		<title>{{title}}</title>
+            <meta 	charset="UTF-8">
+            <meta 	name="description" 	content="Twitter Feed">
+            <meta 	name="keywords"    	content="homepage,Themistoklis Theologitis , twf">
+            <meta 	name="author" 		content="Themistoklis Theologitis">
+	    	<meta 	name="viewport" 	content="width=device-width,initial-scale=1">
+	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+			<script src="js/bootstrap.min.js"></script>
+	    	<link 	href="css/bootstrap.min.css" rel="stylesheet"> 
+	    	<link 	href="css/home.css" 	rel ="stylesheet" type="text/css">	 
+	    	<script src="js/home.js"></script>
+	    	<link   href="css/languages.min.css" rel ="stylesheet" type="text/css">
+	    	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+			<script src="loadie.js-master/js/jquery.loadie.min.js"></script>
+
+	</head>
+
+	<body>
+		<header>
+			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="slide-nav">
+			   	<div class="navbar-header">
+				    <a class="navbar-toggle"> 
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+				    <a class="navbar-brand" href="/home">Twitter Feed</a>
+				    <img id="top_logo" src="../images/logo_tw_40.png" alt="Twitter Logo">
+			   	</div>
+
+			   	
+
+			    <div id="main_menu">
+			    	<div id="navbarCollapse" class="collapse navbar-collapse">
+			            <ul id="nav-navbar-nav" class="nav navbar-nav">
+			                <li class="active"><a href="/home">Home</a></li>
+			                <li><a href="allTweets">All Tweets</a></li>
+			                <li class="dropdown">
+								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> Contact <b class="caret"></b></a>
+								<ul id="dropdownMenu" class = "dropdown-menu">
+					                <li><a href="https://www.facebook.com/themis.theologitis" target="_blank">Facebook</a></li>
+					                <li><a href="https://twitter.com/moukooss" target="_blank">Twitter</a></li>
+					                <li><a href="https://plus.google.com/u/0/114853911892757077911" target="_blank">Google+</a></li>
+					                <li><a href="mailto:theothem@csd.uoc.gr" target="_blank">Email</a></li>
+					            </ul>
+					        </li>
+			                <li><a href="#" target="_blank">About</a></li>
+			            </ul>
+			        </div>
+			    </div>
+			</div>
+		</header>
+
+		<div id="main" class="main">
+			<div id="slidemenu">
+				<form id="search_form_slidemenu" role="search" action="#">
+		    		<div id="search_bar_left_slidemenu">
+		    			<input id="search_bar_item_slidemenu" type="text" class="form-control" placeholder="Search">
+		    		</div>
+			        <div id="search_bar_button_slidemenu">
+			        	<button id="search_button_slidemenu" type="submit" class="btn btn-success">
+				    		<span class="glyphicon glyphicon-search"></span>
+				    	</button>
+			        </div>
+				</form>
+				<div id="filter_menu">
+				</div>
+			</div>
+			<div id="mainInfo">
+				<div id="bar">
+				</div>
+				<div id="logo">
+					<img src="../images/home_logo3.png" alt="Twitter Logo">
+				</div>
+
+				<div id="userFields">
+					<div id="title">
+						<p><u>Search Tweets By:</u></p>
+					</div>
+					<div id="content">
+						<div id="content_box">
+							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<div id="text">
+									<input id="txt" class="form-control" type="text" value="Text"
+									onfocus="if (this.value=='Text') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Text'">
+						    		<i id="text_warning">Tweets before the given date</i>
+								</div>
+							</form>
+							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<div id="user">
+									<input id="usr" class="form-control" type="text" value="User"
+									onfocus="if (this.value=='User') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'User'">
+						    		<i id="user_warning">Tweets before the given date</i>
+								</div>
+							</form>
+							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<div id="hashtag">
+									<input id="hashtg" class="form-control" type="text" value="Hashtag #"
+									onfocus="if (this.value=='Hashtag #') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Hashtag #'">
+						    		<i id="hashtag_warning">Tweets before the given date</i>	
+								</div>
+							</form>
+							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<div id="date">
+									<input id="rightInput1" class="form-control" type="date" value=""
+									onblur="document.getElementById('date_warning').style.visibility = 'hidden'"  
+						    		onfocus="document.getElementById('date_warning').style.visibility = 'visible'">
+									<i id="date_warning">Tweets before the given date</i>
+								</div>
+							</form>
+							<button id="remove_all" onclick="remove_filter(this.value)" value="all">Remove All</button>
+							<button type="button" onclick="send()" id="send_button">Send</button>
+						</div>
+						<div id="option_box">
+								{{#load_options.length}}
+									<div id="option">
+											{{#load_options}}<button id="button_item" onclick="remove_filter(this.value)" value={{.}}>&#x2718;{{.}}</button>{{/load_options}}
+											<!--x2718, x274C-->
+									</div>
+								{{/load_options.length}}
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<footer>
+			<div id="left_footer">
+				<span class="lang-xs" lang="en"></span>	
+			</div>
+			<div id="right_footer">
+				<p>© Copyright 2015 Theologitis Themistoklis. All Rights Reserved</p>	
+			</div>
+		</footer>
+	</body>
+</html>
