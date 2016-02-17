@@ -81,6 +81,7 @@
 					<div id="content">
 						<div id="content_box">
 							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
 								<div id="text">
 									<input id="txt" class="form-control" type="text" value="Text"
 									onfocus="if (this.value=='Text') this.value = ''"  
@@ -89,6 +90,7 @@
 								</div>
 							</form>
 							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
 								<div id="user">
 									<input id="usr" class="form-control" type="text" value="User"
 									onfocus="if (this.value=='User') this.value = ''"  
@@ -97,6 +99,7 @@
 								</div>
 							</form>
 							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>	
 								<div id="hashtag">
 									<input id="hashtg" class="form-control" type="text" value="Hashtag #"
 									onfocus="if (this.value=='Hashtag #') this.value = ''"  
@@ -105,6 +108,7 @@
 								</div>
 							</form>
 							<form id="text_form" role="search" onsubmit="send();return false;" >
+								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
 								<div id="date">
 									<input id="rightInput1" class="form-control" type="date" value=""
 									onblur="document.getElementById('date_warning').style.visibility = 'hidden'"  

@@ -96,10 +96,8 @@ function send() {
            $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
         }, 10 * 100); // wait 60 seconds
         
-        
-
         $.ajax({
-            type:       "POST",
+            type:       "GET",
             url:        "http://localhost:3000/db_options",
             data:       {'text':text,'user': user,'hashtag': hashtag,'dateFrom': dateFrom},
             dataType:   "json",
@@ -148,7 +146,7 @@ function playDemo (_id, index, interval) {
 function remove_filter(clicked){
 
     $.ajax({
-        type:       "POST",
+        type:       "GET",
         url:        "http://localhost:3000/remove_filter",
         data:       {'filter':clicked},
         dataType:   "json",

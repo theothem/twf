@@ -1,6 +1,8 @@
 var express         = require('express');
+var csrf            = require('csurf');
+var session         = require('client-sessions'); 
 
-module.exports = function (users,hashtag,date,res,path,order)
+module.exports = function (users,hashtag,date,req,res,path,order)
 {	
 	var hashtags;
 	hashtags = hashtag.split(",");
@@ -44,7 +46,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -79,7 +81,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -114,7 +116,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -149,7 +151,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -187,7 +189,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -222,7 +224,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username, 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -257,7 +259,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, { usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
 													db.close();
 												}
 									        });
@@ -292,7 +294,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -330,7 +332,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -365,7 +367,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -400,7 +402,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -435,7 +437,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':''});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':'',csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -478,7 +480,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -512,7 +514,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -546,7 +548,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -580,7 +582,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags, 'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -618,7 +620,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -652,7 +654,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -686,7 +688,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -720,7 +722,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -757,7 +759,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -792,7 +794,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -827,7 +829,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -862,7 +864,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -900,7 +902,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -935,7 +937,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -970,7 +972,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });
@@ -1005,7 +1007,7 @@ module.exports = function (users,hashtag,date,res,path,order)
 													db.close();
 												}
 												else{
-													res.render(path, { 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate});
+													res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort(), 'user': users ,'hashtags': fhashtags.sort() , 'url': hashtags,'date':backupDate,csrfToken: req.csrfToken()});
 													db.close();
 												}
 									        });

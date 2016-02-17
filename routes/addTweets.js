@@ -23,7 +23,7 @@ module.exports = function(res,tweets_to_add,filter,dateFrom)
 			//console.log('Duplicates User   : '+tweets_to_add.length-data+'.\n');
 			//console.log('Added to database : '+data+' new tweets.\n');
 			if (res!=null)
-				res.render('../public/js/index' ,{ resp : 'ok' } );
+				res.end();
 			db.close();
 		};
 

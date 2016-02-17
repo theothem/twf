@@ -6,7 +6,7 @@ var tweets  = [];
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //res.render('index', { title: 'Twitter Feed' });
-  	getTweets(res,'allTweets',req.query.order);
+  	getTweets(req,res,'allTweets',req.query.order);
 });
 
 module.exports = router;

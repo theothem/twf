@@ -6,6 +6,7 @@ var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var mustacheExpress = require('mustache-express');
 var bcrypt          = require('bcryptjs');
+var csrf            = require('csurf'); 
 var session         = require('client-sessions');
 var mongodb         = require('mongodb');
 
@@ -49,7 +50,58 @@ app.use(session({
   secret     : 'ak*jck%1kh$31ofu%^d23u1o!@jsdkjcsd',
   duration   : 30*60*1000,
   activeDuration: 5*60*1000,
+  httpOnly   : true,  //dont let javascript  access cookies
+  secure     : true,  //only use cookies over https
+  ephemeral  : true,  //delete this cookie when browser is closed
 }));
+
+app.use(csrf());
+
+app.use(function(req , res , next){
+  if (req.session && req.session.user)
+  {
+    var MongoClient = mongodb.MongoClient;
+    var url = 'mongodb://localhost:27017/twfDB';
+    MongoClient.connect(url, function (err, db) 
+    {
+      if (err) 
+      {
+        console.log('Unable to connect to the mongoDB server. Error:', err);
+      } 
+      else 
+      {
+          //console.log('Connection established to', url);
+          db.collection('Users').find({ 'username' : req.session.user.username }).toArray( function(err, user)
+          {
+            if ((user.length>0)&&(user!=undefined))
+            {
+              req.user = user[0];
+              delete req.user.password;
+              req.session.user = user[0];
+              res.locals.user = req.user;
+            }
+            next();
+            db.close();
+          });
+      }
+    });
+  }
+  else
+  {
+    next();
+  }
+});
+
+function requireLogin(req,res,next){
+  if (!req.user)
+  {
+    res.redirect('/');
+  }
+  else
+  {
+    next();
+  }
+};
 
 //Refresh Mongo DB Entries
 //refresh_db(searchTweets,addTweets);
@@ -63,7 +115,9 @@ var search_cnt    = 1;  //cnt for searchKeyWord   page to load more and skip 'se
 var User = {'username' : '' , 'password' : '', 'email': ''};
 
 // Handle Pages
-app.use('/', index);                                        
+app.get('/', function(req , res , next){
+  res.render('index', { title: 'Twitter Feed' , csrfToken: req.csrfToken() });
+});                                        
 
 app.post('/signup_user',signup_user);
 
@@ -74,7 +128,7 @@ app.post('/login', function(req , res , next){
       if (err) {
         console.log('Unable to connect to the mongoDB server. Error:', err);
       } else {
-        console.log('Connection established to', url);
+        //console.log('Connection established to', url);
         db.collection('Users').find({ 'username' : req.body.username }).toArray( function(err, user)
         {
           if (err){
@@ -94,9 +148,9 @@ app.post('/login', function(req , res , next){
                     console.log('Error at distinct');
                   else
                   {
+                    db.close();
                     req.session.user = user[0];
                     res.redirect('home');
-                    db.close();
                   }
                 });
               }
@@ -123,8 +177,7 @@ app.use('/logout',function(req , res , next){
   res.redirect('/');
 });
 
-app.use('/home',function(req , res , next){
-  console.log('Home!');
+app.get('/home',requireLogin,function(req , res , next){
 
   var MongoClient = mongodb.MongoClient;
   var url = 'mongodb://localhost:27017/twfDB';
@@ -136,13 +189,14 @@ app.use('/home',function(req , res , next){
     } 
     else 
     {
-      console.log('Connection established to', url);
+      //console.log('Connection established to', url);
       if (req.session && req.session.user)
       {
         db.collection('Users').find({ 'username' : req.session.user.username }).toArray( function(err, user)
         {
           if (user.length==0)
           {
+            db.close();
             req.session.reset();
             res.redirect('/');
           }
@@ -151,12 +205,14 @@ app.use('/home',function(req , res , next){
             res.locals.user = user[0];
             db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
             {
-              if (err)
+              if (err){
+                db.close();
                 console.log('Error at distinct');
+              }
               else
               {
-                res.render('home', { 'load_options':  filter_options , title: 'Twitter Feed' , user:req.session.user.username });
                 db.close();
+                res.render('home', { 'load_options':  filter_options , title: 'Twitter Feed' , user:req.session.user.username , csrfToken: req.csrfToken()});
               }
             });
           }
@@ -170,39 +226,9 @@ app.use('/home',function(req , res , next){
   });
 });
 
-app.use(function(req , res , next){
-  if (req.session && req.session.user)
-  {
-    var MongoClient = mongodb.MongoClient;
-    var url = 'mongodb://localhost:27017/twfDB';
-    MongoClient.connect(url, function (err, db) 
-    {
-      if (err) 
-      {
-        console.log('Unable to connect to the mongoDB server. Error:', err);
-      } 
-      else 
-      {
-        console.log('Connection established to', url);
-          db.collection('Users').find({ 'username' : req.session.user.username }).toArray( function(err, user)
-          {
-            if ((user.length>0)&&(user!=undefined))
-            {
-              req.user = user[0];
-              req.session.user = user[0];
-            }
-            next();
-          });
-      }
-    });
-  }
-  else
-  {
-    next();
-  }
-});
 
-app.use('/allTweets',function(req,res,next){                  
+
+app.use('/allTweets', requireLogin ,function(req,res,next){                  
   allTweets_cnt = 1;
   filters_cnt   = 1;
   search_cnt    = 1;
@@ -210,7 +236,7 @@ app.use('/allTweets',function(req,res,next){
   allTweets(req,res,next);
 });
 
-app.use('/filters/', function(request, response, next) {          
+app.use('/filters/', requireLogin , function(request, response, next) {          
   var query     = require('url').parse(request.url,true).query;
   var users     = query.users;
   var hashtags  = query.hashtags;
@@ -220,10 +246,10 @@ app.use('/filters/', function(request, response, next) {
   filters_cnt   = 1;
   search_cnt    = 1;
 
-  filterByHashtag(users,hashtags,date,response,"filters",query.order);
+  filterByHashtag(users,hashtags,date,request,response,"filters",query.order);
 });
 
-app.use('/searchKeyWord/', function(request, response, next) {            
+app.use('/searchKeyWord/', requireLogin , function(request, response, next) {            
   var query     = require('url').parse(request.url,true).query;
   var search    = query.search;
   var users     = query.users;
@@ -234,11 +260,11 @@ app.use('/searchKeyWord/', function(request, response, next) {
   filters_cnt   = 1;
   search_cnt    = 1;
 
-  searchKeyWord(search,users,hashtags,date,response,"searchKeyWord",query.order);
+  searchKeyWord(search,users,hashtags,date,request,response,"searchKeyWord",query.order);
 });
 
 //Load More 
-if (app.post('/load_search_tweets', function(req, res,data) {
+if (app.use('/load_search_tweets', function(req, res,data) {
     var query     = require('url').parse(req.url,true).query;
     var search    = query.search;
     var users     = query.users;
@@ -249,77 +275,76 @@ if (app.post('/load_search_tweets', function(req, res,data) {
     filters_cnt   = 1;
 
     searchKeyWord_loadMore(search,users,hashtags,date,res,"searchKeyWord",query.order,20*search_cnt++);
-    console.log('Load_search_tweets triggered! '+req.query.order);
+    //console.log('Load_search_tweets triggered! '+req.query.order);
 }));
 
-if (app.post('/load_filter_tweets', function(req, res,data) {
+if (app.use('/load_filter_tweets', function(req, res,data) {
     var query     = require('url').parse(req.url,true).query;
     var users     = query.users;
     var hashtags  = query.hashtags;
     var date      = query.date;
 
-    console.log('Load_filter_tweets triggered! '+users+','+hashtags+','+date);
+    //console.log('Load_filter_tweets triggered! '+users+','+hashtags+','+date);
     filterByHashtag_loadMore(users,hashtags,date,res,"filters",query.order,20*filters_cnt++);
 }));
 
-if (app.post('/load_tweets', function(req, res,data) {
-    console.log('Load_tweets triggered! '+req.query.order);
-    getTweets(res,'allTweets',req.query.order,20*allTweets_cnt++);
+if (app.use('/load_tweets', function(req, res,data) {
+    //console.log('Load_tweets triggered! '+req.query.order);
+    getTweets(req,res,'allTweets',req.query.order,20*allTweets_cnt++);
 }));
 
 
 // Edit Mongo DB
-if (app.post('/db_options', function(req, res) {
-    console.log('Database option received');
+app.use('/db_options',requireLogin ,  function(req, res) {
+    //.log('Database option received');
 
-    if( req.body.text != '')
+    if( req.query.text != '')
     {
         //console.log(req.body.text);
         var myCallback = function(data) {
           //insert data
-          if( req.body.dateFrom != '')
-            addTweets(res,data,req.body.text,req.body.dateFrom);
+          if( req.query.dateFrom != '')
+            addTweets(res,data,req.query.text,req.query.dateFrom);
           else
-            addTweets(res,data,req.body.text,null);
+            addTweets(res,data,req.query.text,null);
         };
-        if( req.body.dateFrom != '')
-          searchTweets(req.body.text,myCallback,1,req.body.dateFrom,0);
+        if( req.query.dateFrom != '')
+          searchTweets(req.query.text,myCallback,1,req.query.dateFrom,0);
         else
-          searchTweets(req.body.text,myCallback,0,0,0);
+          searchTweets(req.query.text,myCallback,0,0,0);
     }
-    if( req.body.user != '')
+    if( req.query.user != '')
     {
-        //console.log(req.body.user);
         var myCallback = function(data) {
           //insert data
-          var filt = ("@"+req.body.user);
+          var filt = ("@"+req.query.user);
           addTweets(res,data,filt,null);
         };
-        searchTweets(req.body.user,myCallback,0,0,1);
+        searchTweets(req.query.user,myCallback,0,0,1);
     }
-    if( req.body.hashtag != '')
+    if( req.query.hashtag != '')
     {
-        if (req.body.hashtag[0] != '#')
-          req.body.hashtag = '#'+req.body.hashtag;
+        if (req.query.hashtag[0] != '#')
+          req.query.hashtag = '#'+req.query.hashtag;
 
         var myCallback = function(data) {
           //insert data
-          if( req.body.dateFrom != '')
-            addTweets(res,data,req.body.hashtag,req.body.dateFrom);
+          if( req.query.dateFrom != '')
+            addTweets(res,data,req.query.hashtag,req.query.dateFrom);
           else
-            addTweets(res,data,req.body.hashtag,null);
+            addTweets(res,data,req.query.hashtag,null);
         };
-        if( req.body.dateFrom != '')
-          searchTweets(req.body.hashtag,myCallback,1,req.body.dateFrom,0);
+        if( req.query.dateFrom != '')
+          searchTweets(req.query.hashtag,myCallback,1,req.query.dateFrom,0);
         else
-          searchTweets(req.body.hashtag,myCallback,0,0,0);
+          searchTweets(req.query.hashtag,myCallback,0,0,0);
     }
-}));
+});
 
-if (app.post('/remove_filter', function(req, res) {
+if (app.use('/remove_filter', function(req, res) {
     allTweets_cnt = 1;
-    console.log('Remove_filter : '+req.body.filter);
-    remove_filter(req.body.filter,res);
+    console.log('Remove_filter : '+req.query.filter);
+    remove_filter(req.query.filter,res);
 }));
 
 

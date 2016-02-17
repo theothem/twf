@@ -89,7 +89,7 @@ function remove_filters(){
         for (i=0;i<filters_to_remove.length;i++)
         {
             $.ajax({
-                type:       "POST",
+                type:       "GET",
                 url:        "http://localhost:3000/remove_filter",
                 data:       {'filter':filters_to_remove[i]},
                 dataType:   "json"

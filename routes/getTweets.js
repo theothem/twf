@@ -1,7 +1,10 @@
 var express         = require('express');
 var last_get		= 0;
 var view_tweets		= [];
-module.exports = function (res,path,order,skip)
+var csrf            = require('csurf'); 
+var session         = require('client-sessions');
+
+module.exports = function (req,res,path,order,skip)
 {
 	var mongodb 	= require('mongodb');
 	var router 		= express.Router();
@@ -184,7 +187,7 @@ module.exports = function (res,path,order,skip)
 												db.close();
 											}
 											else{
-												res.render(path, { tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort()});
+												res.render(path, { title: 'Twitter Feed',user:req.session.user.username, tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort(), csrfToken: req.csrfToken() });
 												db.close();
 											}
 								        });
@@ -218,7 +221,7 @@ module.exports = function (res,path,order,skip)
 												db.close();
 											}
 											else{
-												res.render(path, { tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort()});
+												res.render(path, { title: 'Twitter Feed',user:req.session.user.username, tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort(),csrfToken: req.csrfToken()});
 												db.close();
 											}
 								        });
@@ -252,7 +255,7 @@ module.exports = function (res,path,order,skip)
 												db.close();
 											}
 											else{
-												res.render(path, { tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort()});
+												res.render(path, { title: 'Twitter Feed',user:req.session.user.username, tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort(),csrfToken: req.csrfToken()});
 												db.close();
 											}
 								        });
@@ -286,7 +289,7 @@ module.exports = function (res,path,order,skip)
 												db.close();
 											}
 											else{
-												res.render(path, { tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort()});
+												res.render(path, { title: 'Twitter Feed',user:req.session.user.username, tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users.sort() , 'hashtags': hashtags.sort(),csrfToken: req.csrfToken()});
 												db.close();
 											}
 								        });

@@ -1,6 +1,6 @@
 var express         = require('express');
 
-module.exports = function (search,users,hashtags,date,res,path,order)
+module.exports = function (search,users,hashtags,date,req,res,path,order)
 {	
 	if ((search!=null)&&(search!=undefined))
 		if (search.indexOf('/') > -1){
@@ -46,7 +46,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
 													db.close();
 												}
 									        });
@@ -80,7 +80,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
 													db.close();
 												}
 									        });
@@ -114,7 +114,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
 													db.close();
 												}
 									        });
@@ -148,7 +148,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search});
 													db.close();
 												}
 									        });
@@ -187,7 +187,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log('Len:'+tweets.length);
-													res.render(path, { 'title': 'Search' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -221,7 +221,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log('Len:'+tweets.length);
-													res.render(path, { 'title': 'Search' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -255,7 +255,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log('Len:'+tweets.length);
-													res.render(path, { 'title': 'Search' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -289,7 +289,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log('Len:'+tweets.length);
-													res.render(path, { 'title': 'Search' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -328,7 +328,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -362,7 +362,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -396,7 +396,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -430,7 +430,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -471,7 +471,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -505,7 +505,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -539,7 +539,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -573,7 +573,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -611,7 +611,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -645,7 +645,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -679,7 +679,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -713,7 +713,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -753,7 +753,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -787,7 +787,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -821,7 +821,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -855,7 +855,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() , 'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -901,7 +901,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -935,7 +935,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -969,7 +969,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -1003,7 +1003,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var});
 													db.close();
 												}
 									        });
@@ -1045,7 +1045,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -1079,7 +1079,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -1113,7 +1113,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });
@@ -1147,7 +1147,7 @@ module.exports = function (search,users,hashtags,date,res,path,order)
 													console.log('Error at distinct');
 												else{
 													console.log(tweets.length);
-													res.render(path, { 'title': 'users' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
+													res.render(path, {usr:req.session.user.username, 'title': 'Twitter Feed' , tweet_data: tweets , 'load_options':  filter_options.sort() ,'user': users , 'users': users_returned.sort() ,'hashtags': hashtags.sort(),"searched":search,"url":hashtags_var,"date":backupDate});
 													db.close();
 												}
 									        });

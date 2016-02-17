@@ -21,7 +21,7 @@ module.exports = function (query,res)
 					if (err)
 						console.log('Unable to remove '+query+' from database');
 					else
-						res.render('../public/js/index' ,{ remove_resp : 'ok' } );
+						res.end();
 					db.close();
 			    });
 			}
@@ -31,7 +31,7 @@ module.exports = function (query,res)
 					if (err)
 						console.log('Unable to remove '+query+' from database');
 					else
-						res.render( '../public/js/index' ,{remove_resp : 'ok' } );
+						res.end();
 					db.close();
 			    });
 			}	

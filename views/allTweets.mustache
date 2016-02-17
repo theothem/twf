@@ -35,6 +35,7 @@
 			   	<div id="main_menu">
 			   	
 			    	<form id="search_form" role="search" action="javascript:search();">
+			    		<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
 			    		<div id="search_bar_left">
 			    			<input id="search_bar_item" type="text" class="form-control" placeholder="Search">
 			    		</div>
@@ -49,7 +50,7 @@
 			                <li ><a href="/home">Home</a></li>
 			                <li class="active"><a href="/allTweets">All Tweets</a></li>
 					        <li class="dropdown">
-								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> User <b class="caret"></b></a>
+								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> {{user}} <b class="caret"></b></a>
 								<ul id="dropdownMenu" class = "dropdown-menu">
 					                <li><a href="javascript:window.location.href= '/edit_profile';" target="_blank">Edit Profile</a></li>
 					                <li><a href="javascript:window.location.href= '/logout';" target="_blank">Logout</a></li>
@@ -310,7 +311,7 @@
 				            	load_length += 300;
 				                var options = window.location.href.split('?');
 				                $.ajax({
-				                    type: 'POST',
+				                    type: 'GET',
 				                    url: 'http://localhost:3000/load_tweets?'+options[1],
 				                    success: function(result){
 								        for (var i=0;i<result.length;i++)
