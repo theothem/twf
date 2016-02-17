@@ -38,13 +38,11 @@
 			            <ul id="nav-navbar-nav" class="nav navbar-nav">
 			                <li class="active"><a href="/home">Home</a></li>
 			                <li><a href="allTweets">All Tweets</a></li>
-			                <li class="dropdown">
-								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> Contact <b class="caret"></b></a>
+					        <li class="dropdown">
+								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> {{user}}<b class="caret"></b></a>
 								<ul id="dropdownMenu" class = "dropdown-menu">
-					                <li><a href="https://www.facebook.com/themis.theologitis" target="_blank">Facebook</a></li>
-					                <li><a href="https://twitter.com/moukooss" target="_blank">Twitter</a></li>
-					                <li><a href="https://plus.google.com/u/0/114853911892757077911" target="_blank">Google+</a></li>
-					                <li><a href="mailto:theothem@csd.uoc.gr" target="_blank">Email</a></li>
+					                <li><a href="javascript:window.location.href= '/edit_profile';" target="_blank">Edit Profile</a></li>
+					                <li><a href="javascript:window.location.href= '/logout';" target="_blank">Logout</a></li>
 					            </ul>
 					        </li>
 			                <li><a href="#" target="_blank">About</a></li>

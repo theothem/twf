@@ -14,7 +14,6 @@
 	    	<link   href="css/languages.min.css" rel ="stylesheet" type="text/css">
 	    	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 			<script src="loadie.js-master/js/jquery.loadie.min.js"></script>
-
 	</head>
 	<body>
 		<header>
@@ -29,22 +28,23 @@
 				    <a class="navbar-brand" href="/">Twitter Feed</a>
 				    <img id="top_logo" src="../images/logo_tw_40.png" alt="Twitter Logo">
 			   	</div>
-			   	<form>
-			   			<button type="button" class="styled-button-2" onclick="Login()" id="loginButton">Login</button>
-			   			<div id="Pass">
-					   		<input id="PassInput"class="form-control" type="password" value="Password"
+			   	<form id="login_form" action="/login" method="POST">
+			   			<input type="hidden" name="_csrf">{{csrfToken}}</input>
+					   	<div id="Log">
+					   		<input name="username" id="username"class="form-control" type="text" value="Login"
+											onfocus="if (this.value=='Login') this.value = ''"  
+								    		onblur="if (this.value=='') this.value = 'Login'">
+					   		</input>
+					   		<img src="../images/user1.png" id="input_img1">	
+					   	</div>	 
+					   	<div id="Pass">
+					   		<input name="password" id="password" class="form-control" type="password" value="Password"
 											onfocus="if (this.value=='Password') this.value = ''"  
 								    		onblur="if (this.value=='') this.value = 'Password'">
 					   		</input>
 					   		<img src="../images/lock.png" id="input_img2">
-					   	</div>		
-					   	<div id="Log">
-					   		<input id="loginInput"class="form-control" type="text" value="Login"
-											onfocus="if (this.value=='Login') this.value = ''"  
-								    		onblur="if (this.value=='') this.value = 'Login'">
-					   		</input>	
-					   		<img src="../images/user1.png" id="input_img1">
-					   	</div>	   		
+					   	</div>
+					   	<button type="submit" class="styled-button-2" id="loginButton" >Login</button>
 			   	</form>
 			</div>
 		</header>
@@ -86,7 +86,7 @@
 								</div>
 							</form>
 							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<div id="password">
+								<div id="passwrd">
 									<input id="pass" class="form-control" type="password" value="Password"
 									onfocus="if (this.value=='Password') this.value = ''"  
 						    		onblur="if (this.value=='') this.value = 'Password'">

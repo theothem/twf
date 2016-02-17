@@ -23,8 +23,7 @@ $(document).ready(function () {
         });
         
         $(this).toggleClass('slide-active', !selected);
-        $('#slidemenu').toggleClass('slide-active').fadeIn('fast');
-        
+        $('#slidemenu').toggleClass('slide-active').fadeIn('fast');    
     });
 });
 
