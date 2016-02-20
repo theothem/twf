@@ -9,6 +9,7 @@ var bcrypt          = require('bcryptjs');
 var csrf            = require('csurf'); 
 var session         = require('client-sessions');
 var mongodb         = require('mongodb');
+var mysql           = require('mysql');
 
 var index                     = require('./routes/index');
 var home                      = require('./routes/home');
@@ -60,29 +61,41 @@ app.use(csrf());
 app.use(function(req , res , next){
   if (req.session && req.session.user)
   {
-    var MongoClient = mongodb.MongoClient;
-    var url = 'mongodb://localhost:27017/twfDB';
-    MongoClient.connect(url, function (err, db) 
+
+    var connection = mysql.createConnection({
+      host     : 'localhost',
+      user     : 'root',
+      password : '741992',
+      database : 'twf'
+    });
+    connection.connect(function(err){
+      if(!err) {
+          //console.log("Database is connected ...");    
+      } else {
+          console.log("Error connecting database ...");  
+          res.redirect('/');
+          return;
+      }
+    });
+
+    connection.query('SELECT * FROM users WHERE username = ?', req.session.user.username ,function(err, user) 
     {
-      if (err) 
+      if (!err)
       {
-        console.log('Unable to connect to the mongoDB server. Error:', err);
-      } 
-      else 
-      {
-          //console.log('Connection established to', url);
-          db.collection('Users').find({ 'username' : req.session.user.username }).toArray( function(err, user)
-          {
-            if ((user.length>0)&&(user!=undefined))
-            {
-              req.user = user[0];
-              delete req.user.password;
-              req.session.user = user[0];
-              res.locals.user = req.user;
-            }
-            next();
-            db.close();
-          });
+        //console.log('The solution is: ', rows);
+        if (user.length == 1)
+        {
+          req.user = user[0];
+          delete req.user.password;
+          req.session.user = user[0];
+          res.locals.user = req.user;
+        }
+        next();
+        connection.end();
+      }
+      else{
+        console.log('Error while performing Query.');
+        res.redirect('/');
       }
     });
   }
@@ -104,10 +117,10 @@ function requireLogin(req,res,next){
 };
 
 //Refresh Mongo DB Entries
-//refresh_db(searchTweets,addTweets);
+refresh_db(searchTweets,addTweets);
 setInterval(function() {
-    //refresh_db(searchTweets,addTweets);
-}, 60 * 4000); // wait 60 seconds * 1 minutes
+    refresh_db(searchTweets,addTweets);
+}, 60 * 1000); // wait 60 seconds * 1 minutes
 
 var allTweets_cnt = 1;  //cnt for allTweets       page to load more and skip 'allTweets_cnt'  entries
 var filters_cnt   = 1;  //cnt for filters         page to load more and skip 'filters_cnt'    entries
@@ -119,57 +132,11 @@ app.get('/', function(req , res , next){
   res.render('index', { title: 'Twitter Feed' , csrfToken: req.csrfToken() });
 });                                        
 
-app.post('/signup_user',signup_user);
-
+app.use('/signup_user',function(req , res , next){
+  signup_user(req,res,next);
+});            
 app.post('/login', function(req , res , next){
-  var MongoClient = mongodb.MongoClient;
-    var url = 'mongodb://localhost:27017/twfDB';
-    MongoClient.connect(url, function (err, db) {
-      if (err) {
-        console.log('Unable to connect to the mongoDB server. Error:', err);
-      } else {
-        //console.log('Connection established to', url);
-        db.collection('Users').find({ 'username' : req.body.username }).toArray( function(err, user)
-        {
-          if (err){
-            console.log('Error trying to login. User \''+req.body.username+'\'');
-            res.redirect('/');
-            db.close();
-          }
-          else{
-            if (user.length == 1)
-            {
-              if (bcrypt.compareSync( req.body.password , user[0].password))
-              {
-                console.log('User \''+req.body.username+'\' logged in successfully');
-                db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-                {
-                  if (err)
-                    console.log('Error at distinct');
-                  else
-                  {
-                    db.close();
-                    req.session.user = user[0];
-                    res.redirect('home');
-                  }
-                });
-              }
-              else{
-                console.log('Error trying to login. User \''+req.body.username+'\''+','+req.body.password);
-                res.redirect('/');
-                db.close();
-              }
-            }
-            else
-            {
-              console.log('Error trying to login. User \''+req.body.username+'\''+','+req.body.password);
-              res.redirect('/');
-              db.close();
-            }
-          }
-        });
-      }
-    });
+  login(req,res,next);
 });
 
 app.use('/logout',function(req , res , next){
@@ -177,53 +144,8 @@ app.use('/logout',function(req , res , next){
   res.redirect('/');
 });
 
-app.get('/home',requireLogin,function(req , res , next){
-
-  var MongoClient = mongodb.MongoClient;
-  var url = 'mongodb://localhost:27017/twfDB';
-  MongoClient.connect(url, function (err, db) 
-  {
-    if (err) 
-    {
-      console.log('Unable to connect to the mongoDB server. Error:', err);
-    } 
-    else 
-    {
-      //console.log('Connection established to', url);
-      if (req.session && req.session.user)
-      {
-        db.collection('Users').find({ 'username' : req.session.user.username }).toArray( function(err, user)
-        {
-          if (user.length==0)
-          {
-            db.close();
-            req.session.reset();
-            res.redirect('/');
-          }
-          else
-          {
-            res.locals.user = user[0];
-            db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-            {
-              if (err){
-                db.close();
-                console.log('Error at distinct');
-              }
-              else
-              {
-                db.close();
-                res.render('home', { 'load_options':  filter_options , title: 'Twitter Feed' , user:req.session.user.username , csrfToken: req.csrfToken()});
-              }
-            });
-          }
-        });
-      }
-      else
-      {
-        res.redirect('/');
-      }
-    }
-  });
+app.use('/home',requireLogin,function(req , res , next){
+  home(req,res,next);
 });
 
 
@@ -295,18 +217,16 @@ if (app.use('/load_tweets', function(req, res,data) {
 
 
 // Edit Mongo DB
-app.use('/db_options',requireLogin ,  function(req, res) {
-    //.log('Database option received');
+app.use('/db_options',requireLogin , function(req, res) {
 
     if( req.query.text != '')
     {
-        //console.log(req.body.text);
         var myCallback = function(data) {
           //insert data
           if( req.query.dateFrom != '')
-            addTweets(res,data,req.query.text,req.query.dateFrom);
+            addTweets(req,res,data,req.query.text,req.query.dateFrom);
           else
-            addTweets(res,data,req.query.text,null);
+            addTweets(req,res,data,req.query.text,null);
         };
         if( req.query.dateFrom != '')
           searchTweets(req.query.text,myCallback,1,req.query.dateFrom,0);
@@ -318,7 +238,7 @@ app.use('/db_options',requireLogin ,  function(req, res) {
         var myCallback = function(data) {
           //insert data
           var filt = ("@"+req.query.user);
-          addTweets(res,data,filt,null);
+          addTweets(req,res,data,filt,null);
         };
         searchTweets(req.query.user,myCallback,0,0,1);
     }
@@ -330,9 +250,9 @@ app.use('/db_options',requireLogin ,  function(req, res) {
         var myCallback = function(data) {
           //insert data
           if( req.query.dateFrom != '')
-            addTweets(res,data,req.query.hashtag,req.query.dateFrom);
+            addTweets(req,res,data,req.query.hashtag,req.query.dateFrom);
           else
-            addTweets(res,data,req.query.hashtag,null);
+            addTweets(req,res,data,req.query.hashtag,null);
         };
         if( req.query.dateFrom != '')
           searchTweets(req.query.hashtag,myCallback,1,req.query.dateFrom,0);
@@ -341,10 +261,10 @@ app.use('/db_options',requireLogin ,  function(req, res) {
     }
 });
 
-if (app.use('/remove_filter', function(req, res) {
+if (app.get('/remove_filter', function(req, res) {
     allTweets_cnt = 1;
     console.log('Remove_filter : '+req.query.filter);
-    remove_filter(req.query.filter,res);
+    remove_filter(req.query.filter,req,res);
 }));
 
 

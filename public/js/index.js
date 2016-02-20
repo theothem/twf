@@ -101,17 +101,14 @@ function send() {
         }, 10 * 100); // wait 60 seconds
         
         $.ajax({
-            type:       "POST",
+            type:       "GET",
             url:        "http://localhost:3000/signup_user",
             data:       {'username':username,'password': password,'email': email},
             dataType:   "json",
             success: function(msg){
                 percent = 1
                 $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
-                if (msg.error == 'error')
-                    window.alert('Error adding \''+username+'\' to DataBase');
-                else
-                    window.alert('User \''+username+'\' added to DataBase');
+                window.alert(msg.error);
                 window.location = '/';
             }, 
         });

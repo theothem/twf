@@ -2,32 +2,47 @@ var express 	= require('express');
 var router 		= express.Router();
 var mongodb     = require('mongodb');
 var bcrypt      = require('bcryptjs');
+var mysql      = require('mysql');
 
 module.exports = function (req , res , next)
 {
-    var MongoClient = mongodb.MongoClient;
-    var url = 'mongodb://localhost:27017/twfDB';
-    MongoClient.connect(url, function (err, db) {
-      if (err) {
-        console.log('Unable to connect to the mongoDB server. Error:', err);
-      } else {
-        console.log('Connection established to', url);
-        var hash = bcrypt.hashSync(req.body.password , bcrypt.genSaltSync(10));
-        db.collection('Users').insert(  {'username' : req.body.username , 'password': hash , 'email': req.body.email }  ,function(err, doc)
-        {
-          if (err){
-            console.log('Error adding user \''+req.body.username+'\'');
-            res.json('index',{title:'Twitter Feed' , 'error': 'error'});
-            db.close();
-          }
-          else{
-          	console.log('User added : '+req.body.username+','+req.body.email);
-          	res.json('index',{title:'Twitter Feed','error': req.body.username});
-            db.close();
-          }
-        });
-      }
-    });
+  var connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : '741992',
+    database : 'twf'
+  });
+
+  connection.connect(function(err){
+    if(!err) {
+        //console.log("Database is connected ...");    
+    } else {
+        console.log("Error connecting database ...");    
+        res.json('index',{title:'Twitter Feed' , 'error': 'Error connecting database'});
+        return;
+    }
+  });
+
+  var hash = bcrypt.hashSync(req.query.password , bcrypt.genSaltSync(10));
+  var user = {
+    username : req.query.username,
+    password : hash,
+    email    : req.query.email
+  };
+
+  var query = connection.query('insert into users set ?', user , function(err,result) {
+    //console.log(query.sql);
+    if (!err){
+      console.log('User added : '+req.query.username+','+req.query.email);
+      res.json('index',{title:'Twitter Feed','error': 'User \''+req.query.username+'\' added to DataBase'});
+    }
+    else{
+      console.log('Error while performing Query.'+err);
+      res.json('index',{title:'Twitter Feed' , 'error': 'Error adding \''+req.query.username+'\' to DataBase'});
+    }
+  });
+
+  connection.end();
 };
 
 
