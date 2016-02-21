@@ -226,9 +226,9 @@
 									<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
 												{{#users}}
 													<li id="flist">
-														<a id="{{screen_name}}" class="filter-item" href="javascript:filterByUser('{{screen_name}}');">
+														<a id="{{user}}" class="filter-item" href="javascript:filterByUser('{{user}}');">
 															<i class="chkbox"></i>
-															<span>{{screen_name}}</span>
+															<span>{{user}}</span>
 														</a>
 													</li>
 												{{/users}}
@@ -253,15 +253,15 @@
 					      <div class="panel-body">
 								<div id="option_box">
 									<ul id="hashtag_list" class="list-unstyled" data-type="ZOOM7">
-											{{#hash}}	
-													<li id="flist">
-														<a id="#{{.}}" class="filter-item" href="javascript:filterByHashtag('{{.}}');">
-															<i class="chkbox"></i>
-															<span>{{.}}</span>
-														</a>
-													</li>
-											{{/hash}}
-												<!--x2718, x274C-->
+										{{#hash}}	
+												<li id="flist">
+													<a id="#{{hashtag}}" class="filter-item" href="javascript:filterByHashtag('{{hashtag}}');">
+														<i class="chkbox"></i>
+														<span>{{hashtag}}</span>
+													</a>
+												</li>
+										{{/hash}}
+										<!--x2718, x274C-->
 									</ul>
 								</div>
 								<button id="submitHashtag_button" onclick="submitHashtag()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>

@@ -117,10 +117,10 @@ function requireLogin(req,res,next){
 };
 
 //Refresh Mongo DB Entries
-refresh_db(searchTweets,addTweets);
+//refresh_db(searchTweets,addTweets);
 setInterval(function() {
-    refresh_db(searchTweets,addTweets);
-}, 60 * 1000); // wait 60 seconds * 1 minutes
+    //refresh_db(searchTweets,addTweets);
+}, 60 * 1000 * 10); // wait 60 seconds * 2 minutes
 
 var allTweets_cnt = 1;  //cnt for allTweets       page to load more and skip 'allTweets_cnt'  entries
 var filters_cnt   = 1;  //cnt for filters         page to load more and skip 'filters_cnt'    entries
@@ -207,7 +207,7 @@ if (app.use('/load_filter_tweets', function(req, res,data) {
     var date      = query.date;
 
     //console.log('Load_filter_tweets triggered! '+users+','+hashtags+','+date);
-    filterByHashtag_loadMore(users,hashtags,date,res,"filters",query.order,20*filters_cnt++);
+    filterByHashtag_loadMore(users,hashtags,date,req,res,"filters",query.order,20*filters_cnt++);
 }));
 
 if (app.use('/load_tweets', function(req, res,data) {

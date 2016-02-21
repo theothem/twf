@@ -187,17 +187,15 @@
 					      <div class="panel-body">
 								<div id="option_box">
 									<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
-										{{#load_options.length}}
-												{{#load_options}}
-													<li id="flist">
-														<a id="{{.}}" class="filter-item" href="javascript:remove_filter('{{.}}');">
-															<i class="chkbox"></i>
-															<span>{{.}}</span>
-														</a>
-													</li>
-												{{/load_options}}
-												<!--x2718, x274C-->
-										{{/load_options.length}}
+										{{#load_options}}
+											<li id="flist">
+												<a id="{{filter}}" class="filter-item" href="javascript:remove_filter('{{filter}}');">
+													<i class="chkbox"></i>
+													<span>{{filter}}</span>
+												</a>
+											</li>
+										{{/load_options}}
+										<!--x2718, x274C-->
 									</ul>
 								</div>
 								<div id="removeAll_div">
@@ -224,24 +222,22 @@
 					      <div class="panel-body">
 								<div id="option_box">
 									<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
-										{{#users.length}}
-												{{#users}}
-													<li id="flist">
-														<a id="{{.}}" class="filter-item" href="javascript:filterByUser('{{.}}');">
-															<i class="chkbox"></i>
-															<span>{{.}}</span>
-														</a>
-														<script type="text/javascript">
-															var users;
-															users = '{{user}}'.split(",");
-															if ( $.inArray('{{.}}', users) > -1 ) {
-																filterByUser('{{.}}');
-															}
-														</script>
-													</li>
-												{{/users}}
-												<!--x2718, x274C-->
-										{{/users.length}}
+										{{#usersFilter}}
+											<li id="flist">
+												<a id="{{user}}" class="filter-item" href="javascript:filterByUser('{{user}}');">
+													<i class="chkbox"></i>
+													<span>{{user}}</span>
+												</a>
+												<script type="text/javascript">
+													var users;
+													users = '{{users}}'.split(",");
+													if ( $.inArray('{{user}}', users) > -1 ) {
+														filterByUser('{{user}}');
+													}
+												</script>
+											</li>
+										{{/usersFilter}}
+										<!--x2718, x274C-->
 									</ul>
 								</div>
 								<button id="submitUsers_button" onclick="submitUsers()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
@@ -261,24 +257,22 @@
 					      <div class="panel-body">
 								<div id="option_box">
 									<ul id="hashtag_list" class="list-unstyled" data-type="ZOOM7">
-										{{#hashtags.length}}
-												{{#hashtags}}
-													<li id="flist">
-														<a id="{{.}}" class="filter-item" href="javascript:filterByHashtag('{{.}}');">
-															<i class="chkbox"></i>
-															<span>{{.}}</span>
-														</a>
-														<script type="text/javascript">
-															var hasht;
-															hasht = '{{url}}'.split(",");
-															if ( $.inArray('{{.}}', hasht) > -1 ) {
-																filterByHashtag('{{.}}');
-															}
-														</script>
-													</li>
-												{{/hashtags}}
-												<!--x2718, x274C-->
-										{{/hashtags.length}}
+										{{#hash}}
+												<li id="flist">
+													<a id="{{hashtag}}" class="filter-item" href="javascript:filterByHashtag('{{hashtag}}');">
+														<i class="chkbox"></i>
+														<span>{{hashtag}}</span>
+													</a>
+												</li>
+												<script type="text/javascript">
+													var hasht;
+													hasht = '{{url}}'.split(",");
+													if ( $.inArray('{{hashtag}}', hasht) > -1 ) {
+														filterByHashtag('{{hashtag}}');
+													}
+												</script>
+										{{/hash}}
+										<!--x2718, x274C-->
 									</ul>
 								</div>
 								<button id="submitHashtag_button" onclick="submitHashtag()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
@@ -302,8 +296,8 @@
 										var date;
 										date = '{{date}}';
 										if ( date!='' ) {
-											var spl = date.split('&#x2F;');
-											var newdate = spl[0]+'/'+spl[1]+'/'+spl[2];
+											var spl = date.split('-');
+											var newdate = spl[2]+'/'+spl[1]+'/'+spl[0];
 											document.getElementById('datepicker').value= newdate;
 										}
 									</script>
@@ -335,7 +329,7 @@
 				                    success: function(result){
 								        for (var i=0;i<result.length;i++)
 								        {
-								        	var text = "<div id="+"twits"+">"+"<div id="+"retweet"+">"+"</div>"+"<div id="+"down"+">"+"<div id="+"img"+">"+"<img id="+"profile_img" +" src="+result[i].tweet.user.profile_image_url+">"+"</div>"+"<div id="+"right_tw"+">"+"<div id="+"user_username_time"+">"+"<p id="+"username"+">"+"<b>"+result[i].tweet.user.name+"</b>"+"</p>"+"<p id="+"screenname"+">@"+result[i].tweet.user.screen_name+"</p>"+"<p id="+"tweet_date"+">"+result[i].tweet.created_at+"</p>"+"</div>"+"<div id="+"text"+">"+"<p id="+"tweet_text"+">"+result[i].tweet.text+"</p>"+"</div>"+"</div>"+"</div>"+"<div id="+"favRt>"+"<img id="+"fav_icon"+" onmouseover=\"hoverFAV(this);\""+" onmouseout=\"unhoverFAV(this);\""+" src=\"../images/heart_0.png\">"+"<span id=\"fav_count\" onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='black'\">"+result[i].tweet.favorite_count+"</span>"+"<img id=\"rt_icon\" onmouseover=\"hoverRT(this);\" onmouseout=\"unhoverRT(this);\" src=\"../images/rt.png\""+">"+"<span id=\"rt_count\" onmouseover=\"this.style.color='#19cf86'\" onmouseout=\"this.style.color='black'\">"+result[i].tweet.retweet_count+"</span>"+"</div>"+"</div";
+								        	var text = "<div id="+"twits"+">"+"<div id="+"retweet"+">"+"</div>"+"<div id="+"down"+">"+"<div id="+"img"+">"+"<img id="+"profile_img" +" src="+result[i].profile_img+">"+"</div>"+"<div id="+"right_tw"+">"+"<div id="+"user_username_time"+">"+"<p id="+"username"+">"+"<b>"+result[i].screen_name+"</b>"+"</p>"+"<p id="+"screenname"+">@"+result[i].user+"</p>"+"<p id="+"tweet_date"+">"+result[i].created_at+"</p>"+"</div>"+"<div id="+"text"+">"+"<p id="+"tweet_text"+">"+result[i].text+"</p>"+"</div>"+"</div>"+"</div>"+"<div id="+"favRt>"+"<img id="+"fav_icon"+" onmouseover=\"hoverFAV(this);\""+" onmouseout=\"unhoverFAV(this);\""+" src=\"../images/heart_0.png\">"+"<span id=\"fav_count\" onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='black'\">"+result[i].favorite_count+"</span>"+"<img id=\"rt_icon\" onmouseover=\"hoverRT(this);\" onmouseout=\"unhoverRT(this);\" src=\"../images/rt.png\""+">"+"<span id=\"rt_count\" onmouseover=\"this.style.color='#19cf86'\" onmouseout=\"this.style.color='black'\">"+result[i].retweet_count+"</span>"+"</div>"+"</div";
 							                var element = document.createElement("div");
 							                element.id  = "twits";
 							                element.innerHTML = text;
@@ -356,39 +350,25 @@
 
 	    				<div id="down">
 	    					<div id="img">
-	    						{{#tweet}}
-	    							{{#user}}
-	    								{{#entities}}
-	    									<img id="profile_img" src={{profile_image_url}}>
-	    								{{/entities}}
-	    							{{/user}}
-	    						{{/tweet}}
+	    						<img id="profile_img" src={{profile_img}}>
 		    				</div>
 
 		    				<div id="right_tw">
 		    					<div id="user_username_time">
-		    						{{#tweet}}
-	    								{{#user}}
-	    									<p id="username"><b>{{name}}</b></p>
-	    									<p id="screenname">@{{screen_name}}</p>
-	    								{{/user}}
-	    									<p id="tweet_date">{{created_at}}</p>
-	    							{{/tweet}}
+									<p id="username"><b>{{screen_name}}</b></p>
+									<p id="screenname">@{{user}}</p>
+									<p id="tweet_date">{{created_at}}</p>
 			    				</div>
 
 			    				<div id="text">
-			    					{{#tweet}}
-	    									<p id="tweet_text">{{text}} </p>
-	    							{{/tweet}}
+	    							<p id="tweet_text">{{text}} </p>
 			    				</div>
 		    				</div>
 		    				<div id="favRt">
-		    					{{#tweet}}
-			    					<img id="fav_icon" onmouseover="hoverFAV(this);" onmouseout="unhoverFAV(this);" src="../images/heart_0.png">
-			    					<span id="fav_count" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">{{favorite_count}}</span>
-			    					<img id="rt_icon" onmouseover="hoverRT(this);" onmouseout="unhoverRT(this);" src="../images/rt.png">
-			    					<span id="rt_count" onmouseover="this.style.color='#19cf86'" onmouseout="this.style.color='black'">{{retweet_count}}
-		    					{{/tweet}}
+		    					<img id="fav_icon" onmouseover="hoverFAV(this);" onmouseout="unhoverFAV(this);" src="../images/heart_0.png">
+		    					<span id="fav_count" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">{{favorite_count}}</span>
+		    					<img id="rt_icon" onmouseover="hoverRT(this);" onmouseout="unhoverRT(this);" src="../images/rt.png">
+		    					<span id="rt_count" onmouseover="this.style.color='#19cf86'" onmouseout="this.style.color='black'">{{retweet_count}}
 		    				</div>
 		    			</div>
 	    			</div>

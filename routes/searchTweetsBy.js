@@ -58,29 +58,6 @@ module.exports = function(query,callback,option,date,user_option)
 			    if (all_tweets.statuses != undefined)
 					console.log('Collected         : '+all_tweets.statuses.length+' tweets ( User ) for query : '+query+'.\n');
 				callback(all_tweets.statuses);
-				//callback(user_tweets.statuses);
-				/*	put them in query HashTable
-				if (query[0] == '#'){
-					query = lin.substring(1, query.length);
-				}
-
-				hashtable.put(query, [] );
-
-				var j=0;
-				for (j=0;j<hashtag_tweets.statuses.length;j++)
-				{
-					var i=0;
-					for (i=0;i<hashtag_tweets.statuses[j].entities.hashtags.length;i++)
-					{
-						if ((hashtag_tweets.statuses[j].entities.hashtags[i].text != query) && (hashtable.get(query).indexOf(hashtag_tweets.statuses[j].entities.hashtags[i].text)==-1))
-						{
-							hashtable.get(query).push(hashtag_tweets.statuses[j].entities.hashtags[i].text);
-						}
-					}
-				}
-				console.log(query+' :');
-				console.log(hashtable.get(query));
-				*/
 			});
     	}
     }
