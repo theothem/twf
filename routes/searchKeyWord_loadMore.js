@@ -1,6 +1,9 @@
 var express         = require('express');
+var csrf            = require('csurf');
+var session         = require('client-sessions'); 
+var mysql           = require('mysql');
 
-module.exports = function (search,users,hashtags,date,res,path,order,skip)
+module.exports = function (search,users,hashtags,date,req,res,path,order,skip)
 {	
 	if ((search!=null)&&(search!=undefined))
 		if (search.indexOf('/') > -1){
@@ -9,1186 +12,844 @@ module.exports = function (search,users,hashtags,date,res,path,order,skip)
 	
 	if (search == undefined)
 		search = '';
-	var all_tweets  = [];
-	var mongodb 	= require('mongodb');
-	var MongoClient = mongodb.MongoClient;
-	var url = 'mongodb://localhost:27017/twfDB';
-	MongoClient.connect(url, function (err, db) 
-	{	
-		if (err) {
-			console.log('Unable to connect to the mongoDB server. Error:', err);
-		} 
-		else 
+
+	var connection = mysql.createConnection({
+	    host     : 'localhost',
+	    user     : 'root',
+	    password : '741992',
+	    database : 'twf'
+	});
+	
+	connection.connect(function(err){
+	    if(!err) {
+	        //console.log("Database is connected ...");    
+	    } else {
+	        console.log("Error connecting database ...");  
+	        res.redirect('/home');
+	        return;  
+	    }
+	});	
+	
+	if ((users=='')&(hashtags=='')&(date==''))	//000
+	{
+		if (order == 'favorites')
 		{
-			if ((users=='')&(hashtags=='')&(date==''))	//000
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
-				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({ $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-			}
-			if ((users=='')&(hashtags=='')&(date!=''))	//001
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+		else if (order == 'retweets')
+		{
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				var backupDate = date;
-				date = dateToDate(date);
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log('Len:'+tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log('Len:'+tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
-				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log('Len:'+tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' }, $or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log('Len:'+tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-			}
-			if ((users=='')&(hashtags!='')&(date==''))	//010
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+		else if (order == 'dateDown')
+		{
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				var hashtags_var;
-				hashtags_var = hashtags.split(",");
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
-				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({ 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-			}
-			if ((users=='')&(hashtags!='')&(date!=''))	//011
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+		else
+		{
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				var backupDate = date;
-				date = dateToDate(date);
-				var hashtags_var;
-				hashtags_var = hashtags.split(",");
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
-				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-			}
-			if ((users!='')&(hashtags=='')&(date==''))	//100
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+	}
+	if ((users=='')&(hashtags=='')&(date!=''))	//001
+	{
+		var backupDate = date;
+		date = dateToDate(date);
+		if (order == 'favorites')
+		{
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				var usrs = users.split(",");
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
-				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-			}
-			if ((users!='')&(hashtags=='')&(date!=''))	//101
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+		else if (order == 'retweets')
+		{
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				var backupDate = date;
-				date = dateToDate(date);
-				var usrs = users.split(",");
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
-				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({'tweet.created_at': { $regex: date , $options: 'i' }, 'tweet.user.screen_name': {$in: usrs} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-			}
-			if ((users!='')&(hashtags!='')&(date==''))	//110
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+		else if (order == 'dateDown')
+		{
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				var usrs = users.split(",");
-				var hashtags_var;
-				hashtags_var = hashtags.split(",");
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
-				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({ 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
-				}
-			}
-			if ((users!='')&(hashtags!='')&(date!=''))	//111
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+		else
+		{
+			connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 			{
-				var usrs = users.split(",");
-				var hashtags_var;
-				hashtags_var = hashtags.split(",");
-				var backupDate = date;
-				date = dateToDate(date);
-				if (order == 'favorites')
-				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.favorite_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+				if (err){
+					console.log(err);
 				}
-				else if (order == 'retweets')
+				var tweets_to_send = tweets;
+				for (var i=0;i<tweets_to_send.length;i++)
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.retweet_count' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
-						}
-					});
+					tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 				}
-				else if (order == 'dateDown')
+				res.json(tweets_to_send);
+				connection.end();
+				return;
+			});
+		}
+	}
+	if ((users=='')&(hashtags!='')&(date==''))	//010
+	{
+		if (order == 'favorites')
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
 				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : 1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
-						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
 						}
-					});
-				}
-				else
-				{
-					db.collection('tweets').find({ 'tweet.created_at': { $regex: date , $options: 'i' } , 'tweet.user.screen_name': {$in: usrs} ,'tweet.entities.hashtags.text': {$in: hashtags_var} ,$or: [ {'tweet.user.screen_name': { $regex: search , $options: 'i' }},{'tweet.user.name': { $regex: search , $options: 'i' }},{'tweet.created_at': { $regex: search , $options: 'i' }},{'tweet.entities.hashtags.text': { $regex: search , $options: 'i' }}, {'tweet.text': { $regex: search , $options: 'i' }} ] }).sort({'tweet.id' : -1}).limit(20).skip(skip).toArray(function(err, tweets) {
-						if (err)
-							console.log('Error searching for user: "'+search+'"');
-						else
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
 						{
-							db.collection('tweets').distinct( 'filter'  ,function(err, filter_options)
-					        {
-					          	if (err)
-					            	console.log('Error at distinct');
-					        	else{
-						          	db.collection('tweets').distinct( 'tweet.user.screen_name'  ,function(err, users_returned)
-							        {
-										if (err)
-											console.log('Error at distinct');
-										else{
-											db.collection('tweets').distinct( 'tweet.entities.hashtags.text'  ,function(err, hashtags)
-									        {
-												if (err)
-													console.log('Error at distinct');
-												else{
-													console.log(tweets.length);
-													res.json(tweets);
-													db.close();
-												}
-									        });
-										}
-							        });
-					          	}
-					        });
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
 					});
 				}
 			}
 		}
-	});
+		else if (order == 'retweets')
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
+				{
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
+					});
+				}
+			}
+		}
+		else if (order == 'dateDown')
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
+				{
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
+					});
+				}
+			}
+		}
+		else
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
+				{
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
+					});
+				}
+			}
+		}
+	}
+	if ((users=='')&(hashtags!='')&(date!=''))	//011
+	{
+		var backupDate = date;
+		date = dateToDate(date);
+		var hashtags_var;
+		hashtags_var = hashtags.split(",");
+		if (order == 'favorites')
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
+				{
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
+					});
+				}
+			}
+		}
+		else if (order == 'retweets')
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
+				{
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
+					});
+				}
+			}
+		}
+		else if (order == 'dateDown')
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
+				{
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
+					});
+				}
+			}
+		}
+		else
+		{
+			for (var i=0;i<hashtags.length;i++)
+			{
+				hashtags[i] = '\''+hashtags[i]+'\'';
+				if (i==hashtags.length-1)
+				{
+					connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;
+					});
+				}
+			}
+		}
+	}
+	if ((users!='')&(hashtags=='')&(date==''))	//100
+	{
+		var usersBack = users;
+		users = users.split(',');
+		if (order == 'favorites')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+		else if (order == 'retweets')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+		else if (order == 'dateDown')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+		else
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+	}
+	if ((users!='')&(hashtags=='')&(date!=''))	//101
+	{
+		var backupDate = date;
+		date = dateToDate(date);
+		users = users.split(',');
+		if (order == 'favorites')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+		else if (order == 'retweets')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+		else if (order == 'dateDown')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+		else
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					{
+						if (err){
+							console.log(err);
+						}
+						var tweets_to_send = tweets;
+						for (var i=0;i<tweets_to_send.length;i++)
+						{
+							tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+						}
+						res.json(tweets_to_send);
+						connection.end();
+						return;	
+					});
+				}
+			}
+		}
+	}
+	if ((users!='')&(hashtags!='')&(date==''))	//110
+	{
+		var usersBack = users;
+		users = users.split(',');
+		var hashtags_var = hashtags.toString();
+		if (order == 'favorites')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+		else if (order == 'retweets')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+		else if (order == 'dateDown')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+	}
+	if ((users!='')&(hashtags!='')&(date!=''))	//111
+	{
+		var usersBack = users;
+		users = users.split(',');
+		var hashtags_var = hashtags.toString();
+		var backupDate = date;
+		date = dateToDate(date);
+		if (order == 'favorites')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+		else if (order == 'retweets')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+		else if (order == 'dateDown')
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			for (var i=0;i<users.length;i++)
+			{
+				users[i] = '\''+users[i]+'\'';
+				if (i==users.length-1)
+				{
+					for (var i=0;i<hashtags.length;i++)
+					{
+						hashtags[i] = '\''+hashtags[i]+'\'';
+						if (i==hashtags.length-1)
+						{
+							connection.query('SELECT * FROM tweets WHERE (tweets.filter IN ( SELECT filter FROM Belongs WHERE Belongs.username = ?)) AND ( tweets.created_at BETWEEN \''+date+' 00:00:00\' AND \''+date+' 23:59:59\' ) AND tweets.user IN ('+users.toString()+')'+'AND tweets.id IN ( SELECT id FROM hashtags WHERE hashtags.hashtag IN (\''+hashtags.toString()+'\')) ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+							{
+								if (err){
+									console.log(err);
+								}
+								var tweets_to_send = tweets;
+								for (var i=0;i<tweets_to_send.length;i++)
+								{
+									tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+								}
+								res.json(tweets_to_send);
+								connection.end();
+								return;		
+							});
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 function dateToDate(input){
-
-	var date = input.split('/');
-	var day  = date[0];
-	var year = date[2];
-
-	var month;
 	
-	if ((date[1] == '1')||(date[1] == '01'))
-		month = 'Jan';
-	else if ((date[1] == '2')||(date[1] == '02'))
-		month = 'Feb';
-	else if ((date[1] == '3')||(date[1] == '03'))
-		month = 'Mar';
-	else if ((date[1] == '4')||(date[1] == '04'))
-		month = 'Apr';
-	else if ((date[1] == '5')||(date[1] == '05'))
-		month = 'May';
-	else if ((date[1] == '6')||(date[1] == '06'))
-		month = 'Jun';
-	else if ((date[1] == '7')||(date[1] == '07'))
-		month = 'Jul';
-	else if ((date[1] == '8')||(date[1] == '08'))
-		month = 'Aug';
-	else if ((date[1] == '9')||(date[1] == '09'))
-		month = 'Sep';
-	else if ((date[1] == '10')||(date[1] == '010'))
-		month = 'Oct';
-	else if ((date[1] == '11')||(date[1] == '011'))
-		month = 'Nov';
-	else if ((date[1] == '12')||(date[1] == '012'))
-		month = 'Dec';
+	var date   = input.split('/');
+	var day    = date[0];
+	var year   = date[2];
+	var month  = date[1];
 
-	var output = month+' '+day+' '+year;
+	var output = year+'-'+month+'-'+day;
 	return output;
 }

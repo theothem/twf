@@ -31,7 +31,7 @@ module.exports = function (req,res,path,order,skip)
 	var users;
 	var hashtags;
 
-	connection.query('SELECT DISTINCT t.filter FROM tweets t INNER JOIN Belongs b ON t.filter = b.filter WHERE b.username=\''+req.session.user.username+'\'ORDER BY filter;' ,function(err, filters) 
+	connection.query('SELECT DISTINCT t.filter FROM tweets t INNER JOIN Belongs b ON t.filter = b.filter WHERE b.username=\''+req.session.user.username+'\'ORDER BY t.filter;' ,function(err, filters) 
 	{
 		if (err){
 			console.log(err);
@@ -41,7 +41,7 @@ module.exports = function (req,res,path,order,skip)
 		}
 		filter_options = filters;
 	});
-	connection.query('SELECT DISTINCT t.user FROM tweets t INNER JOIN Belongs b ON t.filter = b.filter WHERE b.username=\''+req.session.user.username+'\'ORDER BY screen_name;' ,function(err, usrs) 
+	connection.query('SELECT DISTINCT t.user FROM tweets t INNER JOIN Belongs b ON t.filter = b.filter WHERE b.username=\''+req.session.user.username+'\'ORDER BY user;' ,function(err, usrs) 
 	{
 		if (err){
 			console.log(err);

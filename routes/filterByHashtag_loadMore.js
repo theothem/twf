@@ -165,6 +165,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -187,6 +189,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -209,6 +213,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -231,6 +237,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -263,6 +271,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}
@@ -294,6 +304,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}
@@ -325,6 +337,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}
@@ -356,6 +370,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}
@@ -499,6 +515,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -521,6 +539,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -543,6 +563,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -565,6 +587,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 								tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 							}
 							res.json(tweets_to_send);
+							connection.end();
+							return;
 						});
 					}
 				}
@@ -668,6 +692,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}	
@@ -699,6 +725,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}	
@@ -730,6 +758,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}	
@@ -761,6 +791,8 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 										tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
 									}
 									res.json(tweets_to_send);
+									connection.end();
+									return;
 								});
 							}
 						}	

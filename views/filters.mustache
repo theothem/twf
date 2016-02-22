@@ -231,7 +231,11 @@
 												<script type="text/javascript">
 													var users;
 													users = '{{users}}'.split(",");
+													var searched = '{{searched}}'.split(",");
 													if ( $.inArray('{{user}}', users) > -1 ) {
+														filterByUser('{{user}}');
+													}
+													if ( $.inArray('@'+'{{user}}', searched) > -1 ) {
 														filterByUser('{{user}}');
 													}
 												</script>
@@ -267,7 +271,12 @@
 												<script type="text/javascript">
 													var hasht;
 													hasht = '{{url}}'.split(",");
+													var searched = '{{searched}}'.split(",");
+													
 													if ( $.inArray('{{hashtag}}', hasht) > -1 ) {
+														filterByHashtag('{{hashtag}}');
+													}
+													if ( $.inArray('#'+'{{hashtag}}', searched) > -1 ) {
 														filterByHashtag('{{hashtag}}');
 													}
 												</script>

@@ -196,7 +196,7 @@ if (app.use('/load_search_tweets', function(req, res,data) {
     allTweets_cnt = 1;
     filters_cnt   = 1;
 
-    searchKeyWord_loadMore(search,users,hashtags,date,res,"searchKeyWord",query.order,20*search_cnt++);
+    searchKeyWord_loadMore(search,users,hashtags,date,req,res,"searchKeyWord",query.order,20*search_cnt++);
     //console.log('Load_search_tweets triggered! '+req.query.order);
 }));
 
