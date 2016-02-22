@@ -71,6 +71,62 @@
 					<img src="../images/home_logo3.png" alt="Twitter Logo">
 				</div>
 
+				<form id="login_form2" action="/login" method="POST">
+		   			<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
+				   	<div id="Log">
+				   		<input name="username" id="username"class="form-control" type="text" value="Login"
+										onfocus="if (this.value=='Login') this.value = ''"  
+							    		onblur="if (this.value=='') this.value = 'Login'">
+				   		</input>
+				   		<img src="../images/user1.png" id="input_img1">	
+				   	</div>	 
+				   	<div id="Pass">
+				   		<input name="password" id="password" class="form-control" type="password" value="Password"
+										onfocus="if (this.value=='Password') this.value = ''"  
+							    		onblur="if (this.value=='') this.value = 'Password'">
+				   		</input>
+				   		<img src="../images/lock.png" id="input_img2">
+				   	</div>
+				   	<button type="submit" class="styled-button-2" id="loginButton" >Login</button>
+				</form>
+
+				<div id="userFields2">
+			        <a id="title2"  data-toggle="collapse" data-target="#content_box2">
+			        	<span class="caret"></span>
+			          	<span>Sign Up</span>
+			        </a>
+					<div id="content2">
+						<div id="content_box2" class="collapse">
+							<form id="text_form2" role="search" onsubmit="send();return false;" >
+								<div id="usrename">
+									<input id="usrname" class="form-control" type="text" value="Username"
+									onfocus="if (this.value=='Username') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Username'">
+						    		<i id="usrname_warning">More than 4 characters</i>
+								</div>
+							</form>
+							<form id="text_form2" role="search" onsubmit="send();return false;" >
+								<div id="passwrd">
+									<input id="pass" class="form-control" type="password" value="Password"
+									onfocus="if (this.value=='Password') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Password'">
+						    		<i id="password_warning">More than 6 digits.</i>
+								</div>
+							</form>
+							<form id="text_form2" role="search" onsubmit="send();return false;" >
+								<div id="email">
+									<input id="mail" class="form-control" type="text" value="Email"
+									onfocus="if (this.value=='Email') this.value = ''"  
+						    		onblur="if (this.value=='') this.value = 'Email'">
+						    		<i id="email_warning">Must contain @ and . </i>	
+								</div>
+								<button type="button" onclick="send()" id="send_button2">Send</button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+
 				<div id="userFields">
 					<div id="title">
 						<p><u>Sign Up:</u></p>
@@ -90,7 +146,7 @@
 									<input id="pass" class="form-control" type="password" value="Password"
 									onfocus="if (this.value=='Password') this.value = ''"  
 						    		onblur="if (this.value=='') this.value = 'Password'">
-						    		<i id="password_warning">More than 6 digits.(Letters and chars)</i>
+						    		<i id="password_warning">More than 6 digits.</i>
 								</div>
 							</form>
 							<form id="text_form" role="search" onsubmit="send();return false;" >
@@ -100,8 +156,8 @@
 						    		onblur="if (this.value=='') this.value = 'Email'">
 						    		<i id="email_warning">Must contain @ and . </i>	
 								</div>
+								<button type="button" onclick="send()" id="send_button">Send</button>
 							</form>
-							<button type="button" onclick="send()" id="send_button">Send</button>
 						</div>
 					</div>
 				</div>

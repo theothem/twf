@@ -49,8 +49,8 @@ function send() {
     if (((username.length < 4))||((username == '')))
     {
         document.getElementById("usrname_warning").innerHTML           = "More than 4 characters";
-        document.getElementById("usrname_warning").style.color         = "#B10009";
-        document.getElementById("usrname_warning").style.background    = "#FDE4E1";
+        document.getElementById("usrname_warning").style.color         = "#d90000";
+        //document.getElementById("usrname_warning").style.background    = "#FDE4E1";
         document.getElementById("usrname_warning").style.font          = "bold 14px Arial";
         document.getElementById("usrname_warning").style.padding       = "2px 4px";
         document.getElementById("usrname_warning").style.visibility    ='visible';
@@ -64,8 +64,8 @@ function send() {
     if (((!(isAlphanumeric(password)))||((password.length < 6)))||(password == ''))
     {
         document.getElementById("password_warning").innerHTML           = "More than 6 digits";
-        document.getElementById("password_warning").style.color         = "#B10009";
-        document.getElementById("password_warning").style.background    = "#FDE4E1";
+        document.getElementById("password_warning").style.color         = "#d90000";
+        //document.getElementById("password_warning").style.background    = "#FDE4E1";
         document.getElementById("password_warning").style.font          = "bold 14px Arial";
         document.getElementById("password_warning").style.padding       = "2px 4px";
         document.getElementById("password_warning").style.visibility    ='visible';
@@ -79,8 +79,8 @@ function send() {
     if (((email.indexOf('.') < 0 ))||((email == ''))||((email.indexOf('@') < 0 )))
     {
         document.getElementById("email_warning").innerHTML              = "Must contain @ and . ";
-        document.getElementById("email_warning").style.color            = "#B10009";
-        document.getElementById("email_warning").style.background       = "#FDE4E1";
+        document.getElementById("email_warning").style.color            = "#d90000";
+        //document.getElementById("email_warning").style.background       = "#FDE4E1";
         document.getElementById("email_warning").style.font             = "bold 14px Arial";
         document.getElementById("email_warning").style.padding          = "2px 4px";
         document.getElementById("email_warning").style.visibility       ='visible';

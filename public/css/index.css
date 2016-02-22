@@ -224,9 +224,7 @@ footer p{
 	margin-left: 1%;
 	margin-top: 2px;
 }
-
-@media screen and (max-width: 767px){ 
-
+@media screen and (max-width: 400px){
 	body.slide-active {
     	overflow-x: hidden
 	}
@@ -248,6 +246,130 @@ footer p{
 		float: left;
 	}
 
+	#userFields{
+		display: none;
+		height: 0px;
+		width: 0px;
+	}
+
+	#slide-nav .navbar-toggle {
+		display: none;
+	}
+
+	#top_logo{
+		display: none;
+	}
+
+	.navbar.navbar-inverse.navbar-fixed-top{
+		height: 50px;
+	}
+
+	#login_form{
+		float: left;
+		display: none;
+		height: 60px;
+		width: 100%;
+		margin-top: 38%;
+	}
+
+	#login_form2{
+		float: left;
+		display: block;
+		height: 18%;
+		width: 100%;
+	}
+
+	#Log{
+		float: left;
+		display: block;
+		height: 40%;
+		width: 155px;
+		margin-top: 4%;
+		margin-left: 30%;
+	}
+
+	#Pass{
+		float: left;
+		display: block;
+		height: 40%;
+		width: 155px;
+		margin-top: 4%;
+		margin-left: 30%;
+	}
+
+	#username{
+		float: left;
+		display: block;
+		height: 23px;
+		width: 100%;
+		padding-left: 26px;
+		color: gray;
+	}
+
+	#password{
+		float: right;
+		display: block;
+		height: 23px;
+		width: 100%;
+		padding-left: 26px;
+		padding-top: 9px;
+	}
+
+	#input_img1{
+		height: 16px;
+		width: 16px;
+		float: left;
+		display: inline;
+		background-color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+    	margin-left: 10px;
+    	margin-top: -20px;
+	}
+
+	#input_img2{
+		height: 16px;
+		width: 16px;
+		background-color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+    	margin-left: 5px;
+    	margin-top: -20px;
+	}
+
+
+	#loginButton{
+		float: right;
+		display: inline;
+		height: 25px;
+		width: 60px;
+		margin-top: 4%;
+		margin-right: 0px;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 5px;
+    	-webkit-border-radius: 5px;
+    	border-radius: 5px;	
+    	font-family:'Verdana',Arial,sans-serif;
+		background-color: black;
+		color:white;
+	}
+
 	.navbar-header {
 	    margin: 0 auto;
 	    padding: 0 15px;
@@ -266,7 +388,7 @@ footer p{
 	}
 	#slidemenu {
 	    left: -100%;
-	    width: 80%;
+	    width: 50%;
 	    height: 100%;
 	    min-width: 0;
 	    position: absolute;
@@ -324,7 +446,430 @@ footer p{
 		background-color: #336699;
 	}
 
+	#mainInfo{
+		float: left;
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
+
+	#bar{
+		height: 3px;
+		background-color: #336699;
+	}
+
+	#logo{
+		display: block;
+		float: left;
+		height: 25%;
+		width: 100%;
+	}
+
+	#logo img{
+		height: 100px;
+		width: 100px;
+		margin-left: 35%; 
+		margin-top: 2%;
+	}
+
+	#userFields2 #title2{
+		float: left;
+		display: block;
+		height: 21px;
+		margin-left: 40%;
+		font-size: 110%;
+		width: auto;
+		color: black;
+	}
+
+	#userFields2 #content2{
+		float: left;
+		display: block;
+		width: 100%;
+		margin-top: 5%;
+	}
+
+	#text_form2{
+		width: 100%;
+		margin-left: 0%;
+		margin-top: 0px;
+		height: 45px;
+	}
+
+	#text_form2 input{
+		width: 155px;
+		margin-left: 30%;
+		margin-top: 0px;
+		height: 25px;
+	}
+
+	#text_form2 i{
+		float: left;
+		display: block;
+		height: 18px;
+		margin-left: 30%;
+		margin-top: 2px;
+		visibility: hidden;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+	}
+
+	#email{
+		float: left;
+		display: inline;
+		width: 100%;
+	}
+
+	#content_box2 #send_button2{
+		height: 25px;
+		width: 60px;
+		background-color: black;
+		color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+		margin-top: -20px;
+		float: right;
+		display: inline;
+		font-family:'Verdana',Arial,sans-serif;
+	}
+
 	
+	#main #tweet_window{
+		height: 2043px;
+		width: 	90%;
+		background-color: #336699;
+		float: left;
+		display: inline;
+		margin-left: 5%;
+		margin-top: 5px;
+	}
+
+	#main #tweet_window ul li{
+		display: block;
+	}
+
+	#main #filter_window{
+		height: 0%;
+		width: 	0%;
+		background-color: #999;
+		margin-left: 0px;
+		float: left;
+		display: none;
+		margin-left: 0px;
+		margin-top: 0px;
+	}
+
+	footer{
+		display: none;
+	}
+	footer #left_footer{
+		display: none;
+	}
+	footer p{
+	  display: none;
+	}
+} 
+@media screen and (max-width: 767px)and (min-width: 401px){ 
+
+	body.slide-active {
+    	overflow-x: hidden
+	}
+
+	.no-margin-top {
+	    margin-top: 0px;
+	}
+
+	body{
+		height: 100%;
+		width: 	100%;
+		background-color: #336699;
+	}
+	header{
+		background-color: #222;
+		height: 50px;
+		width: 100%;
+		display: block;
+		float: left;
+	}
+
+	#userFields{
+		display: none;
+		height: 0px;
+		width: 0px;
+	}
+
+
+	#login_form2{
+		float: left;
+		display: block;
+		height: 15%;
+		width: 100%;
+	}
+
+	#Log{
+		float: left;
+		display: block;
+		height: 52px;
+		width: 200px;
+		margin-top: 0%;
+		margin-left: 30%;
+	}
+
+	#Pass{
+		float: left;
+		display: block;
+		height: 52px;
+		width: 200px;
+		margin-top: 0%;
+		margin-left: 30%;
+	}
+
+	#username{
+		float: left;
+		display: block;
+		height: 23px;
+		width: 100%;
+		padding-left: 26px;
+		color: gray;
+	}
+
+	#password{
+		float: right;
+		display: block;
+		height: 23px;
+		width: 100%;
+		padding-left: 26px;
+		padding-top: 9px;
+	}
+
+	#input_img1{
+		height: 16px;
+		width: 16px;
+		float: left;
+		display: inline;
+		background-color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+    	margin-left: 10px;
+    	margin-top: -20px;
+	}
+
+	#input_img2{
+		height: 16px;
+		width: 16px;
+		background-color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+    	margin-left: 5px;
+    	margin-top: -20px;
+	}
+
+
+	#loginButton{
+		float: left;
+		display: block;
+		height: 24.5px;
+		width: 60px;
+		margin-top: 0px;
+		margin-left: 10px;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 5px;
+    	-webkit-border-radius: 5px;
+    	border-radius: 5px;	
+    	font-family:'Verdana',Arial,sans-serif;
+		background-color: black;
+		color:white;
+	}
+
+	.navbar.navbar-inverse.navbar-fixed-top{
+		height: 50px;
+	}
+
+	#login_form{
+		float: left;
+		display: none;
+		height: 50px;
+		width: 20%;
+	}
+
+	.navbar-header {
+	    margin: 0 auto;
+	    padding: 0 15px;
+	}
+
+	.navbar-header .navbar-brand{
+		color: white;
+	}
+	.navbar.slide-active {
+	    position: absolute;
+	    width: 100%;
+	    top: -1px;
+	}
+	.navbar.slide-active .icon-bar {
+	    background: orange;
+	}
+	#slidemenu {
+	    left: -100%;
+	    width: 50%;
+	    height: 100%;
+	    min-width: 0;
+	    position: absolute;
+	    padding-left: 0;
+	    z-index: 10;
+	    top: -8px;
+	    margin-top: 50px;
+	    background-color: black;
+	}
+
+	#slidemenu .navbar-nav {
+	    min-width: 0;
+	    width: 100%;
+	    margin: 0;
+	}
+	#slide-nav {
+	    border-top: 0;
+	}
+	.navbar-inverse #slidemenu {
+	    background: black;
+	}
+
+	#search_form_slidemenu{
+		width: 99%;
+		margin-left: 0px;
+	}
+
+	#filter_menu{
+		width: 99%;
+		margin-left: 0px;
+		margin-top: -15px;
+	}
+
+	#search_bar{
+		display: none;
+		height: 100%;
+		width: 0%;
+		float: left;
+		margin-left: 15%;
+	}
+
+	#main_menu{
+		height: 0%;
+		width: 0%;
+		margin-left: 0%;
+		float: left;
+		display: none;
+	}
+
+	#main{
+		height: auto;
+		width: 100%;
+		float: left;
+		display: block;
+		background-color: #336699;
+	}
+
+	#bar{
+		height: 3px;
+		background-color: #336699;
+	}
+
+	#logo{
+		display: block;
+		float: left;
+		height: 25%;
+		width: 100%;
+	}
+
+	#logo img{
+		height: 100px;
+		width: 100px;
+		margin-left: 40%; 
+		margin-top: 2%;
+
+	}
+
+	#title2{
+		height: 21px;
+		margin-left: 35%;
+		font-size: 110%;
+		width: auto;
+		color: black;
+	}
+
+	#userFields2 #content2{
+		float: left;
+		display: block;
+		width: 100%;
+		margin-top: 5%;
+	}
+
+	#text_form2{
+		width: 100%;
+		margin-left: 0%;
+		margin-top: 0px;
+		height: 45px;
+	}
+
+	#text_form2 input{
+		width: 200px;
+		margin-left: 30%;
+		margin-top: 0px;
+		height: 25px;
+	}
+
+	#text_form2 i{
+		float: left;
+		display: block;
+		height: 18px;
+		margin-left: 30%;
+		margin-top: 2px;
+		visibility: hidden;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+	}
+
+	#content_box2 #send_button2{
+		height: 25px;
+		width: 60px;
+		background-color: black;
+		color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+		float: left;
+		margin-left: 80px;
+		margin-top: -25px;
+		display: inline;
+		font-family:'Verdana',Arial,sans-serif;
+	}
+
 
 	#main #tweet_window{
 		height: 2043px;
@@ -366,6 +911,18 @@ footer p{
 
 	header{
 		height: 50px;
+	}
+
+	#userFields2{
+		display: none;
+		height: 0px;
+		width: 0px;
+	}
+
+	#login_form2{
+		display: none;
+		height: 0px;
+		width: 0px;
 	}
 
 	#slide-nav{
