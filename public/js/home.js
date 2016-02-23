@@ -52,28 +52,28 @@ function send() {
     {
         document.getElementById("text_warning").innerHTML           = "Give text";
         document.getElementById("text_warning").style.color         = "#B10009";
-        document.getElementById("text_warning").style.background    = "#FDE4E1";
+        //document.getElementById("text_warning").style.background    = "#FDE4E1";
         document.getElementById("text_warning").style.font          = "bold 14px Arial";
         document.getElementById("text_warning").style.padding       = "2px 4px";
         document.getElementById("text_warning").style.visibility    ='visible';
 
         document.getElementById("user_warning").innerHTML           = "Give user";
         document.getElementById("user_warning").style.color         = "#B10009";
-        document.getElementById("user_warning").style.background    = "#FDE4E1";
+        //document.getElementById("user_warning").style.background    = "#FDE4E1";
         document.getElementById("user_warning").style.font          = "bold 14px Arial";
         document.getElementById("user_warning").style.padding       = "2px 4px";
         document.getElementById("user_warning").style.visibility    ='visible';
 
         document.getElementById("hashtag_warning").innerHTML        = "Give hashtag";
         document.getElementById("hashtag_warning").style.color      = "#B10009";
-        document.getElementById("hashtag_warning").style.background = "#FDE4E1";
+       // document.getElementById("hashtag_warning").style.background = "#FDE4E1";
         document.getElementById("hashtag_warning").style.font       = "bold 14px Arial";
         document.getElementById("hashtag_warning").style.padding    = "2px 4px";
         document.getElementById("hashtag_warning").style.visibility ='visible';
 
         document.getElementById("date_warning").innerHTML           = "Give date";
         document.getElementById("date_warning").style.color         = "#B10009";
-        document.getElementById("date_warning").style.background    = "#FDE4E1";
+       // document.getElementById("date_warning").style.background    = "#FDE4E1";
         document.getElementById("date_warning").style.font          = "bold 14px Arial";
         document.getElementById("date_warning").style.padding       = "2px 4px";
         document.getElementById("date_warning").style.visibility    ='visible';
@@ -82,7 +82,7 @@ function send() {
     {
         document.getElementById("date_warning").innerHTML           = "Give text,user or hashtag";
         document.getElementById("date_warning").style.color         = "#B10009";
-        document.getElementById("date_warning").style.background    = "#FDE4E1";
+       // document.getElementById("date_warning").style.background    = "#FDE4E1";
         document.getElementById("date_warning").style.font          = "bold 14px Arial";
         document.getElementById("date_warning").style.padding       = "2px 4px";
         document.getElementById("date_warning").style.visibility    ='visible';

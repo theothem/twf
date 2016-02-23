@@ -337,11 +337,13 @@ footer p{
 	    top: -8px;
 	    margin-top: 50px;
 	    background-color: black;
+	    overflow-y: auto; 
 	}
 
 	#slidemenu .navbar-nav {
 	    min-width: 0;
 	    width: 100%;
+	    height: 100%;
 	    margin: 0;
 	}
 	#slide-nav {
@@ -356,10 +358,76 @@ footer p{
 		margin-left: 0px;
 	}
 
+	#RemoveAll span:hover, #RemoveAll span:hover span {
+	    color: #9A1A4A;
+	}
+
+	.glyphicon-plus {
+       color: #F00; 
+   }
+
+	.filter-item.selected .chkbox{
+		background-position: 0 -15px;
+	}
+
+	#remove_button , #submitUsers_button , #submitHashtag_button , #submit_Order_button{
+		float: right;
+		display: block;
+		height: 24px;
+	}
+
+	#submitDate_button{
+		float: right;
+		display: inline;
+		height: 24px;
+	}
+
+	#calendar{
+		float: left;
+		display: inline;
+		width: 85%;
+		height: 24px;
+	}
+
+	.glyphicon.glyphicon-trash{
+		font-size: 14px;
+	}
+
+	.chkbox{
+		display: inline-block;
+	    width: 15px;
+	    height: 15px;
+	    background-image: url(../images/chkb.png);
+	    background-repeat: no-repeat;
+	    background-position: 0 0;
+	    margin-right: 4px;
+	}
+
+	#flist span , #DateUp span , #DateDown span , #Popular span , #Retweeted span{
+		color: white;
+		position: relative;
+	}
+
+	.panel h4 a , #nav-navbar-nav a{
+		font-size: 14px;
+	}
+
 	#filter_menu{
+		float: left;
+		display: block;
 		width: 99%;
+		height: 100%;
 		margin-left: 0px;
 		margin-top: -15px;
+	}
+
+	#filter_tweets{
+		float: left;
+		display: block;
+		width: 99%;
+		height: 59%;
+		margin-left: 0px;
+		background-color: #222;
 	}
 
 	#search_bar{
@@ -379,17 +447,16 @@ footer p{
 	}
 
 	#main{
-		height: auto;
+		height: 90%;
 		width: 100%;
 		float: left;
 		display: block;
 		background-color: #336699;
-	}
-
-	
+		overflow-y: scroll;
+	}	
 
 	#main #tweet_window{
-		height: 2043px;
+		height: auto;
 		width: 	90%;
 		background-color: #336699;
 		float: left;
@@ -402,15 +469,187 @@ footer p{
 		display: block;
 	}
 
+
+	#twits{
+		float: left;
+		display: block;
+		height: auto;
+		width: 95%;
+		margin-left: 2.5%;
+		background-color: white;
+		border: 5px solid #336699 ;
+		border-top:none;
+		border-left: none;
+		border-right: none;
+	}
+
+	#down {
+	    float: left;
+	    display: block;
+	    height: auto;
+	    width: 100%;
+	    background-color: white;
+	}
+
+	#img {
+	    float: left;
+	    display: inline;
+	    height: auto;
+	    width: auto;
+	    margin-left: 2px;
+	}
+
+	#profile_img {
+	    width: auto;
+	    height: auto;
+	    margin-left: 6px;
+	    -moz-border-radius: 4px;
+	    -webkit-border-radius: 4px;
+	    margin-top: 4%;
+	}
+
+	#right_tw {
+	    float: left;
+	    display: inline;
+	    height: auto;
+	    width: 88%;
+	    background-color: white;
+	}
+
+	#user_username_time {
+	    float: left;
+	    display: block;
+	    height: auto;
+	    width: 100%;
+	}
+
+	#username {
+	    float: left;
+	    display: block;
+	    height: auto;
+	    margin-left: 5px;
+	    font-size: 14px;
+	    margin-top: 0px;
+	    color: #292f33;
+	    font-weight: bold;
+	}
+
+	#screenname {
+	    float: left;
+	    display: block;
+	    height: auto;
+	    margin-left: 2px;
+	    margin-top: 2px;
+	    font-size: 13px;
+	    color: #8899a6;
+	}
+
+	#tweet_date {
+	    float: left;
+	    display: block;
+	    height: 18px;
+	    width: 100%;
+	    margin-left: 0px;
+	    margin-top: 2px;
+	    font-size: 12px;
+	    color: #8899a6;
+	}
+
+	#text {
+	    float: left;
+	    display: block;
+	    height: auto;
+	    width: 100%;
+	    margin-top: 0px;
+	}
+
+	#favRt {
+	    float: left;
+	    display: block;
+	    height: 19px;
+	    width: 100%;
+	    background-color: white;
+	}
+
+	#fav_icon {
+	    float: left;
+	    display: inline;
+	    height: 14px;
+	    width: 14px;
+	    margin-left: 12%;
+	}
+
+	#rt_icon {
+	    float: left;
+	    display: inline;
+	    height: 14px;
+	    width: 14px;
+	    margin-left: 3%;
+	}
+
+	#rt_count {
+	    float: left;
+	    display: inline;
+	    margin-left: 6px;
+	    font-size: 12px;
+	    font-weight: bold;
+	    margin-top: 0px;
+	}
+
+	#fav_count, #rt_count {
+	    float: left;
+	    display: inline;
+	    margin-left: 6px;
+	    font-size: 12px;
+	    font-weight: bold;
+	    margin-top: 0px;
+	}
+
+
 	#main #filter_window{
-		height: 0%;
-		width: 	0%;
+		height: auto;
+		width: 	48%;
 		background-color: #999;
 		margin-left: 0px;
 		float: left;
 		display: none;
 		margin-left: 0px;
 		margin-top: 0px;
+	}
+
+	#navbarCollapse
+	{
+		float: left;
+		display: block;
+		width: 100%;
+		height: 100%;
+		margin-top: 15px;
+		border : none;
+		overflow-y: scroll; 
+	}
+
+	.navbarCollapse{
+		height: auto;
+		width: 100%;
+		overflow-y: scroll; 
+	}
+
+	#nav-navbar-nav{
+		float: left;
+		height: auto;
+	}
+
+	#nav-navbar-nav li{
+		margin-top: 0px;
+	}
+
+	.panel-group .panel {
+	    margin-bottom: 0;
+	    border-radius: 0;
+	    background-color: #222;
+	    border: 1px solid transparent;
+	    box-shadow: 0 1px 1px rgba(0 1px 1px rgba(0,0,0,0.05));
+	    margin-top: 0px;
 	}
 
 	footer{

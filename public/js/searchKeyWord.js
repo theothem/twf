@@ -45,7 +45,7 @@ function remove_all(){
     }
 }
 
-function remove_filter(clicked){
+function remove_filters(clicked){
 
     if (rm_flag == 1)
     {
@@ -185,6 +185,36 @@ function submitHashtag(){
 
 function search(){
     var value = document.getElementById('search_bar_item').value;
+    var date = document.getElementById('datepicker').value;
+    var search_date = value.split('/');
+
+    if (date == 'dd/mm/yyyy')
+        date = '';
+
+    if (value[0] == '#')
+    {
+        var hash = value.split('#');
+        hashtags_to_send.push(hash[1]);
+        window.location = 'searchKeyWord?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+    }
+    else if (value[0] == '@')
+    {
+        var hash = value.split('@');
+        users_to_send.push(hash[1]);
+        window.location = 'searchKeyWord?search='+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
+    }
+    else if (search_date.length == 3)
+    {
+        window.location = 'searchKeyWord?search='+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+value;    
+    }
+    else
+    {
+        window.location = 'searchKeyWord?search='+value+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
+    }
+}
+
+function search2(){
+    var value = document.getElementById('search_bar_item_slidemenu').value;
     var date = document.getElementById('datepicker').value;
     var search_date = value.split('/');
 

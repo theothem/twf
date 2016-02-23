@@ -67,7 +67,7 @@
 		<div id="main" class="main">
 			
 			<div id="slidemenu">
-				<form id="search_form_slidemenu" role="search" action="#">
+				<form id="search_form_slidemenu" role="search" action="javascript:search2();">
 		    		<div id="search_bar_left_slidemenu">
 		    			<input id="search_bar_item_slidemenu" type="text" class="form-control" placeholder="Search">
 		    		</div>
@@ -78,9 +78,229 @@
 			        </div>
 				</form>
 				<div id="filter_menu">
-					
+					<div id="navbarCollapse" class="collapse navbar-collapse">
+			            <ul id="nav-navbar-nav" class="nav navbar-nav">
+			                <li class="active"><a href="/home">Home</a></li>
+			                <li><a href="allTweets">All Tweets</a></li>
+					        <li class="dropdown">
+								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> {{user}}<b class="caret"></b></a>
+								<ul id="dropdownMenu" class = "dropdown-menu">
+					                <li><a href="javascript:window.location.href= '/edit_profile';" target="_blank">Edit Profile</a></li>
+					                <li><a href="javascript:window.location.href= '/logout';" target="_blank">Logout</a></li>
+					            </ul>
+					        </li>
+			                <li><a href="#" target="_blank">About</a></li>
+			                <div class="panel-group">
+				                <div id="panel0" class="panel">
+								    <div class="panel">
+								      <h4 id="filterOrderBy">
+								        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOrder1">
+								        	<span class="caret"></span>
+								          	<span>Order By</span>
+								        </a>
+								      </h4>
+								    </div>
+									<div id="collapseOrder1" class="panel-collapse collapse">
+								      <div class="panel-body">
+											<div id="option_box">
+												<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
+													<li id="Retweeted">
+														<a id="Retweeted_a" class="filter-item" href="javascript:orderBy_retweets()">
+															<span id='Retweeted_span' class='glyphicon glyphicon-arrow-up'>Retweets</span>
+															<script>
+																var myParam = location.search.split('order=')[1];
+																if (myParam == 'retweets')
+																{
+																	document.getElementById('Retweeted_span').style.color = 'gray';
+																	document.getElementById('Retweeted_span').style.pointerEvents = 'none';	
+																}
+																else
+																{
+																	document.getElementById('Retweeted_span').style.color = 'white';
+																	document.getElementById('Retweeted_span').style.pointerEvents = 'auto';
+																}
+															</script>
+														</a>
+													</li>
+													<li id="Popular">
+														<a id="Popular_a" class="filter-item" href="javascript:orderBy_favorites()">
+															<span id='Favorites_span' class='glyphicon glyphicon-arrow-up'>Favorites</span>
+															<script>
+																var myParam = location.search.split('order=')[1];
+																if (myParam == 'favorites')
+																{
+																	document.getElementById('Favorites_span').style.color = 'gray';
+																	document.getElementById('Favorites_span').style.pointerEvents = 'none';	
+																}
+																else
+																{
+																	document.getElementById('Favorites_span').style.color = 'white';
+																	document.getElementById('Favorites_span').style.pointerEvents = 'auto';
+																}
+															</script>
+														</a>
+													</li>
+													<li id="DateUp">
+														<a id="DateUp_a" class="filter-item" href="javascript:orderBy_dateUp()">
+															<span id='DateUpspan' class='glyphicon glyphicon-arrow-up'>Date</span>
+															<script>
+																var myParam = location.search.split('order=')[1];
+																if ((myParam == 'dateDown')||(myParam == 'favorites')||(myParam == 'retweets'))
+																{
+																	document.getElementById('DateUpspan').style.color = 'white';
+																	document.getElementById('DateUpspan').style.pointerEvents = 'auto';
+																}
+																else
+																{
+																	document.getElementById('DateUpspan').style.color = 'gray';
+																	document.getElementById('DateUpspan').style.pointerEvents = 'none';
+																}
+															</script>
+														</a>
+													</li>
+													<li id="DateDown">
+														<a id="DateDown_a" class="filter-item" href="javascript:orderBy_dateDown()">
+															<span id='DateDownspan' class='glyphicon glyphicon-arrow-down'>Date</span>
+															<script>
+																var myParam = location.search.split('order=')[1];
+																if (myParam == 'dateDown')
+																{
+																	document.getElementById('DateDownspan').style.color = 'gray';
+																	document.getElementById('DateDownspan').style.pointerEvents = 'none';	
+																}
+																else
+																{
+																	document.getElementById('DateDownspan').style.color = 'white';
+																	document.getElementById('DateDownspan').style.pointerEvents = 'auto';
+																}
+															</script>
+														</a>
+													</li>
+												</ul>
+											</div>
+								      </div>
+								    </div>
+								</div>
+								<div id="panel1" class="panel">
+								    <div class="panel">
+								      <h4 id="filterBy_title">
+								        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFilters1">
+								        	<span class="caret"></span>
+								          	<span>Remove Filters</span>
+								        </a>
+								      </h4>
+								    </div>
+									<div id="collapseFilters1" class="panel-collapse collapse">
+								      <div class="panel-body">
+											<div id="option_box">
+												<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
+															{{#load_options}}
+																<li id="flist">
+																	<a id="{{filter}}" class="filter-item" href="javascript:remove_filter('{{filter}}');">
+																		<i class="chkbox"></i>
+																		<span>{{filter}}</span>
+																	</a>
+																</li>
+															{{/load_options}}
+															<!--x2718, x274C-->
+												</ul>
+											</div>
+											<div id="removeAll_div">
+												<a id="RemoveAll" class="filter-item" href="javascript:remove_all();">
+													<i class="chkbox"></i>
+													<span>Select All</span>
+												</a>
+												<button id="remove_button" onclick="remove_filters()" class="btn btn-danger btn-xs" data-title="Remove" data-toggle="modal" ><span class="glyphicon glyphicon-trash"></span></button>
+											</div>
+								      </div>
+								    </div>
+								</div>
+
+								<div id="panel2" class="panel">
+								    <div class="panel">
+								      <h4 id="filterBy_title">
+								        <a data-toggle="collapse" data-parent="#accordion" href="#collapseUsers1">
+								        	<span class="caret"></span>
+								          	<span>Users</span>
+								        </a>
+								      </h4>
+								    </div>
+									<div id="collapseUsers1" class="panel-collapse collapse">
+								      <div class="panel-body">
+											<div id="option_box">
+												<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
+															{{#users}}
+																<li id="flist">
+																	<a id="{{user}}" class="filter-item" href="javascript:filterByUser('{{user}}');">
+																		<i class="chkbox"></i>
+																		<span>{{user}}</span>
+																	</a>
+																</li>
+															{{/users}}
+															<!--x2718, x274C-->
+												</ul>
+											</div>
+											<button id="submitUsers_button" onclick="submitUsers()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+								      </div>
+								    </div>
+								</div>
+
+								<div id="panel3" class="panel">
+								    <div class="panel">
+								      <h4 id="filterBy_HashTag">
+								        <a data-toggle="collapse" data-parent="#accordion" href="#collapseHashtags1">
+								        	<span class="caret"></span>
+								          	<span>Hashtags</span>
+								        </a>
+								      </h4>
+								    </div>
+									<div id="collapseHashtags1" class="panel-collapse collapse">
+								      <div class="panel-body">
+											<div id="option_box">
+												<ul id="hashtag_list" class="list-unstyled" data-type="ZOOM7">
+													{{#hash}}	
+															<li id="flist">
+																<a id="#{{hashtag}}" class="filter-item" href="javascript:filterByHashtag('{{hashtag}}');">
+																	<i class="chkbox"></i>
+																	<span>{{hashtag}}</span>
+																</a>
+															</li>
+													{{/hash}}
+													<!--x2718, x274C-->
+												</ul>
+											</div>
+											<button id="submitHashtag_button" onclick="submitHashtag()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+								      </div>
+								    </div>
+								</div>
+
+								<div id="panel4" class="panel">
+								    <div class="panel">
+								      <h4 id="filterBy_Date">
+								        <a data-toggle="collapse" data-parent="#accordion" href="#collapseDate1">
+								        	<span class="caret"></span>
+								          	<span>Date</span>
+								        </a>
+								      </h4>
+								    </div>
+									<div id="collapseDate1" class="panel-collapse collapse">
+										<div class="panel-body">
+										    <form id="calendar">
+											    <input id="datepicker" value="dd/mm/yyyy"/>
+											</form>
+											<button id="submitDate_button" onclick="submitDate()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+										</div>
+								      	<script>
+											$(document).ready(function() {
+												$("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
+											});
+									  	</script>
+									</div>
+								</div>
+							</div>
+			            </ul>
+			        </div>
 				</div>
-				
 			</div>
 			
 			<div id="filter_window" class="filter_window">

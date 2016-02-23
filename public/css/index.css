@@ -598,6 +598,10 @@ footer p{
 		float: left;
 	}
 
+	#slide-nav .navbar-toggle {
+		display: none;
+	}
+
 	#userFields{
 		display: none;
 		height: 0px;
@@ -608,8 +612,9 @@ footer p{
 	#login_form2{
 		float: left;
 		display: block;
-		height: 15%;
+		height: 118px;
 		width: 100%;
+		margin-top: 40px;
 	}
 
 	#Log{
@@ -783,11 +788,12 @@ footer p{
 	}
 
 	#main{
-		height: auto;
+		height: 100%;
 		width: 100%;
 		float: left;
 		display: block;
 		background-color: #336699;
+		overflow-y : scroll;
 	}
 
 	#bar{
@@ -816,6 +822,14 @@ footer p{
 		font-size: 110%;
 		width: auto;
 		color: black;
+	}
+
+	#userFields2{
+		float: left;
+		display: block;
+		height: 100%;
+		width: 100%;
+		overflow-y : scroll;
 	}
 
 	#userFields2 #content2{

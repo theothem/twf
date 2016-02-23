@@ -54,17 +54,21 @@
 
 		<div id="main" class="main">
 			<div id="slidemenu">
-				<form id="search_form_slidemenu" role="search" action="#">
-		    		<div id="search_bar_left_slidemenu">
-		    			<input id="search_bar_item_slidemenu" type="text" class="form-control" placeholder="Search">
-		    		</div>
-			        <div id="search_bar_button_slidemenu">
-			        	<button id="search_button_slidemenu" type="submit" class="btn btn-success">
-				    		<span class="glyphicon glyphicon-search"></span>
-				    	</button>
-			        </div>
-				</form>
 				<div id="filter_menu">
+					<div id="navbarCollapse" class="collapse navbar-collapse">
+			            <ul id="nav-navbar-nav" class="nav navbar-nav">
+			                <li class="active"><a href="/home">Home</a></li>
+			                <li><a href="allTweets">All Tweets</a></li>
+					        <li class="dropdown">
+								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> {{user}}<b class="caret"></b></a>
+								<ul id="dropdownMenu" class = "dropdown-menu">
+					                <li><a href="javascript:window.location.href= '/edit_profile';" target="_blank">Edit Profile</a></li>
+					                <li><a href="javascript:window.location.href= '/logout';" target="_blank">Logout</a></li>
+					            </ul>
+					        </li>
+			                <li><a href="#" target="_blank">About</a></li>
+			            </ul>
+			        </div>
 				</div>
 			</div>
 			<div id="mainInfo">

@@ -266,7 +266,7 @@ footer p{
 	}
 	#slidemenu {
 	    left: -100%;
-	    width: 80%;
+	    width: 50%;
 	    height: 100%;
 	    min-width: 0;
 	    position: absolute;
@@ -294,7 +294,176 @@ footer p{
 		margin-left: 0px;
 	}
 
+	#logo{
+		float: left;
+		display: block;
+		height: 125px;
+		width: 100%;
+	}
+
+	#logo img{
+		height: 100px;
+		width: 100px;
+		margin-left: 35%; 
+		margin-top: 10px;
+	}
+
+	#mainInfo{
+		float: left;
+		display: inline;
+		height: 100%;
+		width: 100%;
+	}
+
+	#bar{
+		height: 3px;
+		background-color: #336699;
+	}
+
+	.loadie 
+	{ 
+		z-index: 9999; 
+		height: 3px;
+		width: 100%;
+		background-color: white;
+	}
+
+	#userFields{
+		display: block;
+		float: left;
+		height: 73%;
+		width: 100%;
+	}
+
+	#userFields #title{
+		width: 100%;
+		height: 10%;
+		float: left;
+		display: block;
+		margin-left: 0px;
+		margin-top: 10px;
+	}
+
+	#userFields #title p {
+		color: black;
+		font-size: 150%;
+		margin-left: 25%;
+	}
+
+	#top_logo{
+		float: left;
+		display: inline;
+		margin-top: 3px;
+		margin-left: -10px;
+	}
+
+	#content{
+		float: left;
+		display: block;
+		height: auto;
+		width: 100%;
+		margin-bottom: 0px;
+	}
+
+	#userFields #option_box{
+		width: 50%;
+		height: auto;
+		float: left;
+		display: block;
+		margin-left: 25%;
+		margin-top: 20px;
+	}
+
+	#userFields #content #content_box{
+		height: auto;
+		width: 50%;
+		float: left;
+		display: block;
+		margin-left: 25%;
+		margin-top: 15px;
+	}	
+
+	#remove_all{
+		float: left;
+		display: inline;
+		height: 25px;
+		margin-top: 10px;
+		background-color: black;
+		color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+	}	
+
+	#send_button{
+		float: right;
+		display: inline;
+		height: 25px;
+		margin-top: 10px;
+		background-color: black;
+		color: white;
+		box-shadow: none;
+		border-top: none;
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-radius: 4px;
+	}	
+
+	#text_warning,#date_warning , #user_warning, #hashtag_warning{
+		float: left;
+		display: inline;
+		visibility: hidden;
+		text-align: center;
+		color: #00529B;
+    	-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	margin-top: 2px;
+	}
+
+	#button_item{
+		height: 25px;
+		background-color: #336699;
+		color: black;
+		margin-left: 5px;
+		-moz-border-radius: 4px;
+    	-webkit-border-radius: 4px;
+    	border-color: black;
+    	margin-top: 5px;
+	}
+
+	#text_form{
+		float: left;
+		display: block;
+		height: 35px;
+		width: 100%;
+		margin-top: 0px;
+	}
+
+	#text_form input{
+		float: left;
+		display: block;
+		height: 23px;
+		width: 100%;
+		/*background-color: #336699;
+		box-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom-color: black;
+		color: black;
+		padding-top: 0px;*/
+	}
+
 	#filter_menu{
+		height: 100%;
 		width: 99%;
 		margin-left: 0px;
 		margin-top: -15px;
@@ -317,14 +486,13 @@ footer p{
 	}
 
 	#main{
-		height: auto;
+		height: 90%;
 		width: 100%;
 		float: left;
 		display: block;
 		background-color: #336699;
+		overflow-y: scroll;
 	}
-
-	
 
 	#main #tweet_window{
 		height: 2043px;
@@ -349,6 +517,24 @@ footer p{
 		display: none;
 		margin-left: 0px;
 		margin-top: 0px;
+	}
+
+	#navbarCollapse
+	{
+		float: left;
+		display: block;
+		width: 100%;
+		height: 30px;
+		margin-top: 24px;
+		border : none;
+	}
+
+	#nav-navbar-nav{
+		float: left;
+	}
+
+	#nav-navbar-nav li{
+		margin-top: 20px;
 	}
 
 	footer{
@@ -456,7 +642,7 @@ footer p{
 	#logo{
 		display: block;
 		float: left;
-		height: 25%;
+		height: 170;
 		width: 100%;
 	}
 
@@ -464,7 +650,7 @@ footer p{
 		height: 150px;
 		width: 150px;
 		margin-left: 43%;
-		margin-top: 2%;
+		margin-top: 20px;
 	}
 
 	#userFields{
