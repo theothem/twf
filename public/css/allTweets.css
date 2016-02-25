@@ -280,6 +280,11 @@ footer p{
 	margin-top: 2px;
 }
 
+#twits a{
+	color: black;
+	text-decoration: none;
+}
+
 @media screen and (max-width: 767px){ 
 
 	body.slide-active {
@@ -662,6 +667,10 @@ footer p{
 		height: 50px;
 	}
 
+	#filter_menu{
+		visibility: hidden;
+	}
+
 	#top_logo{
 		float: left;
 		display: inline;
@@ -895,7 +904,7 @@ footer p{
 		float: left;
 		display: block;
 		height: auto;
-		width: 590.391px;
+		width: 650px;
 		background-color: white;
 		border: 5px solid #336699 ;
 		border-top:none;
@@ -979,6 +988,7 @@ footer p{
 		display: block;
 		height: 25px;
 		width: 100%;
+		position: relative;
 	}
 
 	#username{
@@ -1010,6 +1020,7 @@ footer p{
 		margin-top: 6px;
 		font-size: 13px;
 		color: #8899a6;
+		position: absolute;
 	}
 
 	#text{

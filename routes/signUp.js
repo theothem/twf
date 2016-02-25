@@ -1,11 +1,27 @@
-var express 	= require('express');
-var router 		= express.Router();
-var mongodb     = require('mongodb');
+var express     = require('express');
+var router      = express.Router();
 var bcrypt      = require('bcryptjs');
-var mysql      = require('mysql');
+var mysql       = require('mysql');
 
 module.exports = function (req , res , next)
 {
+
+  if ((req.query.username == 'Username')||(req.query.username == '')||(req.query.username.length < 4)||(req.query.username.indexOf('<script') > -1)||((req.query.username.indexOf('</script') > -1)))
+  {
+      res.json('index',{title:'Twitter Feed' , 'error': 'Error adding \''+req.query.username+'\' to DataBase'});
+      return;
+  }
+  if ((req.query.password == 'Password')||(req.query.password == '')||( /[^a-zA-Z0-9]/.test( req.query.password ))||(req.query.password.length < 6)||(req.query.password.indexOf('<script') > -1)||(req.query.password.indexOf('</script') > -1))
+  {
+      res.json('index',{title:'Twitter Feed' , 'error': 'Error adding \''+req.query.username+'\' to DataBase'});
+      return;
+  }
+  if ((req.query.email == 'Email') || (req.query.email == '' ) || (req.query.email.indexOf('.') < 0) || (req.query.email.indexOf('@') < 0 ))
+  {
+      res.json('index',{title:'Twitter Feed' , 'error': 'Error adding \''+req.query.username+'\' to DataBase'});
+      return;
+  }
+
   var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
@@ -31,7 +47,6 @@ module.exports = function (req , res , next)
   };
 
   var query = connection.query('insert into users set ?', user , function(err,result) {
-    //console.log(query.sql);
     if (!err){
       console.log('User added : '+req.query.username+','+req.query.email);
       res.json('index',{title:'Twitter Feed','error': 'User \''+req.query.username+'\' added to DataBase'});

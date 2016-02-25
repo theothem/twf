@@ -1,12 +1,14 @@
 var express         = require('express');
-var last_get		= 0;
-var view_tweets		= [];
 var csrf            = require('csurf'); 
 var session         = require('client-sessions');
 var mysql           = require('mysql');
 
 module.exports = function (req,res,path,order,skip)
 {
+	var filter_options;
+	var users;
+	var hashtags;
+
 	if ((skip == undefined) || (skip == null))
 		skip = 0;
 
@@ -26,10 +28,6 @@ module.exports = function (req,res,path,order,skip)
 	        return;  
 	    }
 	});	
-
-	var filter_options;
-	var users;
-	var hashtags;
 
 	connection.query('SELECT DISTINCT t.filter FROM tweets t INNER JOIN Belongs b ON t.filter = b.filter WHERE b.username=\''+req.session.user.username+'\'ORDER BY t.filter;' ,function(err, filters) 
 	{

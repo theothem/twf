@@ -310,7 +310,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}	
@@ -327,7 +327,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}
@@ -344,7 +344,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}
@@ -361,7 +361,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}
@@ -385,7 +385,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}
@@ -402,7 +402,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}
@@ -419,7 +419,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}
@@ -436,7 +436,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order)
 						if (err){
 							console.log(err);
 						}
-						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken()});
+						res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': usersBack ,'hash': fhashtags , 'url': '','date':date,csrfToken: req.csrfToken(),"searched":search});
 					});
 				}
 			}

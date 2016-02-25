@@ -89,7 +89,6 @@
 				   	</div>
 				   	<button type="submit" class="styled-button-2" id="loginButton" >Login</button>
 				</form>
-
 				<div id="userFields2">
 			        <a id="title2"  data-toggle="collapse" data-target="#content_box2">
 			        	<span class="caret"></span>
@@ -99,34 +98,34 @@
 						<div id="content_box2" class="collapse">
 							<form id="text_form2" role="search" onsubmit="send();return false;" >
 								<div id="usrename">
-									<input id="usrname" class="form-control" type="text" value="Username"
+									<input id="usrname2" class="form-control" type="text" value="Username"
 									onfocus="if (this.value=='Username') this.value = ''"  
 						    		onblur="if (this.value=='') this.value = 'Username'">
-						    		<i id="usrname_warning">More than 4 characters</i>
+						    		<i id="usrname_warning2">More than 4 characters</i>
 								</div>
 							</form>
 							<form id="text_form2" role="search" onsubmit="send();return false;" >
 								<div id="passwrd">
-									<input id="pass" class="form-control" type="password" value="Password"
+									<input id="pass2" class="form-control" type="password" value="Password"
 									onfocus="if (this.value=='Password') this.value = ''"  
 						    		onblur="if (this.value=='') this.value = 'Password'">
-						    		<i id="password_warning">More than 6 digits.</i>
+						    		<i id="password_warning2">More than 6 digits.</i>
 								</div>
 							</form>
 							<form id="text_form2" role="search" onsubmit="send();return false;" >
 								<div id="email">
-									<input id="mail" class="form-control" type="text" value="Email"
-									onfocus="if (this.value=='Email') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'Email'">
-						    		<i id="email_warning">Must contain @ and . </i>	
+									<div>
+										<input id="mail2" class="form-control" type="text" value="Email"
+										onfocus="if (this.value=='Email') this.value = ''"  
+							    		onblur="if (this.value=='') this.value = 'Email'">
+							    		<button type="submit" onclick="sendMobile()" id="send_button2">Send</button>
+									</div>	
+						    		<i id="email_warning2">Must contain @ and . </i>
 								</div>
-								<button type="button" onclick="send()" id="send_button2">Send</button>
 							</form>
 						</div>
 					</div>
 				</div>
-
-
 				<div id="userFields">
 					<div id="title">
 						<p><u>Sign Up:</u></p>
@@ -162,9 +161,7 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
-
 		<footer>
 			<div id="left_footer">
 				<span class="lang-xs" lang="en"></span>	

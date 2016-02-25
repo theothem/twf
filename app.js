@@ -8,19 +8,16 @@ var mustacheExpress = require('mustache-express');
 var bcrypt          = require('bcryptjs');
 var csrf            = require('csurf'); 
 var session         = require('client-sessions');
-var mongodb         = require('mongodb');
 var mysql           = require('mysql');
 
 var index                     = require('./routes/index');
 var home                      = require('./routes/home');
 var allTweets                 = require('./routes/allTweets');
-var tweets                    = require('./routes/tweets');
 var hashtags                  = require('./routes/hashtags');
 var getTweets                 = require('./routes/getTweets');
 var searchTweets              = require('./routes/searchTweetsBy');
 var addTweets                 = require('./routes/addTweets');
 var remove_filter             = require('./routes/removeFilter');
-var filterByUser              = require('./routes/filterByUser');
 var filterByHashtag           = require('./routes/filterByHashtag');
 var searchKeyWord             = require('./routes/searchKeyWord');
 var refresh_db                = require('./routes/refresh_db');
@@ -28,9 +25,10 @@ var filterByHashtag_loadMore  = require('./routes/filterByHashtag_loadMore');
 var searchKeyWord_loadMore    = require('./routes/searchKeyWord_loadMore');
 var signup_user               = require('./routes/signUp');
 var login                     = require('./routes/login');
+var deleteUser                = require('./routes/deleteUser');
 
 var app             = express(); 
-
+var loggedUsers     = [];
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -58,10 +56,10 @@ app.use(session({
 
 app.use(csrf());
 
-app.use(function(req , res , next){
+//check for every page if user has access
+app.use(function(req , res , next){                   
   if (req.session && req.session.user)
   {
-
     var connection = mysql.createConnection({
       host     : 'localhost',
       user     : 'root',
@@ -82,7 +80,6 @@ app.use(function(req , res , next){
     {
       if (!err)
       {
-        //console.log('The solution is: ', rows);
         if (user.length == 1)
         {
           req.user = user[0];
@@ -120,11 +117,12 @@ function requireLogin(req,res,next){
 //refresh_db(searchTweets,addTweets);
 setInterval(function() {
     //refresh_db(searchTweets,addTweets);
-}, 60 * 1000 * 10); // wait 60 seconds * 2 minutes
+}, 60 * 1000 * 2); // wait 60 seconds * 2 minutes
 
-var allTweets_cnt = 1;  //cnt for allTweets       page to load more and skip 'allTweets_cnt'  entries
-var filters_cnt   = 1;  //cnt for filters         page to load more and skip 'filters_cnt'    entries
-var search_cnt    = 1;  //cnt for searchKeyWord   page to load more and skip 'search_cnt'     entries
+
+var allTweets_cnt = 1 ;  //cnt for allTweets       page to load more and skip 'allTweets_cnt'  entries
+var filters_cnt   = 1 ;  //cnt for filters         page to load more and skip 'filters_cnt'    entries
+var search_cnt    = 1 ;  //cnt for searchKeyWord   page to load more and skip 'search_cnt'     entries
 var User = {'username' : '' , 'password' : '', 'email': ''};
 
 // Handle Pages
@@ -134,9 +132,14 @@ app.get('/', function(req , res , next){
 
 app.use('/signup_user',function(req , res , next){
   signup_user(req,res,next);
-});            
+}); 
+
 app.post('/login', function(req , res , next){
   login(req,res,next);
+});
+
+app.use('/delete_profile', function(req , res , next){
+  deleteUser(req,res,next);
 });
 
 app.use('/logout',function(req , res , next){
@@ -147,8 +150,6 @@ app.use('/logout',function(req , res , next){
 app.use('/home',requireLogin,function(req , res , next){
   home(req,res,next);
 });
-
-
 
 app.use('/allTweets', requireLogin ,function(req,res,next){                  
   allTweets_cnt = 1;
@@ -219,7 +220,7 @@ if (app.use('/load_tweets', function(req, res,data) {
 // Edit Mongo DB
 app.use('/db_options',requireLogin , function(req, res) {
 
-    if( req.query.text != '')
+    if (( req.query.text != '')&&(req.query.text != 'Text'))
     {
         var myCallback = function(data) {
           //insert data
@@ -233,7 +234,7 @@ app.use('/db_options',requireLogin , function(req, res) {
         else
           searchTweets(req.query.text,myCallback,0,0,0);
     }
-    if( req.query.user != '')
+    if (( req.query.user != '')&&(req.query.user != 'User'))
     {
         var myCallback = function(data) {
           //insert data
@@ -242,7 +243,7 @@ app.use('/db_options',requireLogin , function(req, res) {
         };
         searchTweets(req.query.user,myCallback,0,0,1);
     }
-    if( req.query.hashtag != '')
+    if (( req.query.hashtag != '')&&(req.query.hashtag != 'User'))
     {
         if (req.query.hashtag[0] != '#')
           req.query.hashtag = '#'+req.query.hashtag;

@@ -2,7 +2,6 @@ var express 		= require('express');
 var readline 		= require('readline');
 var HashTable 		= require('hashtable');
 var router 			= express.Router();
-var mongodb 		= require('mongodb');
 var mysql           = require('mysql');
 var session         = require('client-sessions');
 
@@ -42,7 +41,7 @@ module.exports = function(req,res,tweets_to_add,filter,dateFrom,mode)
 			console.log("Added tweets to DataBase by user \'"+req.session.user.username+'\' , '+filter+',');
 	};
 
-	var usingItNow = function(callback,req,res,tweets_to_add,filter,dateFrom,mode) {
+	var addTweetsToDB = function(callback,req,res,tweets_to_add,filter,dateFrom,mode) {
 
 		var inserted = 0;
 		for(var i=0;i<tweets_to_add.length;i++)
@@ -72,12 +71,13 @@ module.exports = function(req,res,tweets_to_add,filter,dateFrom,mode)
 					    }
 					});
 				}
-
+				
 				var tweet = {
-				    id 		 		: twid.id_str,
+				    id 		 		: twid.id_str.toString(),
 				    filter	 		: filter,
 				    created_at		: twid.created_at,
 				    dateFrom		: dateFrom,
+				    user_id			: twid.user.id.toString(),
 				    user    		: twid.user.screen_name,
 				    screen_name 	: twid.user.name,
 				    profile_img 	: twid.user.profile_image_url,
@@ -91,8 +91,7 @@ module.exports = function(req,res,tweets_to_add,filter,dateFrom,mode)
 				      added++;
 					}
 				    else{
-				      //console.log('Error while adding to tweets.'+err);
-				      //console.log(tweet.text);
+				      //console.log('Error adding tweets.'+err);
 				    }
 				});
 			}
@@ -126,7 +125,7 @@ module.exports = function(req,res,tweets_to_add,filter,dateFrom,mode)
 						      	//console.log('hashtags added : '+hashtag.id+','+hashtag.hashtag);
 						    }
 						    else{
-						      	console.log('Error while adding to Hashtags.'+err);
+						      	//console.log('Error while adding to Hashtags.'+err);
 						    }
 						    if (++inserted2 == twid.entities.hashtags.length) {
 								callback2();
@@ -137,38 +136,8 @@ module.exports = function(req,res,tweets_to_add,filter,dateFrom,mode)
 			}
 			usingItNow2(myCallback2,tweets_to_add[i],req,res,filter,dateFrom,mode);
 		}
-
-		/*var inserted = 0;
-		for(var i=0;i<tweets_to_add.length;i++)
-		{	
-			tweets_to_add[i].created_at = dateToDate(tweets_to_add[i].created_at);
-			if (( filter != null ) && ( filter != undefined) && (tweets_to_add[i].id_str != null)&& (tweets_to_add[i].id_str != undefined) && (tweets_to_add[i]!=null)&& (tweets_to_add[i]!=undefined))
-			{
-				var twid = tweets_to_add[i];
-				var hash ='';
-				
-				if (twid.entities.hashtags.length == 0){
-					hash = null;
-					addto(req,filter,twid,hash,mode,added,duplicates,dateFrom,connection);
-					if (++inserted == tweets_to_add.length) {
-				        callback(added);
-				    }
-				}
-				else
-				{
-					for (var j=0;j<twid.entities.hashtags.length;j++)
-					{
-						addto(req,filter,twid,twid.entities.hashtags[j].text,mode,added,duplicates,dateFrom,connection);
-					}					
-					if (++inserted == tweets_to_add.length) {
-       					callback(added);
-      				}
-				}
-			}
-		}
-		//callback(added);*/
 	};
-	usingItNow(myCallback,req,res,tweets_to_add,filter,dateFrom,mode);
+	addTweetsToDB(myCallback,req,res,tweets_to_add,filter,dateFrom,mode);
 };
 
 function addto(req,filter,twid,hash,mode,added,duplicates,dateFrom,connection){

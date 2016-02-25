@@ -115,6 +115,93 @@ function send() {
     }
 }
 
+function sendMobile() {
+    var username    = document.getElementById("usrname2").value;
+    var password    = document.getElementById("pass2").value;
+    var email       = document.getElementById("mail2").value;
+    var cnt        = 0;
+
+    if (username == 'Username'){
+        username = '';
+    }
+
+    if (password == 'Password' ){
+        password = '';
+    }
+
+    if (email == 'Email' ){
+        email = '';
+    }
+
+    if (((username.length < 4))||((username == '')))
+    {
+        document.getElementById("usrname_warning2").innerHTML           = "More than 4 characters";
+        document.getElementById("usrname_warning2").style.color         = "#d90000";
+        //document.getElementById("usrname_warning2").style.background    = "#FDE4E1";
+        document.getElementById("usrname_warning2").style.font          = "bold 14px Arial";
+        document.getElementById("usrname_warning2").style.padding       = "2px 4px";
+        document.getElementById("usrname_warning2").style.visibility    ='visible';
+        cnt = 1;
+    }
+    else
+    {
+        document.getElementById("usrname_warning2").style.visibility    ='hidden';
+    }
+    
+    if (((!(isAlphanumeric(password)))||((password.length < 6)))||(password == ''))
+    {
+        document.getElementById("password_warning2").innerHTML           = "More than 6 digits";
+        document.getElementById("password_warning2").style.color         = "#d90000";
+        //document.getElementById("password_warning2").style.background    = "#FDE4E1";
+        document.getElementById("password_warning2").style.font          = "bold 14px Arial";
+        document.getElementById("password_warning2").style.padding       = "2px 4px";
+        document.getElementById("password_warning2").style.visibility    ='visible';
+        cnt = 1;
+    }
+    else
+    {
+        document.getElementById("password_warning2").style.visibility    ='hidden';
+    }
+    
+    if (((email.indexOf('.') < 0 ))||((email == ''))||((email.indexOf('@') < 0 )))
+    {
+        document.getElementById("email_warning2").innerHTML              = "Must contain @ and . ";
+        document.getElementById("email_warning2").style.color            = "#d90000";
+        //document.getElementById("email_warning2").style.background       = "#FDE4E1";
+        document.getElementById("email_warning2").style.font             = "bold 14px Arial";
+        document.getElementById("email_warning2").style.padding          = "2px 4px";
+        document.getElementById("email_warning2").style.visibility       ='visible';
+        cnt = 1;
+    }
+    else
+    {
+        document.getElementById("email_warning2").style.visibility       ='hidden';
+    }
+
+    if (cnt != 1)
+    {
+        $('#bar').loadie(); // Change the wrapper if wanted.
+        var percent = 0;
+        setInterval(function() {
+           percent += 0.10
+           $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
+        }, 10 * 100); // wait 60 seconds
+        
+        $.ajax({
+            type:       "GET",
+            url:        "http://localhost:3000/signup_user",
+            data:       {'username':username,'password': password,'email': email},
+            dataType:   "json",
+            success: function(msg){
+                percent = 1
+                $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
+                window.alert(msg.error);
+                window.location = '/';
+            }, 
+        });
+    }
+}
+
 function playDemo (_id, index, interval) {
   $('#demo-msg-' + index).animate({
     'opacity': '0'

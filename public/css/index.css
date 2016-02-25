@@ -520,6 +520,19 @@ footer p{
 		width: 100%;
 	}
 
+	#mail2{
+		float: left;
+		display: inline;
+		width: 90%;
+	}
+
+	#email div{
+		float: left;
+		display: block;
+		height: 25px;
+		width: 100%;
+	}
+
 	#content_box2 #send_button2{
 		height: 25px;
 		width: 60px;
@@ -533,7 +546,7 @@ footer p{
 		-moz-border-radius: 4px;
     	-webkit-border-radius: 4px;
     	border-radius: 4px;
-		margin-top: -20px;
+		margin-top: 0px;
 		float: right;
 		display: inline;
 		font-family:'Verdana',Arial,sans-serif;
@@ -864,6 +877,25 @@ footer p{
     	-webkit-border-radius: 4px;
 	}
 
+	#mail2{
+		float: left;
+		display: inline;
+		width: 90%;
+	}
+
+	#email{
+		float: left;
+		display: inline;
+		width: 100%;
+	}
+
+	#email div{
+		float: left;
+		display: block;
+		height: 25px;
+		width: 100%;
+	}
+
 	#content_box2 #send_button2{
 		height: 25px;
 		width: 60px;
@@ -878,12 +910,10 @@ footer p{
     	-webkit-border-radius: 4px;
     	border-radius: 4px;
 		float: left;
-		margin-left: 80px;
-		margin-top: -25px;
+		margin-left: 10px;
 		display: inline;
 		font-family:'Verdana',Arial,sans-serif;
 	}
-
 
 	#main #tweet_window{
 		height: 2043px;

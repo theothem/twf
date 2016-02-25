@@ -1,12 +1,23 @@
 var express         = require('express');
 var router          = express.Router();
-var mongodb         = require('mongodb');
 var bcrypt          = require('bcryptjs');
 var mysql           = require('mysql');
 var session         = require('client-sessions');
 
 module.exports = function (req , res , next)
 {
+
+  if ((req.body.username == 'Username')||(req.body.username == '')||(req.body.username.length < 4)||(req.body.username.indexOf('<script') > -1)||((req.body.username.indexOf('</script') > -1)))
+  {
+      res.redirect('/');
+      return;
+  }
+  if ((req.body.password == 'Password')||(req.body.password == '')||( /[^a-zA-Z0-9]/.test( req.body.password ))||(req.body.password.length < 6)||(req.body.password.indexOf('<script') > -1)||(req.body.password.indexOf('</script') > -1))
+  {
+      res.redirect('/');
+      return;
+  }
+
   var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
@@ -27,7 +38,6 @@ module.exports = function (req , res , next)
   {
     connection.end();
     if (!err){
-      //console.log('The solution is: ', rows);
       if (user.length == 1)
       {
         if (bcrypt.compareSync( req.body.password , user[0].password))

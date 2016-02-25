@@ -45,7 +45,7 @@ function remove_all(){
     }
 }
 
-function remove_filters(clicked){
+function remove_filter(clicked){
 
     if (rm_flag == 1)
     {
@@ -71,6 +71,35 @@ function remove_filters(clicked){
     {
         filters_to_remove.push(clicked);
         document.getElementById(clicked).className = "filter-item selected";
+    }
+}
+
+function remove_filter2(clicked){
+
+    if (rm_flag == 1)
+    {
+        $.ajax({
+            type:       "GET",
+            url:        "http://localhost:3000/remove_filter",
+            data:       {'filter':"all"},
+            dataType:   "json",
+            complete:   function()
+            {   window.location.reload();  }
+        });
+    }
+
+    if (document.getElementById('_'+clicked).className == "filter-item selected")
+    {
+        document.getElementById('_'+clicked).className = "filter-item";
+        var i = filters_to_remove.indexOf(clicked);
+        if(i != -1) {
+            filters_to_remove.splice(i, 1);
+        }
+    }
+    else
+    {
+        filters_to_remove.push(clicked);
+        document.getElementById('_'+clicked).className = "filter-item selected";
     }
 }
 
@@ -137,8 +166,28 @@ function filterByUser(clicked){
     }
     else
     {
-        users_to_send.push(clicked);
+        var i = users_to_send.indexOf(clicked);
+        if(i == -1) 
+            users_to_send.push(clicked);
         document.getElementById(clicked).className = "filter-item selected";
+    } 
+}
+
+function filterByUser2(clicked){
+    if (document.getElementById('_'+clicked).className == "filter-item selected")
+    {
+        document.getElementById('_'+clicked).className = "filter-item";
+        var i = users_to_send.indexOf(clicked);
+        if(i != -1) {
+            users_to_send.splice(i, 1);
+        }
+    }
+    else
+    {
+        var i = users_to_send.indexOf(clicked);
+        if(i == -1) 
+            users_to_send.push(clicked);
+        document.getElementById('_'+clicked).className = "filter-item selected";
     } 
 }
 
@@ -153,8 +202,28 @@ function filterByHashtag(clicked){
     }
     else
     {
-        hashtags_to_send.push(clicked);
+        var i = hashtags_to_send.indexOf(clicked);
+        if(i == -1) 
+            hashtags_to_send.push(clicked);
         document.getElementById(clicked).className = "filter-item selected";
+    } 
+}
+
+function filterByHashtag2(clicked){
+    if (document.getElementById('_'+clicked).className == "filter-item selected")
+    {
+        document.getElementById('_'+clicked).className = "filter-item";
+        var i = hashtags_to_send.indexOf(clicked);
+        if(i != -1) {
+            hashtags_to_send.splice(i, 1);
+        }
+    }
+    else
+    {
+        var i = hashtags_to_send.indexOf(clicked);
+        if(i == -1) 
+            hashtags_to_send.push(clicked);
+        document.getElementById('_'+clicked).className = "filter-item selected";
     } 
 }
 
@@ -194,13 +263,17 @@ function search(){
     if (value[0] == '#')
     {
         var hash = value.split('#');
-        hashtags_to_send.push(hash[1]);
+        var i = hashtags_to_send.indexOf(hash[1]);
+        if(i == -1) 
+            hashtags_to_send.push(hash[1]);
         window.location = 'searchKeyWord?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
     }
     else if (value[0] == '@')
     {
         var hash = value.split('@');
-        users_to_send.push(hash[1]);
+        var i = users_to_send.indexOf(hash[1]);
+        if(i == -1) 
+            users_to_send.push(hash[1]);
         window.location = 'searchKeyWord?search='+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
     }
     else if (search_date.length == 3)
@@ -224,13 +297,17 @@ function search2(){
     if (value[0] == '#')
     {
         var hash = value.split('#');
-        hashtags_to_send.push(hash[1]);
+        var i = hashtags_to_send.indexOf(hash[1]);
+        if(i == -1) 
+            hashtags_to_send.push(hash[1]);
         window.location = 'searchKeyWord?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
     }
     else if (value[0] == '@')
     {
         var hash = value.split('@');
-        users_to_send.push(hash[1]);
+        var i = users_to_send.indexOf(hash[1]);
+        if(i == -1) 
+            users_to_send.push(hash[1]);
         window.location = 'searchKeyWord?search='+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;    
     }
     else if (search_date.length == 3)
@@ -256,11 +333,17 @@ function submitDate(){
         window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;   
 }
 
-function submitDate(){
-    var date = document.getElementById('datepicker').value;
+function submitDate2(){
+    var date = document.getElementById('_datepicker').value;
     if (date == 'dd/mm/yyyy')
         return;
-    window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;   
+    var search = document.getElementById('search_bar_item').value;
+    if (search != '')
+    {
+        window.location = 'searchKeyWord?search='+search+'&users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;
+    }
+    else
+        window.location = 'filters?users='+users_to_send+'&hashtags='+hashtags_to_send+'&date='+date;   
 }
 
 function orderBy_dateUp(){

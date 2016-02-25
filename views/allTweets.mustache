@@ -52,7 +52,7 @@
 					        <li class="dropdown">
 								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> {{user}} <b class="caret"></b></a>
 								<ul id="dropdownMenu" class = "dropdown-menu">
-					                <li><a href="javascript:window.location.href= '/edit_profile';" target="_blank">Edit Profile</a></li>
+					                <li><a href="javascript:window.location.href= '/delete_profile';" target="_blank">Delete Profile</a></li>
 					                <li><a href="javascript:window.location.href= '/logout';" target="_blank">Logout</a></li>
 					            </ul>
 					        </li>
@@ -85,7 +85,7 @@
 					        <li class="dropdown">
 								<a href="#" class="dropdown-toogle" data-toggle = "dropdown"> {{user}}<b class="caret"></b></a>
 								<ul id="dropdownMenu" class = "dropdown-menu">
-					                <li><a href="javascript:window.location.href= '/edit_profile';" target="_blank">Edit Profile</a></li>
+					                <li><a href="javascript:window.location.href= '/delete_profile';" target="_blank">Delete Profile</a></li>
 					                <li><a href="javascript:window.location.href= '/logout';" target="_blank">Logout</a></li>
 					            </ul>
 					        </li>
@@ -106,72 +106,72 @@
 												<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
 													<li id="Retweeted">
 														<a id="Retweeted_a" class="filter-item" href="javascript:orderBy_retweets()">
-															<span id='Retweeted_span' class='glyphicon glyphicon-arrow-up'>Retweets</span>
+															<span id='Retweeted_span2' class='glyphicon glyphicon-arrow-up'>Retweets</span>
 															<script>
 																var myParam = location.search.split('order=')[1];
 																if (myParam == 'retweets')
 																{
-																	document.getElementById('Retweeted_span').style.color = 'gray';
-																	document.getElementById('Retweeted_span').style.pointerEvents = 'none';	
+																	document.getElementById('Retweeted_span2').style.color = 'gray';
+																	document.getElementById('Retweeted_span2').style.pointerEvents = 'none';	
 																}
 																else
 																{
-																	document.getElementById('Retweeted_span').style.color = 'white';
-																	document.getElementById('Retweeted_span').style.pointerEvents = 'auto';
+																	document.getElementById('Retweeted_span2').style.color = 'white';
+																	document.getElementById('Retweeted_span2').style.pointerEvents = 'auto';
 																}
 															</script>
 														</a>
 													</li>
 													<li id="Popular">
 														<a id="Popular_a" class="filter-item" href="javascript:orderBy_favorites()">
-															<span id='Favorites_span' class='glyphicon glyphicon-arrow-up'>Favorites</span>
+															<span id='Favorites_span2' class='glyphicon glyphicon-arrow-up'>Favorites</span>
 															<script>
 																var myParam = location.search.split('order=')[1];
 																if (myParam == 'favorites')
 																{
-																	document.getElementById('Favorites_span').style.color = 'gray';
-																	document.getElementById('Favorites_span').style.pointerEvents = 'none';	
+																	document.getElementById('Favorites_span2').style.color = 'gray';
+																	document.getElementById('Favorites_span2').style.pointerEvents = 'none';	
 																}
 																else
 																{
-																	document.getElementById('Favorites_span').style.color = 'white';
-																	document.getElementById('Favorites_span').style.pointerEvents = 'auto';
+																	document.getElementById('Favorites_span2').style.color = 'white';
+																	document.getElementById('Favorites_span2').style.pointerEvents = 'auto';
 																}
 															</script>
 														</a>
 													</li>
 													<li id="DateUp">
 														<a id="DateUp_a" class="filter-item" href="javascript:orderBy_dateUp()">
-															<span id='DateUpspan' class='glyphicon glyphicon-arrow-up'>Date</span>
+															<span id='DateUpspan2' class='glyphicon glyphicon-arrow-up'>Date</span>
 															<script>
 																var myParam = location.search.split('order=')[1];
 																if ((myParam == 'dateDown')||(myParam == 'favorites')||(myParam == 'retweets'))
 																{
-																	document.getElementById('DateUpspan').style.color = 'white';
-																	document.getElementById('DateUpspan').style.pointerEvents = 'auto';
+																	document.getElementById('DateUpspan2').style.color = 'white';
+																	document.getElementById('DateUpspan2').style.pointerEvents = 'auto';
 																}
 																else
 																{
-																	document.getElementById('DateUpspan').style.color = 'gray';
-																	document.getElementById('DateUpspan').style.pointerEvents = 'none';
+																	document.getElementById('DateUpspan2').style.color = 'gray';
+																	document.getElementById('DateUpspan2').style.pointerEvents = 'none';
 																}
 															</script>
 														</a>
 													</li>
 													<li id="DateDown">
 														<a id="DateDown_a" class="filter-item" href="javascript:orderBy_dateDown()">
-															<span id='DateDownspan' class='glyphicon glyphicon-arrow-down'>Date</span>
+															<span id='DateDownspan2' class='glyphicon glyphicon-arrow-down'>Date</span>
 															<script>
 																var myParam = location.search.split('order=')[1];
 																if (myParam == 'dateDown')
 																{
-																	document.getElementById('DateDownspan').style.color = 'gray';
-																	document.getElementById('DateDownspan').style.pointerEvents = 'none';	
+																	document.getElementById('DateDownspan2').style.color = 'gray';
+																	document.getElementById('DateDownspan2').style.pointerEvents = 'none';	
 																}
 																else
 																{
-																	document.getElementById('DateDownspan').style.color = 'white';
-																	document.getElementById('DateDownspan').style.pointerEvents = 'auto';
+																	document.getElementById('DateDownspan2').style.color = 'white';
+																	document.getElementById('DateDownspan2').style.pointerEvents = 'auto';
 																}
 															</script>
 														</a>
@@ -196,7 +196,7 @@
 												<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
 															{{#load_options}}
 																<li id="flist">
-																	<a id="{{filter}}" class="filter-item" href="javascript:remove_filter('{{filter}}');">
+																	<a id="_{{filter}}" class="filter-item" href="javascript:remove_filter2('{{filter}}');">
 																		<i class="chkbox"></i>
 																		<span>{{filter}}</span>
 																	</a>
@@ -231,7 +231,7 @@
 												<ul id="filter_list" class="list-unstyled" data-type="ZOOM7">
 															{{#users}}
 																<li id="flist">
-																	<a id="{{user}}" class="filter-item" href="javascript:filterByUser('{{user}}');">
+																	<a id="_{{user}}" class="filter-item" href="javascript:filterByUser2('{{user}}');">
 																		<i class="chkbox"></i>
 																		<span>{{user}}</span>
 																	</a>
@@ -260,7 +260,7 @@
 												<ul id="hashtag_list" class="list-unstyled" data-type="ZOOM7">
 													{{#hash}}	
 															<li id="flist">
-																<a id="#{{hashtag}}" class="filter-item" href="javascript:filterByHashtag('{{hashtag}}');">
+																<a id="_#{{hashtag}}" class="filter-item" href="javascript:filterByHashtag2('{{hashtag}}');">
 																	<i class="chkbox"></i>
 																	<span>{{hashtag}}</span>
 																</a>
@@ -286,13 +286,13 @@
 									<div id="collapseDate1" class="panel-collapse collapse">
 										<div class="panel-body">
 										    <form id="calendar">
-											    <input id="datepicker" value="dd/mm/yyyy"/>
+											    <input id="_datepicker" value="dd/mm/yyyy"/>
 											</form>
-											<button id="submitDate_button" onclick="submitDate()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+											<button id="submitDate_button" onclick="submitDate2()" class="btn btn-danger btn-xs" data-title="Submit" data-toggle="modal" ><span class="glyphicon glyphicon-circle-arrow-right"></span></button>
 										</div>
 								      	<script>
 											$(document).ready(function() {
-												$("#datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
+												$("#_datepicker").datepicker({ dateFormat: 'dd/mm/yy' });
 											});
 									  	</script>
 									</div>
@@ -530,7 +530,7 @@
 				                    success: function(result){
 								        for (var i=0;i<result.length;i++)
 								        {
-								        	var text = "<div id="+"twits"+">"+"<div id="+"retweet"+">"+"</div>"+"<div id="+"down"+">"+"<div id="+"img"+">"+"<img id="+"profile_img" +" src="+result[i].profile_img+">"+"</div>"+"<div id="+"right_tw"+">"+"<div id="+"user_username_time"+">"+"<p id="+"username"+">"+"<b>"+result[i].screen_name+"</b>"+"</p>"+"<p id="+"screenname"+">@"+result[i].user+"</p>"+"<p id="+"tweet_date"+">"+result[i].created_at+"</p>"+"</div>"+"<div id="+"text"+">"+"<p id="+"tweet_text"+">"+result[i].text+"</p>"+"</div>"+"</div>"+"</div>"+"<div id="+"favRt>"+"<img id="+"fav_icon"+" onmouseover=\"hoverFAV(this);\""+" onmouseout=\"unhoverFAV(this);\""+" src=\"../images/heart_0.png\">"+"<span id=\"fav_count\" onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='black'\">"+result[i].favorite_count+"</span>"+"<img id=\"rt_icon\" onmouseover=\"hoverRT(this);\" onmouseout=\"unhoverRT(this);\" src=\"../images/rt.png\""+">"+"<span id=\"rt_count\" onmouseover=\"this.style.color='#19cf86'\" onmouseout=\"this.style.color='black'\">"+result[i].retweet_count+"</span>"+"</div>"+"</div";
+								        	var text = "<div id="+"twits"+">"+"<div id="+"retweet"+">"+"</div>"+"<div id="+"down"+">"+"<div id="+"img"+">"+'<a href="http://twitter.com/intent/user?user_id='+result[i].user_id+'" target="_blank">'+"<img id="+"profile_img" +" src="+result[i].profile_img+">"+"</a>"+"</div>"+"<div id="+"right_tw"+">"+"<div id="+"user_username_time"+">"+"<a id=\"username\""+' href=\"http://twitter.com/intent/user?user_id='+result[i].user_id+'\" target=\"_blank\"'+">"+"<b>"+result[i].screen_name+"</b>"+"</a>"+"<a id="+"screenname"+' href=\"http://twitter.com/intent/user?user_id='+result[i].user_id+'\" target=\"_blank\"'+">@"+result[i].user+"</a>"+"<a id="+"tweet_date"+' href=\"http://twitter.com/#!/'+result[i].user_id+'/status/'+result[i].id+'\" target=\"_blank\"'+">"+result[i].created_at+"</a>"+"</div>"+"<div id="+"text"+">"+"<a id="+"tweet_text"+' href=\"http://twitter.com/#!/'+result[i].user_id+'/status/'+result[i].id+'\" target=\"_blank\"'+">"+result[i].text+"</a>"+"</div>"+"</div>"+"</div>"+"<div id="+"favRt>"+" <a href=\"http://twitter.com/#!/"+result[i].user_id+"/status/"+result[i].id+"\" target=\"_blank\"> "+"<img id="+"fav_icon"+" onmouseover=\"hoverFAV(this);\""+" onmouseout=\"unhoverFAV(this);\""+" src=\"../images/heart_0.png\">"+"<span id=\"fav_count\" onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='black'\">"+result[i].favorite_count+"</span>"+"<img id=\"rt_icon\" onmouseover=\"hoverRT(this);\" onmouseout=\"unhoverRT(this);\" src=\"../images/rt.png\""+">"+"<span id=\"rt_count\" onmouseover=\"this.style.color='#19cf86'\" onmouseout=\"this.style.color='black'\">"+result[i].retweet_count+"</span>"+'</a>'+"</div>"+"</div";
 							                var element = document.createElement("div");							                
 							                element.id  = "twits";
 							                element.innerHTML = text;
@@ -552,26 +552,30 @@
 
 	    				<div id="down">
 	    					<div id="img">
-	    						<img id="profile_img" src={{profile_img}}>
+	    						<a href="http://twitter.com/intent/user?user_id={{user_id}}" target="_blank">
+	    							<img id="profile_img" src={{profile_img}}>
+	    						</a>
 		    				</div>
 
 		    				<div id="right_tw">
 		    					<div id="user_username_time">
-									<p id="username"><b> {{screen_name}} </b></p>
-									<p id="screenname">@{{user}}</p>
-									<p id="tweet_date">{{created_at}}</p>
+									<a id="username"   href="http://twitter.com/intent/user?user_id={{user_id}}" target="_blank"><b> {{screen_name}} </b></a>
+									<a id="screenname" href="http://twitter.com/intent/user?user_id={{user_id}}" target="_blank">@{{user}}</a>
+									<a id="tweet_date" href="http://twitter.com/#!/{{user_id}}/status/{{id}}" target="_blank">{{created_at}}</a>
 			    				</div>
 
 			    				<div id="text">
-	    							<p id="tweet_text">{{text}} </p>
+	    							<a id="tweet_text" href="http://twitter.com/#!/{{user_id}}/status/{{id}}" target="_blank">{{text}} </a>
 			    				</div>
 		    				</div>
 		    			</div>
 		    			<div id="favRt">
-		    				<img id="fav_icon" onmouseover="hoverFAV(this);" onmouseout="unhoverFAV(this);" src="../images/heart_0.png">
-		    				<span id="fav_count" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">{{favorite_count}}</span>
-		    				<img id="rt_icon" onmouseover="hoverRT(this);" onmouseout="unhoverRT(this);" src="../images/rt.png">
-		    				<span id="rt_count" onmouseover="this.style.color='#19cf86'" onmouseout="this.style.color='black'">{{retweet_count}}</span>
+		    				<a href="http://twitter.com/#!/{{user_id}}/status/{{id}}" target="_blank">
+			    				<img id="fav_icon" onmouseover="hoverFAV(this);" onmouseout="unhoverFAV(this);" src="../images/heart_0.png">
+			    				<span id="fav_count" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">{{favorite_count}}</span>
+			    				<img id="rt_icon" onmouseover="hoverRT(this);" onmouseout="unhoverRT(this);" src="../images/rt.png">
+			    				<span id="rt_count" onmouseover="this.style.color='#19cf86'" onmouseout="this.style.color='black'">{{retweet_count}}</span>
+		    				</a>
 		    			</div>
 		    		</div>
 			    {{/tweet_data}}
