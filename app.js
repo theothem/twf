@@ -1,17 +1,18 @@
-var express         = require('express');
-var path            = require('path');
-var favicon         = require('serve-favicon');
-var logger          = require('morgan');
-var cookieParser    = require('cookie-parser');
-var bodyParser      = require('body-parser');
-var mustacheExpress = require('mustache-express');
-var bcrypt          = require('bcryptjs');
-var csrf            = require('csurf'); 
-var session         = require('client-sessions');
-var mysql           = require('mysql');
+var express                   = require('express');
+var path                      = require('path');
+var favicon                   = require('serve-favicon');
+var logger                    = require('morgan');
+var cookieParser              = require('cookie-parser');
+var bodyParser                = require('body-parser');
+var mustacheExpress           = require('mustache-express');
+var bcrypt                    = require('bcryptjs');
+var csrf                      = require('csurf'); 
+var session                   = require('client-sessions');
+var mysql                     = require('mysql');
 
 var index                     = require('./routes/index');
 var home                      = require('./routes/home');
+var about                     = require('./routes/about');
 var allTweets                 = require('./routes/allTweets');
 var hashtags                  = require('./routes/hashtags');
 var getTweets                 = require('./routes/getTweets');
@@ -26,6 +27,7 @@ var searchKeyWord_loadMore    = require('./routes/searchKeyWord_loadMore');
 var signup_user               = require('./routes/signUp');
 var login                     = require('./routes/login');
 var deleteUser                = require('./routes/deleteUser');
+var clean_db                  = require('./routes/clean_db');
 
 var app             = express(); 
 var loggedUsers     = [];
@@ -116,8 +118,12 @@ function requireLogin(req,res,next){
 //Refresh Mongo DB Entries
 //refresh_db(searchTweets,addTweets);
 setInterval(function() {
-    //refresh_db(searchTweets,addTweets);
+    refresh_db(searchTweets,addTweets);
 }, 60 * 1000 * 2); // wait 60 seconds * 2 minutes
+
+setInterval(function() {
+    clean_db();
+}, 60 * 1000 * 3); // wait 60 seconds * 5 minutes
 
 
 var allTweets_cnt = 1 ;  //cnt for allTweets       page to load more and skip 'allTweets_cnt'  entries
@@ -138,17 +144,21 @@ app.post('/login', function(req , res , next){
   login(req,res,next);
 });
 
-app.use('/delete_profile', function(req , res , next){
+app.use('/delete_profile', requireLogin ,function(req , res , next){
   deleteUser(req,res,next);
 });
 
-app.use('/logout',function(req , res , next){
+app.use('/logout', requireLogin ,function(req , res , next){
   req.session.reset();
   res.redirect('/');
 });
 
 app.use('/home',requireLogin,function(req , res , next){
   home(req,res,next);
+});
+
+app.use('/about' , requireLogin ,function(req , res , next){
+  about(req,res,next);
 });
 
 app.use('/allTweets', requireLogin ,function(req,res,next){                  
@@ -187,7 +197,7 @@ app.use('/searchKeyWord/', requireLogin , function(request, response, next) {
 });
 
 //Load More 
-if (app.use('/load_search_tweets', function(req, res,data) {
+if (app.use('/load_search_tweets', requireLogin ,function(req, res,data) {
     var query     = require('url').parse(req.url,true).query;
     var search    = query.search;
     var users     = query.users;
@@ -201,7 +211,7 @@ if (app.use('/load_search_tweets', function(req, res,data) {
     //console.log('Load_search_tweets triggered! '+req.query.order);
 }));
 
-if (app.use('/load_filter_tweets', function(req, res,data) {
+if (app.use('/load_filter_tweets', requireLogin ,function(req, res,data) {
     var query     = require('url').parse(req.url,true).query;
     var users     = query.users;
     var hashtags  = query.hashtags;
@@ -211,7 +221,7 @@ if (app.use('/load_filter_tweets', function(req, res,data) {
     filterByHashtag_loadMore(users,hashtags,date,req,res,"filters",query.order,20*filters_cnt++);
 }));
 
-if (app.use('/load_tweets', function(req, res,data) {
+if (app.use('/load_tweets', requireLogin ,function(req, res,data) {
     //console.log('Load_tweets triggered! '+req.query.order);
     getTweets(req,res,'allTweets',req.query.order,20*allTweets_cnt++);
 }));
@@ -243,7 +253,7 @@ app.use('/db_options',requireLogin , function(req, res) {
         };
         searchTweets(req.query.user,myCallback,0,0,1);
     }
-    if (( req.query.hashtag != '')&&(req.query.hashtag != 'User'))
+    if (( req.query.hashtag != '')&&(req.query.hashtag != 'Hashtag #'))
     {
         if (req.query.hashtag[0] != '#')
           req.query.hashtag = '#'+req.query.hashtag;
@@ -262,7 +272,7 @@ app.use('/db_options',requireLogin , function(req, res) {
     }
 });
 
-if (app.get('/remove_filter', function(req, res) {
+if (app.get('/remove_filter', requireLogin ,function(req, res) {
     allTweets_cnt = 1;
     console.log('Remove_filter : '+req.query.filter);
     remove_filter(req.query.filter,req,res);

@@ -9,8 +9,8 @@
 	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 			<script src="js/bootstrap.min.js"></script>
 	    	<link 	href="css/bootstrap.min.css" rel="stylesheet"> 
-	    	<link 	href="css/home.css" 	rel ="stylesheet" type="text/css">	 
-	    	<script src="js/home.js"></script>
+	    	<link 	href="css/about.css" 	rel ="stylesheet" type="text/css">	 
+	    	<script src="js/about.js"></script>
 	    	<link   href="css/languages.min.css" rel ="stylesheet" type="text/css">
 	    	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 			<script src="loadie.js-master/js/jquery.loadie.min.js"></script>
@@ -72,64 +72,23 @@
 				</div>
 			</div>
 			<div id="mainInfo">
-				<div id="bar">
-				</div>
 				<div id="logo">
-					<img src="../images/home_logo3.png" alt="Twitter Logo">
+					<img src="../images/twitter_feed_logo.png" alt="Twitter Logo">
 				</div>
-
 				<div id="userFields">
-					<div id="title">
-						<p><u>Search Tweets By:</u></p>
-					</div>
-					<div id="content">
-						<div id="content_box">
-							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
-								<div id="text">
-									<input id="txt" class="form-control" type="text" value="Text"
-									onfocus="if (this.value=='Text') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'Text'">
-						    		<i id="text_warning">Tweets before the given date</i>
-								</div>
-							</form>
-							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
-								<div id="user">
-									<input id="usr" class="form-control" type="text" value="User"
-									onfocus="if (this.value=='User') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'User'">
-						    		<i id="user_warning">Tweets before the given date</i>
-								</div>
-							</form>
-							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>	
-								<div id="hashtag">
-									<input id="hashtg" class="form-control" type="text" value="Hashtag #"
-									onfocus="if (this.value=='Hashtag #') this.value = ''"  
-						    		onblur="if (this.value=='') this.value = 'Hashtag #'">
-						    		<i id="hashtag_warning">Tweets before the given date</i>	
-								</div>
-							</form>
-							<form id="text_form" role="search" onsubmit="send();return false;" >
-								<input type="hidden" id="_csrf" name="_csrf" value={{csrfToken}}>
-								<div id="date">
-									<input id="rightInput1" class="form-control" type="date" value=""
-									onblur="document.getElementById('date_warning').style.visibility = 'hidden'"  
-						    		onfocus="document.getElementById('date_warning').style.visibility = 'visible'">
-									<i id="date_warning">Tweets before the given date</i>
-								</div>
-							</form>
-							<button id="remove_all" onclick="remove_filter(this.value)" value="all">Remove All</button>
-							<button type="button" onclick="send()" id="send_button">Send</button>
-						</div>
-						<div id="option_box">
-								{{#load_options.length}}
-									<div id="option">
-											{{#load_options}}<button id="button_item" onclick="remove_filter(this.value)" value={{filter}}>&#x2718;{{filter}}</button>{{/load_options}}
-											<!--x2718, x274C-->
-									</div>
-								{{/load_options.length}}
+					<div id="textDiv">
+						<h2 id="description"><u>Περιγραφή Συστήματος </u></h2>
+						<p id="description_text">Το twitter feed είναι ένα σύστημα συλλογής πληροφοριών από το Social Network Twitter με εξειδικευμένες δυνατότητες αναζήτησης.</p>
+						<h2 id="system_details"><u> Τρόπος Λειτουργίας Συστήματος </u></h2>
+						<p id="system_details_text"> 
+						Μέσω του Twitter Feed ο χρήστης μπορεί χωρίς να δημιουργήσει λογαριασμό στο twitter να συλλέξει πληροφορίες σύμφωνα με κάποια κριτήρια τα οποία έχει καθορίσει.</p>
+						<p id="system_details_text2">Τέτοια κριτήρια μπορούν να αποτελέσουν το κείμενο / λέξη , η ημερομηνία δημιουργίας , ο χρήστης ή κάποιο hashtag του tweet.</p>
+						<p id="system_details_text3">Για την είσοδο στο σύστημα απαραίτητη είναι η δημιουργία λογαριασμού.</p>
+						<div id="report_div" class="Centered">
+							<a id="report" href="report.pdf" download>
+								<img id="report_button" src="../images/report.png">	
+								<p id="report_text"> Αναφορά Συστήματος.pdf</p>
+							</a>
 						</div>
 					</div>
 				</div>

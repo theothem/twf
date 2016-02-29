@@ -92,10 +92,8 @@ function send() {
         $('#bar').loadie(); // Change the wrapper if wanted.
         var percent = 0;
         setInterval(function() {
-            if (percent < 0.70){
-                percent += 0.10
-                $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
-            }
+           percent += 0.10
+           $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
         }, 10 * 100); // wait 60 seconds
         
         $.ajax({
@@ -103,17 +101,11 @@ function send() {
             url:        "http://localhost:3000/db_options",
             data:       {'text':text,'user': user,'hashtag': hashtag,'dateFrom': dateFrom},
             dataType:   "json",
-            success:   function(msg)
+            complete:   function()
             {
                 percent = 1
                 $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
-                if (msg.error != ''){
-                    window.alert(msg.error);
-                    window.location.reload();
-                }
-                else{
-                    window.location = 'allTweets';
-                }
+                window.location = 'allTweets';
             }
         });
     }

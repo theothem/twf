@@ -1,0 +1,140 @@
+
+<!-- saved from url=(0026)http://localhost:3000/home -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Twitter Feed</title>
+            <meta charset="UTF-8">
+            <meta name="description" content="Twitter Feed">
+            <meta name="keywords" content="homepage,Themistoklis Theologitis , twf">
+            <meta name="author" content="Themistoklis Theologitis">
+	    	<meta name="viewport" content="width=device-width,initial-scale=1">
+	    	<script src="./Twitter Feed_files/jquery.min.js"></script>
+			<script src="./Twitter Feed_files/bootstrap.min.js"></script>
+	    	<link href="./Twitter Feed_files/bootstrap.min.css" rel="stylesheet"> 
+	    	<link href="./Twitter Feed_files/home.css" rel="stylesheet" type="text/css">	 
+	    	<script src="./Twitter Feed_files/home.js"></script>
+	    	<link href="./Twitter Feed_files/languages.min.css" rel="stylesheet" type="text/css">
+	    	<script src="./Twitter Feed_files/jquery-latest.min.js"></script>
+			<script src="./Twitter Feed_files/jquery.loadie.min.js"></script>
+
+	</head>
+
+	<body>
+		<header>
+			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="slide-nav">
+			   	<div class="navbar-header">
+				    <a class="navbar-toggle"> 
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+				    <a class="navbar-brand" href="http://localhost:3000/home">Twitter Feed</a>
+				    <img id="top_logo" src="./Twitter Feed_files/logo_tw_40.png" alt="Twitter Logo">
+			   	</div>
+
+			   	
+
+			    <div id="main_menu">
+			    	<div id="navbarCollapse" class="collapse navbar-collapse">
+			            <ul id="nav-navbar-nav" class="nav navbar-nav">
+			                <li class="active"><a href="http://localhost:3000/home">Home</a></li>
+			                <li><a href="http://localhost:3000/allTweets">All Tweets</a></li>
+					        <li class="dropdown">
+								<a href="http://localhost:3000/home#" class="dropdown-toogle" data-toggle="dropdown"> theothem2<b class="caret"></b></a>
+								<ul id="dropdownMenu" class="dropdown-menu">
+					                <li><a href="javascript:window.location.href= &#39;/delete_profile&#39;;" target="_blank">Delete Profile</a></li>
+					                <li><a href="javascript:window.location.href= &#39;/logout&#39;;" target="_blank">Logout</a></li>
+					            </ul>
+					        </li>
+			                <li><a href="http://localhost:3000/about">About</a></li>
+			            </ul>
+			        </div>
+			    </div>
+			</div><div class="inverse" id="navbar-height-col"></div>
+		</header>
+
+		<div id="main" class="main">
+			<div id="slidemenu">
+				<div id="filter_menu">
+					<div id="navbarCollapse" class="collapse navbar-collapse">
+			            <ul id="nav-navbar-nav" class="nav navbar-nav">
+			                <li class="active"><a href="http://localhost:3000/home">Home</a></li>
+			                <li><a href="http://localhost:3000/allTweets">All Tweets</a></li>
+					        <li class="dropdown">
+								<a href="http://localhost:3000/home#" class="dropdown-toogle" data-toggle="dropdown"> theothem2<b class="caret"></b></a>
+								<ul id="dropdownMenu" class="dropdown-menu">
+					                <li><a href="javascript:window.location.href= &#39;/delete_profile&#39;;" target="_blank">Delete Profile</a></li>
+					                <li><a href="javascript:window.location.href= &#39;/logout&#39;;" target="_blank">Logout</a></li>
+					            </ul>
+					        </li>
+			                <li><a href="http://localhost:3000/home#" target="_blank">About</a></li>
+			            </ul>
+			        </div>
+				</div>
+			</div>
+			<div id="mainInfo">
+				<div id="bar">
+				</div>
+				<div id="logo">
+					<img src="./Twitter Feed_files/home_logo3.png" alt="Twitter Logo">
+				</div>
+
+				<div id="userFields">
+					<div id="title">
+						<p><u>Search Tweets By:</u></p>
+					</div>
+					<div id="content">
+						<div id="content_box">
+							<form id="text_form" role="search" onsubmit="send();return false;">
+								<input type="hidden" id="_csrf" name="_csrf" value="WJdbfGX8-ZLtxOo0s2I7X1AveAkWT6waGVVM">
+								<div id="text">
+									<input id="txt" class="form-control" type="text" value="Text" onfocus="if (this.value==&#39;Text&#39;) this.value = &#39;&#39;" onblur="if (this.value==&#39;&#39;) this.value = &#39;Text&#39;">
+						    		<i id="text_warning">Tweets before the given date</i>
+								</div>
+							</form>
+							<form id="text_form" role="search" onsubmit="send();return false;">
+								<input type="hidden" id="_csrf" name="_csrf" value="WJdbfGX8-ZLtxOo0s2I7X1AveAkWT6waGVVM">
+								<div id="user">
+									<input id="usr" class="form-control" type="text" value="User" onfocus="if (this.value==&#39;User&#39;) this.value = &#39;&#39;" onblur="if (this.value==&#39;&#39;) this.value = &#39;User&#39;">
+						    		<i id="user_warning">Tweets before the given date</i>
+								</div>
+							</form>
+							<form id="text_form" role="search" onsubmit="send();return false;">
+								<input type="hidden" id="_csrf" name="_csrf" value="WJdbfGX8-ZLtxOo0s2I7X1AveAkWT6waGVVM">	
+								<div id="hashtag">
+									<input id="hashtg" class="form-control" type="text" value="Hashtag #" onfocus="if (this.value==&#39;Hashtag #&#39;) this.value = &#39;&#39;" onblur="if (this.value==&#39;&#39;) this.value = &#39;Hashtag #&#39;">
+						    		<i id="hashtag_warning">Tweets before the given date</i>	
+								</div>
+							</form>
+							<form id="text_form" role="search" onsubmit="send();return false;">
+								<input type="hidden" id="_csrf" name="_csrf" value="WJdbfGX8-ZLtxOo0s2I7X1AveAkWT6waGVVM">
+								<div id="date">
+									<input id="rightInput1" class="form-control" type="date" value="" onblur="document.getElementById(&#39;date_warning&#39;).style.visibility = &#39;hidden&#39;" onfocus="document.getElementById(&#39;date_warning&#39;).style.visibility = &#39;visible&#39;">
+									<i id="date_warning">Tweets before the given date</i>
+								</div>
+							</form>
+							<button id="remove_all" onclick="remove_filter(this.value)" value="all">Remove All</button>
+							<button type="button" onclick="send()" id="send_button">Send</button>
+						</div>
+						<div id="option_box">
+									<div id="option">
+											<button id="button_item" onclick="remove_filter(this.value)" value="@moukooss">✘@moukooss</button><button id="button_item" onclick="remove_filter(this.value)" value="@stelios__7">✘@stelios__7</button><button id="button_item" onclick="remove_filter(this.value)" value="@Stelios_th">✘@Stelios_th</button><button id="button_item" onclick="remove_filter(this.value)" value="@BarackObama">✘@BarackObama</button><button id="button_item" onclick="remove_filter(this.value)" value="@skaigr">✘@skaigr</button><button id="button_item" onclick="remove_filter(this.value)" value="#tsipras">✘#tsipras</button><button id="button_item" onclick="remove_filter(this.value)" value="nba">✘nba</button>
+											<!--x2718, x274C-->
+									</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<footer>
+			<div id="left_footer">
+				<span class="lang-xs" lang="en"></span>	
+			</div>
+			<div id="right_footer">
+				<p>© Copyright 2015 Theologitis Themistoklis. All Rights Reserved</p>	
+			</div>
+		</footer>
+	
+</body></html>

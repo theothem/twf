@@ -92,10 +92,8 @@ function send() {
         $('#bar').loadie(); // Change the wrapper if wanted.
         var percent = 0;
         setInterval(function() {
-            if (percent < 0.70){
-                percent += 0.10
-                $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
-            }
+           percent += 0.10
+           $('#bar').loadie(percent); // Insert your percent as params. }, 3000);
         }, 10 * 100); // wait 60 seconds
         
         $.ajax({

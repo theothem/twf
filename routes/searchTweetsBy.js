@@ -18,8 +18,28 @@ module.exports = function(query,callback,option,date,user_option)
     		console.log("Getting tweets...option :"+date);
 			tweet.get('search/tweets', { q: query , count: 200, until: date}, function(error, hashtag_tweets, response) 
 			{
-				console.log('Collected '+hashtag_tweets.statuses.length+' tweets for query : '+query+'.\n');
-				callback(hashtag_tweets.statuses);
+				if (error)
+			    {
+			    	console.log('Error getting user tweets for: '+query+'. "'+error.description+'"');
+			    	callback(null);
+			    	return;
+			    }
+				else{
+					console.log('Collected '+hashtag_tweets.statuses.length+' tweets for query : '+query+'.\n');
+					if ((hashtag_tweets.statuses.length == 0)||(hashtag_tweets.statuses.length == undefined)){
+						callback(null);
+			    		return;
+					}
+					else{
+						if ((hashtag_tweets.statuses.length == undefined)||(hashtag_tweets.statuses.length == 0)){
+							callback(null);
+				    		return;
+						}
+						else{
+							callback(hashtag_tweets.statuses);
+						}
+					}
+				}
 			});
     	}
     	else if (user_option == 1)	// If you search Tweets for specific user!
@@ -30,10 +50,13 @@ module.exports = function(query,callback,option,date,user_option)
 				if (error)
 			    {
 			    	console.log('Error getting user tweets for: '+query+'. "'+error.description+'"');
+			    	callback(null);
 			    	return;
 			    }
-				console.log('Collected         : '+all_tweets.length+' tweets for user : '+query+'.\n');
-				callback(all_tweets);
+				else{
+					console.log('Collected         : '+all_tweets.length+' tweets for user : '+query+'.\n');
+					callback(all_tweets);
+				}
 			});
     	}
     	else 
@@ -44,11 +67,19 @@ module.exports = function(query,callback,option,date,user_option)
 				if (error)
 			    {
 			    	console.log('Error getting tweets for: '+query+'. "'+error.description+'"');
+			    	callback(null);
 			    	return;
 			    }
-			    if (all_tweets.statuses != undefined)
-					console.log('Collected         : '+all_tweets.statuses.length+' tweets ( User ) for query : '+query+'.\n');
-				callback(all_tweets.statuses);
+			    else{
+			    	console.log('Collected         : '+all_tweets.statuses.length+' tweets ( User ) for query : '+query+'.\n');
+					if ((all_tweets.statuses.length == undefined)||(all_tweets.statuses.length == 0)){
+						callback(null);
+			    		return;
+					}
+					else{
+						callback(all_tweets.statuses);
+					}
+				}
 			});
     	}
     }

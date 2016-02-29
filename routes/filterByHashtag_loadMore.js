@@ -34,7 +34,82 @@ module.exports = function (users,hashtag,date,req,res,path,order,skip)
 
 	if (date=='')
 	{
-		if ((users != '')&&(hashtag == ''))
+		if ((users == '')&&(hashtag == ''))
+		{
+			if (order == 'favorites')
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					
+					var tweets_to_send = tweets;
+					for (var i=0;i<tweets_to_send.length;i++)
+					{
+						tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+					}
+					res.json(tweets_to_send);
+					connection.end();
+					return;
+				});
+			}
+			else if (order == 'retweets')
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					
+					var tweets_to_send = tweets;
+					for (var i=0;i<tweets_to_send.length;i++)
+					{
+						tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+					}
+					res.json(tweets_to_send);
+					connection.end();
+					return;
+				});
+			}
+			else if (order == 'dateDown')
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					
+					var tweets_to_send = tweets;
+					for (var i=0;i<tweets_to_send.length;i++)
+					{
+						tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+					}
+					res.json(tweets_to_send);
+					connection.end();
+					return;
+				});
+			}
+			else
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					
+					var tweets_to_send = tweets;
+					for (var i=0;i<tweets_to_send.length;i++)
+					{
+						tweets_to_send[i].created_at = tweets_to_send[i].created_at.toString();
+					}
+					res.json(tweets_to_send);
+					connection.end();
+					return;
+				});
+			}
+		}
+		else if ((users != '')&&(hashtag == ''))
 		{
 			if (order == 'favorites')
 			{

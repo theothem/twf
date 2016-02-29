@@ -54,7 +54,50 @@ module.exports = function (users,hashtag,date,req,res,path,order)
 
 	if (date=='')
 	{
-		if ((users != '')&&(hashtag == ''))
+		if ((users == '')&&(hashtag == ''))
+		{
+			if (order == 'favorites')
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.favorite_count DESC LIMIT 20', req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': '' ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+				});
+			}
+			else if (order == 'retweets')
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.retweet_count DESC LIMIT 20', req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': '' ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+				});
+			}
+			else if (order == 'dateDown')
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.created_at ASC LIMIT 20', req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': '' ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+				});
+			}
+			else
+			{
+				connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?)'+' ORDER BY tweets.created_at DESC LIMIT 20', req.session.user.username ,function(err, tweets) 
+				{
+					if (err){
+						console.log(err);
+					}
+					res.render(path, {usr:req.session.user.username , 'title': 'filters' , tweet_data: tweets , 'load_options':  filter_options , 'usersFilter': users_returned, 'users': '' ,'hash': fhashtags , 'url': '','date':'',csrfToken: req.csrfToken()});
+				});
+			}
+		}
+		else if ((users != '')&&(hashtag == ''))
 		{
 			if (order == 'favorites')
 			{

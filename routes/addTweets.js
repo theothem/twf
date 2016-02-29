@@ -8,136 +8,140 @@ var session         = require('client-sessions');
 
 module.exports = function(req,res,tweets_to_add,filter,dateFrom,mode) 
 {
-	if (tweets_to_add == undefined)
-		res.end();
+	if (tweets_to_add == null){
+		res.json('home',{title:'Twitter Feed' , error: 'Error getting tweets for '+filter});
+		return;
+	}
+	else
+	{
+		var connection = mysql.createConnection({
+		    host     : 'localhost',
+		    user     : 'root',
+		    password : '741992',
+		    database : 'twf'
+		});
+		
+		connection.connect(function(err){
+		    if(!err) {
+		        //console.log("Database is connected ...");    
+		    } else {
+		        console.log("Error connecting database ...");  
+		        res.json('home',{title:'Twitter Feed' , error: 'Error getting tweets for '+filter });
+		        return;  
+		    }
+		});
 
-	var connection = mysql.createConnection({
-	    host     : 'localhost',
-	    user     : 'root',
-	    password : '741992',
-	    database : 'twf'
-	});
-	
-	connection.connect(function(err){
-	    if(!err) {
-	        //console.log("Database is connected ...");    
-	    } else {
-	        console.log("Error connecting database ...");  
-	        res.redirect('/home');
-	        return;  
-	    }
-	});
+		var added 				= 0;
+		var duplicates  		= 0;
 
-	var added 				= 0;
-	var duplicates  		= 0;
+		var myCallback = function(data) {
+		  	//insert data
+			if (res!=null){
+				res.json('home',{title:'Twitter Feed' , error: '' , success: 'Added tweets to DataBase by user \''+ req.session.user.username+'\' , '+filter});
+			}
+			connection.end();
+			if (req!=null)
+				console.log("Added tweets to DataBase by user \'"+req.session.user.username+'\' , '+filter+',');
+		};
 
-	var myCallback = function(data) {
-	  	//insert data
-		if (res!=null){
-				res.end();
-		}
-		connection.end();
-		if (req!=null)
-			console.log("Added tweets to DataBase by user \'"+req.session.user.username+'\' , '+filter+',');
-	};
+		var addTweetsToDB = function(callback,req,res,tweets_to_add,filter,dateFrom,mode) {
 
-	var addTweetsToDB = function(callback,req,res,tweets_to_add,filter,dateFrom,mode) {
-
-		var inserted = 0;
-		for(var i=0;i<tweets_to_add.length;i++)
-		{
-			var twid = tweets_to_add[i];
-			//console.log(i+'.');
-
-			twid.created_at = dateToDate(twid.created_at);
-			if (( filter != null ) && ( filter != undefined) && (tweets_to_add[i].id_str != null)&& (tweets_to_add[i].id_str != undefined) && (tweets_to_add[i]!=null)&& (tweets_to_add[i]!=undefined))
+			var inserted = 0;
+			for(var i=0;i<tweets_to_add.length;i++)
 			{
-				if (req != null)
-				{
-					var node = {
-					    filter 		 	: filter,
-					    username 		: req.session.user.username
-					};
-				}
+				var twid = tweets_to_add[i];
+				//console.log(i+'.');
 
-				if (mode != 1 )
-				{  
-					var query = connection.query('insert into Belongs set ?', node , function(err,result) {
+				twid.created_at = dateToDate(twid.created_at);
+				if (( filter != null ) && ( filter != undefined) && (tweets_to_add[i].id_str != null)&& (tweets_to_add[i].id_str != undefined) && (tweets_to_add[i]!=null)&& (tweets_to_add[i]!=undefined))
+				{
+					if (req != null)
+					{
+						var node = {
+						    filter 		 	: filter,
+						    username 		: req.session.user.username
+						};
+					}
+
+					if (mode != 1 )
+					{  
+						var query = connection.query('insert into Belongs set ?', node , function(err,result) {
+							if (!err){
+						      	//console.log('Belongs added : '+node.id+','+node.username);
+						    }
+						    else{
+						      	//console.log('Error while adding to Belongs.'+err);
+						    }
+						});
+					}
+					
+					var tweet = {
+					    id 		 		: twid.id_str.toString(),
+					    filter	 		: filter,
+					    created_at		: twid.created_at,
+					    dateFrom		: dateFrom,
+					    user_id			: twid.user.id.toString(),
+					    user    		: twid.user.screen_name,
+					    screen_name 	: twid.user.name,
+					    profile_img 	: twid.user.profile_image_url,
+					    text 			: twid.text,
+					    favorite_count 	: twid.favorite_count,
+					    retweet_count 	: twid.retweet_count
+					};
+
+					var query = connection.query('insert into tweets set ?', tweet , function(err,result) {
 						if (!err){
-					      	//console.log('Belongs added : '+node.id+','+node.username);
-					    }
+					      added++;
+						}
 					    else{
-					      	//console.log('Error while adding to Belongs.'+err);
+					      //console.log('Error adding tweets.'+err);
 					    }
 					});
 				}
-				
-				var tweet = {
-				    id 		 		: twid.id_str.toString(),
-				    filter	 		: filter,
-				    created_at		: twid.created_at,
-				    dateFrom		: dateFrom,
-				    user_id			: twid.user.id.toString(),
-				    user    		: twid.user.screen_name,
-				    screen_name 	: twid.user.name,
-				    profile_img 	: twid.user.profile_image_url,
-				    text 			: twid.text,
-				    favorite_count 	: twid.favorite_count,
-				    retweet_count 	: twid.retweet_count
+
+				var myCallback2 = function() {
+					//console.log('/end of'+inserted);
+		  			if (++inserted == tweets_to_add.length) {
+						callback(added);
+					}
 				};
 
-				var query = connection.query('insert into tweets set ?', tweet , function(err,result) {
-					if (!err){
-				      added++;
-					}
-				    else{
-				      //console.log('Error adding tweets.'+err);
-				    }
-				});
-			}
+				var usingItNow2 = function(callback2 , twid , req,res,filter,dateFrom,mode){
 
-			var myCallback2 = function() {
-				//console.log('/end of'+inserted);
-	  			if (++inserted == tweets_to_add.length) {
-					callback(added);
-				}
-			};
+					if (twid.entities.hashtags.length == 0)
+						callback2();
 
-			var usingItNow2 = function(callback2 , twid , req,res,filter,dateFrom,mode){
+					var inserted2 = 0;
+					for (var j=0;j<twid.entities.hashtags.length;j++)
+					{
+						//console.log('\t'+j+','+twid.entities.hashtags[j].text);
 
-				if (twid.entities.hashtags.length == 0)
-					callback2();
+					    if ((twid.entities.hashtags[j]!=null)&&(twid.entities.hashtags[j].text!='')){		
 
-				var inserted2 = 0;
-				for (var j=0;j<twid.entities.hashtags.length;j++)
-				{
-					//console.log('\t'+j+','+twid.entities.hashtags[j].text);
+					    	var hashtag = {
+							    id 		 		: twid.id_str,
+							    hashtag 		: twid.entities.hashtags[j].text
+							};
 
-				    if ((twid.entities.hashtags[j]!=null)&&(twid.entities.hashtags[j].text!='')){		
-
-				    	var hashtag = {
-						    id 		 		: twid.id_str,
-						    hashtag 		: twid.entities.hashtags[j].text
-						};
-
-						var query = connection.query('insert into hashtags set ?', hashtag , function(err,result) {
-							if (!err){
-						      	//console.log('hashtags added : '+hashtag.id+','+hashtag.hashtag);
-						    }
-						    else{
-						      	//console.log('Error while adding to Hashtags.'+err);
-						    }
-						    if (++inserted2 == twid.entities.hashtags.length) {
-								callback2();
-							}
-						});
+							var query = connection.query('insert into hashtags set ?', hashtag , function(err,result) {
+								if (!err){
+							      	//console.log('hashtags added : '+hashtag.id+','+hashtag.hashtag);
+							    }
+							    else{
+							      	//console.log('Error while adding to Hashtags.'+err);
+							    }
+							    if (++inserted2 == twid.entities.hashtags.length) {
+									callback2();
+								}
+							});
+						}
 					}
 				}
+				usingItNow2(myCallback2,tweets_to_add[i],req,res,filter,dateFrom,mode);
 			}
-			usingItNow2(myCallback2,tweets_to_add[i],req,res,filter,dateFrom,mode);
-		}
-	};
-	addTweetsToDB(myCallback,req,res,tweets_to_add,filter,dateFrom,mode);
+		};
+		addTweetsToDB(myCallback,req,res,tweets_to_add,filter,dateFrom,mode);
+	}
 };
 
 function addto(req,filter,twid,hash,mode,added,duplicates,dateFrom,connection){
