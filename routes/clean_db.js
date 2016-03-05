@@ -23,12 +23,22 @@ module.exports = function (searchTweets,addTweets)
 
 	connection.query('DELETE FROM tweets WHERE tweets.filter NOT IN (SELECT DISTINCT filter from Belongs)' ,function(err, filters) 
 	{
-		connection.end();
 		if (err)
 			console.log(err);
 		else
 		{
-			console.log('Database has been cleaned!');
+			connection.query('DELETE FROM hashtags WHERE id NOT IN (SELECT DISTINCT id from tweets)' ,function(err, deleted) 
+			{
+				connection.end();
+				if (err)
+					console.log(err);
+				else
+				{
+					console.log('Database has been cleaned!');
+				}		
+			});
 		}		
 	});
+
+
 }

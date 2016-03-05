@@ -1047,6 +1047,18 @@ footer p{
     	font-weight: bold;
     	margin-top: 0px;
 	}
+
+	.frame {
+    overflow-y: auto;
+    border: 1px solid black;
+    height: 3em;
+    width: 10em;
+    line-height: 1em;
+}
+
+
+
+
 }
 
 

@@ -387,7 +387,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order,skip)
 				users[i] = '\''+users[i]+'\'';
 				if (i==users.length-1)
 				{
-					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.favorite_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 					{
 						if (err){
 							console.log(err);
@@ -411,7 +411,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order,skip)
 				users[i] = '\''+users[i]+'\'';
 				if (i==users.length-1)
 				{
-					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.retweet_count DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 					{
 						if (err){
 							console.log(err);
@@ -435,7 +435,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order,skip)
 				users[i] = '\''+users[i]+'\'';
 				if (i==users.length-1)
 				{
-					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at ASC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 					{
 						if (err){
 							console.log(err);
@@ -459,7 +459,7 @@ module.exports = function (search,users,hashtags,date,req,res,path,order,skip)
 				users[i] = '\''+users[i]+'\'';
 				if (i==users.length-1)
 				{
-					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
+					connection.query('SELECT DISTINCT * FROM tweets WHERE tweets.filter IN ( SELECT filter FROM Belongs WHERE  Belongs.username = ?) AND (( tweets.created_at LIKE \'%'+search+'%\' ) OR ( tweets.user LIKE \'%'+search+'%\' ) OR ( tweets.screen_name LIKE \'%'+search+'%\' ) OR ( tweets.text LIKE \'%'+search+'%\')) AND tweets.user IN ('+users.toString()+') '+'ORDER BY tweets.created_at DESC LIMIT 20 OFFSET '+skip, req.session.user.username ,function(err, tweets) 
 					{
 						if (err){
 							console.log(err);

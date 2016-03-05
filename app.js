@@ -119,11 +119,11 @@ function requireLogin(req,res,next){
 //refresh_db(searchTweets,addTweets);
 setInterval(function() {
     refresh_db(searchTweets,addTweets);
-}, 60 * 1000 * 2); // wait 60 seconds * 2 minutes
+}, 60 * 1000 * 10); // wait 60 seconds * 2 minutes
 
 setInterval(function() {
     clean_db();
-}, 60 * 1000 * 3); // wait 60 seconds * 5 minutes
+}, 60 * 1000 * 1); // wait 60 seconds * 1 minutes
 
 
 var allTweets_cnt = 1 ;  //cnt for allTweets       page to load more and skip 'allTweets_cnt'  entries
@@ -244,7 +244,7 @@ app.use('/db_options',requireLogin , function(req, res) {
         else
           searchTweets(req.query.text,myCallback,0,0,0);
     }
-    if (( req.query.user != '')&&(req.query.user != 'User'))
+    else if (( req.query.user != '')&&(req.query.user != 'User'))
     {
         var myCallback = function(data) {
           //insert data
@@ -253,7 +253,7 @@ app.use('/db_options',requireLogin , function(req, res) {
         };
         searchTweets(req.query.user,myCallback,0,0,1);
     }
-    if (( req.query.hashtag != '')&&(req.query.hashtag != 'Hashtag #'))
+    else if (( req.query.hashtag != '')&&(req.query.hashtag != 'Hashtag #'))
     {
         if (req.query.hashtag[0] != '#')
           req.query.hashtag = '#'+req.query.hashtag;
@@ -270,6 +270,7 @@ app.use('/db_options',requireLogin , function(req, res) {
         else
           searchTweets(req.query.hashtag,myCallback,0,0,0);
     }
+    //elegxo an parw parapanw apo 2 pedia
 });
 
 if (app.get('/remove_filter', requireLogin ,function(req, res) {

@@ -405,7 +405,7 @@ footer p{
 	#mainInfo{
 		display: inline;
 		float: left;
-		height: auto;
+		height: 80%;
 		width: 90%;
 		margin-left: 5%;
 		margin-top: 15px;
@@ -511,18 +511,6 @@ footer p{
   		text-align: center;
 	}
 
-	#contact_info{
-		float: left;
-		display: block;
-		margin-top: 5px;
-		width: 90%;
-		margin-left: 5%;
-		font-family: 'Lucida Grande';
-  		font-variant: normal;
-  		font-size: 14px;
-  		text-align: center;
-	}
-
 	#report_div{
 		float: left;
 		display: block;
@@ -541,7 +529,7 @@ footer p{
 		float: left;
 		display: inline;
 		height: 20px;
-		margin-top: 15%;
+		margin-top: 20%;
 	}
 
 	#report_button{
@@ -549,7 +537,7 @@ footer p{
 		display: inline;
 		height: 20px;
 		width: 20px;
-		margin-top: 15%;
+		margin-top: 20%;
 	}
 
 	footer{
@@ -650,7 +638,7 @@ footer p{
 	#mainInfo{
 		display: inline;
 		float: left;
-		height: auto;
+		height: 80%;
 		width: 40%;
 		margin-left: 30%;
 		margin-top: 15px;
@@ -757,18 +745,6 @@ footer p{
   		text-align: center;
 	}
 
-	#contact_info{
-		float: left;
-		display: block;
-		margin-top: 20px;
-		width: 90%;
-		margin-left: 5%;
-		font-family: 'Lucida Grande';
-  		font-variant: normal;
-  		font-size: 14px;
-  		text-align: center;
-	}
-
 	#report_div{
 		float: left;
 		display: block;
@@ -787,7 +763,7 @@ footer p{
 		float: left;
 		display: inline;
 		height: 20px;
-		margin-top: 15%;
+		margin-top: 20%;
 	}
 
 	#report_button{
@@ -795,7 +771,7 @@ footer p{
 		display: inline;
 		height: 20px;
 		width: 20px;
-		margin-top: 15%;
+		margin-top: 20%;
 	}
 }
 

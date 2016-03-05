@@ -1,11 +1,81 @@
-<html>
+<html lang="en">
 	<head>
-		
+		<title>{{title}}</title>
+            <meta 	charset="UTF-8">
+            <meta 	name="description" 	content="Twitter Feed">
+            <meta 	name="keywords"    	content="homepage,Themistoklis Theologitis , twf">
+            <meta 	name="author" 		content="Themistoklis Theologitis">
+	    	<meta 	name="viewport" 	content="width=device-width,initial-scale=1">
+	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+			<script src="js/bootstrap.min.js"></script>
+	    	<link 	href="css/bootstrap.min.css" rel="stylesheet"> 
+	    	<link 	href="css/error.css" 	rel ="stylesheet" type="text/css">	 
+	    	<script src="js/error.js"></script>
+	    	<link   href="css/languages.min.css" rel ="stylesheet" type="text/css">
+	    	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+			<script src="loadie.js-master/js/jquery.loadie.min.js"></script>
+
 	</head>
 
 	<body>
-		<h1>Hello {{message}}</h1>
-		<h2>Hello {{error.status}}</h2>
-		<pre> {{{error.stack}}}</pre>
+		<header>
+			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="slide-nav">
+			   	<div class="navbar-header">
+				    <a class="navbar-toggle"> 
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+				    <a class="navbar-brand" href="/home">Twitter Feed</a>
+				    <img id="top_logo" src="../images/logo_tw_40.png" alt="Twitter Logo">
+			   	</div>
+
+			   	
+
+			    <div id="main_menu">
+			    	<div id="navbarCollapse" class="collapse navbar-collapse">
+			            <ul id="nav-navbar-nav" class="nav navbar-nav">
+			                <li class="active"><a href="/home">Home</a></li>
+			            </ul>
+			        </div>
+			    </div>
+			</div>
+		</header>
+
+		<div id="main" class="main">
+			<div id="slidemenu">
+				<div id="filter_menu">
+					<div id="navbarCollapse" class="collapse navbar-collapse">
+			            <ul id="nav-navbar-nav" class="nav navbar-nav">
+			                <li class="active"><a href="/home">Home</a></li>
+			            </ul>
+			        </div>
+				</div>
+			</div>
+			<div id="mainInfo">
+				<div id="logo">
+					<img src="../images/twitter_feed_logo.png" alt="Twitter Logo">
+				</div>
+				<div id="userFields">
+					<div id="textDiv">
+						<p id="description_text">Error {{error.status}}</p>
+						<h2 id="system_details">Oops something went wrong.</h2>
+						<p id="system_details_text">We are working on getting this fixed as soon as we can. Please try again later.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<footer>
+			<div id="left_footer">
+				<span class="lang-xs" lang="en"></span>	
+			</div>
+			<div id="right_footer">
+				<p>© Copyright 2015 Theologitis Themistoklis. All Rights Reserved</p>	
+			</div>
+		</footer>
 	</body>
 </html>
+	
